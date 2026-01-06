@@ -487,6 +487,66 @@ export const INTEGRATIONS = {
                 { name: 'tagName', label: 'Tag Name', type: 'text', required: true }
             ]
         }
+    },
+
+    wix: {
+        name: 'Wix',
+        description: 'Manage Wix orders and contacts',
+        icon: 'W',
+        authType: 'api_key',
+        color: '#0C6EFC',
+        actions: ['get_orders', 'get_contacts', 'create_contact'],
+        helpUrl: 'https://dev.wix.com/api/rest/getting-started',
+        setupInstructions: '1. Go to Wix Developers Center\n2. Create an App\n3. Get API Key or OAuth Token (depending on setup)\n4. If using API Key, paste it here.',
+        authFields: [
+            { name: 'apiKey', label: 'API Key / Access Token', type: 'password', required: true },
+            { name: 'siteId', label: 'Site ID', type: 'text', help: 'Optional: Required for some API calls' }
+        ],
+        actionSchemas: {
+            get_orders: [
+                { name: 'limit', label: 'Limit', type: 'number', help: 'Max number of orders to fetch' }
+            ],
+            get_contacts: [
+                { name: 'limit', label: 'Limit', type: 'number', help: 'Max number of contacts to fetch' }
+            ],
+            create_contact: [
+                { name: 'firstName', label: 'First Name', type: 'text' },
+                { name: 'lastName', label: 'Last Name', type: 'text' },
+                { name: 'email', label: 'Email', type: 'email', required: true },
+                { name: 'phone', label: 'Phone', type: 'text' }
+            ]
+        }
+    },
+
+    wordpress: {
+        name: 'WordPress',
+        description: 'Manage posts and comments',
+        icon: 'W',
+        authType: 'api_key',
+        color: '#21759B',
+        actions: ['create_post', 'get_posts', 'get_comments'],
+        helpUrl: 'https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/',
+        setupInstructions: '1. Go to Users > Profile in your WordPress Admin\n2. Scroll to Application Passwords\n3. specificy a name and Create a new Application Password\n4. Copy the password\n5. Enter your Site URL, Username, and this Password below',
+        authFields: [
+            { name: 'siteUrl', label: 'Site URL', type: 'text', required: true, help: 'e.g. https://mysite.com' },
+            { name: 'username', label: 'Username', type: 'text', required: true },
+            { name: 'applicationPassword', label: 'Application Password', type: 'password', required: true }
+        ],
+        actionSchemas: {
+            create_post: [
+                { name: 'title', label: 'Title', type: 'text', required: true },
+                { name: 'content', label: 'Content', type: 'textarea', required: true },
+                { name: 'status', label: 'Status', type: 'select', options: ['publish', 'draft', 'pending', 'private'], help: 'Default: draft' }
+            ],
+            get_posts: [
+                { name: 'limit', label: 'Limit', type: 'number', help: 'Max posts to fetch' },
+                { name: 'status', label: 'Status', type: 'select', options: ['publish', 'draft', 'pending', 'private'] }
+            ],
+            get_comments: [
+                { name: 'post_id', label: 'Post ID', type: 'text', help: 'Optional: Filter by post' },
+                { name: 'limit', label: 'Limit', type: 'number' }
+            ]
+        }
     }
 };
 

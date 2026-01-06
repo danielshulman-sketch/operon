@@ -17,6 +17,8 @@ import { mailchimpIntegration } from '../integrations/mailchimp';
 import { googleCalendarIntegration } from '../integrations/google-calendar';
 import { outlookCalendarIntegration } from '../integrations/outlook-calendar';
 import { zoomIntegration } from '../integrations/zoom';
+import { wixIntegration } from '../integrations/wix';
+import { wordpressIntegration } from '../integrations/wordpress';
 
 const INTEGRATIONS = {
     slack: slackIntegration,
@@ -30,7 +32,9 @@ const INTEGRATIONS = {
     mailchimp: mailchimpIntegration,
     google_calendar: googleCalendarIntegration,
     outlook_calendar: outlookCalendarIntegration,
-    zoom: zoomIntegration
+    zoom: zoomIntegration,
+    wix: wixIntegration,
+    wordpress: wordpressIntegration
 };
 
 /**
