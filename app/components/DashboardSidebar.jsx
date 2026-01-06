@@ -61,6 +61,16 @@ export default function DashboardSidebar({ isOpen = false, onClose = () => { } }
             icon: Book,
             href: '/dashboard/knowledge-base',
         });
+    }
+
+    // Accessible to everyone
+    navigationItems.push({
+        name: 'User Guide',
+        icon: Book,
+        href: '/dashboard/user-guide',
+    });
+
+    if (isAdmin || isSuperadmin) {
         navigationItems.push({
             name: 'Reporting',
             icon: BarChart3,

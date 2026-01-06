@@ -123,7 +123,7 @@ export default function DashboardPage() {
                 <h1 className="text-4xl font-bold text-white">
                     Welcome back{user?.firstName ? `, ${user.firstName.charAt(0).toUpperCase() + user.firstName.slice(1)} ` : user?.email ? `, ${user.email.split('@')[0].charAt(0).toUpperCase() + user.email.split('@')[0].slice(1)} ` : ''}
                 </h1>
-                <p className="text-white/50 text-sm">Loading...</p>
+                {user === null && <p className="text-white/50 text-sm">Loading...</p>}
             </header>
 
             {user?.isSuperadmin && (

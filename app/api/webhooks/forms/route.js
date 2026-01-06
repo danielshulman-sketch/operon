@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { query, getClient } from '@/utils/db';
-import { executeAutomation } from '@/app/lib/automation/engine';
+import { executeAutomation } from '@/lib/automation/engine';
 
 /**
  * POST /api/webhooks/forms

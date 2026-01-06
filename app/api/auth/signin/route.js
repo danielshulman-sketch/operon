@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import { query } from '@/utils/db';
 import { verifyPassword, generateToken } from '@/utils/auth';
-import { ensureSuperadminColumn } from '@/utils/ensure-superadmin-column';
+
+export const dynamic = 'force-dynamic';
 
 export async function POST(request) {
     try {
@@ -13,8 +14,6 @@ export async function POST(request) {
                 { status: 400 }
             );
         }
-
-        await ensureSuperadminColumn();
 
         // Get user with auth account
         const result = await query(
@@ -81,12 +80,6 @@ export async function POST(request) {
         });
     } catch (error) {
         console.error('Signin error:', error);
-        console.error('Error details:', {
-            message: error.message,
-            stack: error.stack,
-            code: error.code,
-            name: error.name
-        });
         return NextResponse.json(
             { error: 'Failed to sign in', details: error.message },
             { status: 500 }

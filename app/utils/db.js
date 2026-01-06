@@ -14,6 +14,11 @@ const pool = new Pool({
     ssl: shouldUseSSL ? { rejectUnauthorized: false } : false,
 });
 
+pool.on('error', (err, client) => {
+    console.error('Unexpected error on idle client', err);
+    process.exit(-1);
+});
+
 export async function query(text, params) {
     const start = Date.now();
     const res = await pool.query(text, params);

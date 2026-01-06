@@ -28,6 +28,9 @@ export async function GET(request) {
         return NextResponse.json({ tasks: result.rows });
     } catch (error) {
         console.error('Get tasks error:', error);
+        if (error.message === 'Unauthorized') {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
         return NextResponse.json(
             { error: 'Failed to fetch tasks' },
             { status: 500 }
@@ -66,6 +69,9 @@ export async function POST(request) {
         return NextResponse.json({ task: result.rows[0] });
     } catch (error) {
         console.error('Create task error:', error);
+        if (error.message === 'Unauthorized') {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
         return NextResponse.json(
             { error: 'Failed to create task' },
             { status: 500 }

@@ -1,16 +1,15 @@
-import argon2 from 'argon2';
+import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { query } from './db';
-import { ensureSuperadminColumn } from './ensure-superadmin-column';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
 
 export async function hashPassword(password) {
-    return await argon2.hash(password);
+    return await bcrypt.hash(password, 12);
 }
 
 export async function verifyPassword(hash, password) {
-    return await argon2.verify(hash, password);
+    return await bcrypt.compare(password, hash);
 }
 
 export function generateToken(payload) {
@@ -34,8 +33,6 @@ export async function getUserFromToken(token) {
         console.log('[getUserFromToken] No payload or userId');
         return null;
     }
-
-    await ensureSuperadminColumn();
 
     const result = await query(
         `SELECT u.*, om.org_id, om.role, om.is_admin, om.is_active, 

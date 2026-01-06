@@ -74,7 +74,7 @@ export default function SignInPage() {
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
                                 placeholder="you@company.com"
-                                className="w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:border-[#050c1b] focus:ring-2 focus:ring-[#1d4ed8]/40 transition-all text-sm"
+                                className="w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-white text-black placeholder-gray-500 focus:outline-none focus:border-[#050c1b] focus:ring-2 focus:ring-[#1d4ed8]/40 transition-all text-sm"
                             />
                         </div>
 
@@ -88,7 +88,7 @@ export default function SignInPage() {
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
                                 placeholder="Enter your password"
-                                className="w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:border-[#050c1b] focus:ring-2 focus:ring-[#1d4ed8]/40 transition-all text-sm"
+                                className="w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-white text-black placeholder-gray-500 focus:outline-none focus:border-[#050c1b] focus:ring-2 focus:ring-[#1d4ed8]/40 transition-all text-sm"
                             />
                         </div>
 
