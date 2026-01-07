@@ -1,6 +1,13 @@
 const { Pool } = require('pg');
 
-const connectionString = process.env.DATABASE_URL || 'postgresql://postgres.ywcqavarzxcgcoptwfkv:Dcdefe367e4e4%21@aws-1-eu-west-1.pooler.supabase.com:5432/postgres';
+// SECURITY: Database credentials must be provided via environment variable
+const connectionString = process.env.DATABASE_URL;
+
+if (!connectionString) {
+    console.error('❌ ERROR: DATABASE_URL environment variable is required');
+    console.error('Please set DATABASE_URL in your environment or .env.local file');
+    process.exit(1);
+}
 
 const pool = new Pool({
     connectionString,

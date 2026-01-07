@@ -1,7 +1,18 @@
 import { NextResponse } from 'next/server';
 
-// Simple in-memory rate limiting
-// In production, use Redis or a proper rate limiting service
+// ⚠️  WARNING: In-memory rate limiting (Production Unsuitable)
+// This rate limiting uses in-memory storage which:
+// - Doesn't persist across server restarts
+// - Doesn't work in distributed/serverless environments (like Vercel)
+// - Can be bypassed with server reload
+//
+// For production, use Redis-based rate limiting:
+// 1. Set up Upstash Redis: https://upstash.com
+// 2. Install: npm install @upstash/ratelimit @upstash/redis
+// 3. Replace this implementation with Redis-backed rate limiting
+// 
+// See security audit report for implementation details.
+
 const requestCounts = new Map();
 
 // Clean up old entries every 5 minutes

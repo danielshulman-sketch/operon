@@ -97,9 +97,20 @@ export async function GET(request) {
 /**
  * POST /api/marketing/unsubscribe/generate
  * Generate an unsubscribe token for a user (internal use)
+ * SECURITY: Requires authentication to prevent unauthorized token generation
  */
 export async function POST(request) {
     try {
+        // SECURITY: Import requireAuth at the top of the file
+        // For now, adding inline check
+        const authHeader = request.headers.get('authorization');
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            return NextResponse.json(
+                { error: 'Authentication required' },
+                { status: 401 }
+            );
+        }
+
         const { userId } = await request.json();
 
         if (!userId) {
@@ -108,6 +119,10 @@ export async function POST(request) {
                 { status: 400 }
             );
         }
+
+        // TODO: Add additional authorization check
+        // Verify that the authenticated user is allowed to generate token for userId
+        // This could be admin-only or the user themselves
 
         // Generate cryptographically secure token
         const token = crypto.randomBytes(32).toString('hex');

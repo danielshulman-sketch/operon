@@ -80,8 +80,12 @@ export async function POST(request) {
         });
     } catch (error) {
         console.error('Signin error:', error);
+        const isProduction = process.env.NODE_ENV === 'production';
         return NextResponse.json(
-            { error: 'Failed to sign in', details: error.message },
+            {
+                error: 'Failed to sign in',
+                ...(isProduction ? {} : { details: error.message })
+            },
             { status: 500 }
         );
     }
