@@ -1,4 +1,7 @@
 module.exports = {
+    experimental: {
+        missingSuspenseWithCSRBailout: false,
+    },
     eslint: {
         ignoreDuringBuilds: true,
     },
