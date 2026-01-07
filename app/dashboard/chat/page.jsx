@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Send, Bot, Briefcase, Plus, Loader2, Trash2 } from 'lucide-react';
 import InfoTooltip from '../../components/InfoTooltip';
+import DOMPurify from 'isomorphic-dompurify';
 
 export default function ChatPage() {
     const [chatType, setChatType] = useState('general'); // 'general' | 'business' | 'persona'
@@ -378,7 +379,7 @@ export default function ChatPage() {
                                         {msg.role === 'assistant' ? (
                                             <div
                                                 className="font-inter text-sm leading-relaxed space-y-3 ai-response text-black"
-                                                dangerouslySetInnerHTML={{ __html: msg.content }}
+                                                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(msg.content) }}
                                             />
                                         ) : (
                                             <p className="font-inter text-sm whitespace-pre-wrap text-black">{msg.content}</p>

@@ -36,12 +36,14 @@ export default function SettingsPage() {
         role: 'member',
         isAdmin: false
     });
+    const [hasVoiceProfile, setHasVoiceProfile] = useState(false);
 
     useEffect(() => {
         fetchUser();
         fetchMailboxes();
         fetchAutoDraftSettings();
         fetchAutoSyncSettings();
+        fetchVoiceProfile();
     }, []);
 
     useEffect(() => {
@@ -58,12 +60,25 @@ export default function SettingsPage() {
             });
             if (res.ok) {
                 const data = await res.json();
-                console.log('Settings Page User Data:', data.user); // Debug log
-                console.log('Is Admin?', data.user.isAdmin); // Debug log
                 setUser(data.user);
             }
         } catch (error) {
             console.error('Failed to fetch user:', error);
+        }
+    };
+
+    const fetchVoiceProfile = async () => {
+        try {
+            const token = localStorage.getItem('auth_token');
+            const res = await fetch('/api/voice-profile/setup', {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            if (res.ok) {
+                const data = await res.json();
+                setHasVoiceProfile(!!data.profile);
+            }
+        } catch (error) {
+            console.error('Failed to fetch voice profile:', error);
         }
     };
 
@@ -552,7 +567,7 @@ export default function SettingsPage() {
                                 onClick={() => router.push('/dashboard/voice-training')}
                                 className="px-6 py-3 bg-blue-500 text-white rounded-xl font-semibold hover:bg-blue-600 transition-colors"
                             >
-                                Train Voice Profile
+                                {hasVoiceProfile ? 'Retrain Voice Profile' : 'Train Voice Profile'}
                             </button>
                         </div>
                     </div>
@@ -565,6 +580,67 @@ export default function SettingsPage() {
             {activeTab === 'notifications' && (
                 <div className="bg-[#1a1a1a] rounded-2xl p-6 border border-gray-800">
                     <h2 className="text-xl font-semibold text-white mb-6">Notification Preferences</h2>
+
+                    {/* Marketing Consent Section */}
+                    <div className="mb-8 pb-8 border-b border-gray-800">
+                        <div className="flex items-start gap-3 mb-4">
+                            <Mail className="h-5 w-5 text-blue-500 mt-1" />
+                            <div className="flex-1">
+                                <h3 className="text-white font-semibold mb-2">Marketing Communications</h3>
+                                <p className="text-gray-400 text-sm mb-4">
+                                    Control how we can contact you with promotional content and updates about new features.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="flex items-center justify-between py-3">
+                            <div>
+                                <p className="text-white font-medium">Email Marketing</p>
+                                <p className="text-gray-400 text-sm">
+                                    Receive newsletters, product updates, and special offers
+                                </p>
+                            </div>
+                            <label className="relative inline-flex items-center cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    className="sr-only peer"
+                                    id="marketingConsent"
+                                    onChange={async (e) => {
+                                        try {
+                                            const token = localStorage.getItem('auth_token');
+                                            const res = await fetch('/api/marketing/consent', {
+                                                method: 'POST',
+                                                headers: {
+                                                    'Authorization': `Bearer ${token}`,
+                                                    'Content-Type': 'application/json'
+                                                },
+                                                body: JSON.stringify({
+                                                    consentType: 'email_marketing',
+                                                    consented: e.target.checked,
+                                                    source: 'settings_page'
+                                                })
+                                            });
+                                            if (res.ok) {
+                                                alert(e.target.checked ? 'Marketing emails enabled' : 'Marketing emails disabled');
+                                            }
+                                        } catch (error) {
+                                            console.error('Failed to update consent:', error);
+                                            alert('Failed to update preference');
+                                        }
+                                    }}
+                                />
+                                <div className="w-11 h-6 bg-gray-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                            </label>
+                        </div>
+
+                        <div className="mt-4 bg-blue-500/10 border border-blue-500/20 rounded-lg p-3">
+                            <p className="text-xs text-gray-400">
+                                <strong className="text-blue-400">Note:</strong> You will still receive important transactional emails (receipts, password resets, account notifications) regardless of this setting.
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Other Notifications */}
                     <div className="space-y-4">
                         <div className="flex items-center justify-between py-3">
                             <div>

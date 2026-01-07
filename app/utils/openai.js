@@ -42,9 +42,9 @@ async function resolveOrgAiSettings(orgId) {
         return {
             provider: 'openai',
             model: DEFAULT_MODELS.openai,
-            openaiKey: defaultOpenAIKey || null,
-            anthropicKey: defaultAnthropicKey || null,
-            googleKey: defaultGoogleKey || null,
+            openaiKey: null,
+            anthropicKey: null,
+            googleKey: null,
         };
     }
 
@@ -61,9 +61,9 @@ async function resolveOrgAiSettings(orgId) {
     const row = result.rows[0] || {};
     const provider = normalizeProvider(row.provider || 'openai');
     const model = row.model || DEFAULT_MODELS[provider];
-    const openaiKey = row.openai_api_key || (await getOrgOpenAIKey(orgId)) || defaultOpenAIKey || null;
-    const anthropicKey = row.anthropic_api_key || defaultAnthropicKey || null;
-    const googleKey = row.google_api_key || defaultGoogleKey || null;
+    const openaiKey = row.openai_api_key || (await getOrgOpenAIKey(orgId)) || null;
+    const anthropicKey = row.anthropic_api_key || null;
+    const googleKey = row.google_api_key || null;
 
     return {
         provider,

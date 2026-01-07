@@ -1,9 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { CheckSquare, Circle, CheckCircle2, Clock, AlertCircle, Plus, X } from 'lucide-react';
 
 export default function TasksPage() {
+    const searchParams = useSearchParams();
     const [tasks, setTasks] = useState([]);
     const [user, setUser] = useState(null);
     const [filter, setFilter] = useState('all');
@@ -46,6 +48,12 @@ export default function TasksPage() {
             }
         }
     }, [user]);
+
+    useEffect(() => {
+        if (searchParams.get('action') === 'create') {
+            setIsCreateModalOpen(true);
+        }
+    }, [searchParams]);
 
     const fetchUser = async () => {
         try {

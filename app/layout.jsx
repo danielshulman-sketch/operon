@@ -1,5 +1,6 @@
 import { Sora, Inter, Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
+import CookieConsent from './components/CookieConsent';
 
 const sora = Sora({
     subsets: ['latin'],
@@ -20,8 +21,8 @@ const plusJakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata = {
-    title: 'Operon',
-    description: 'AI-powered email operations and automation',
+    title: 'Operon - Business Automation Platform',
+    description: 'GDPR-compliant AI-powered business automation and workflow management',
 };
 
 export default function RootLayout({ children }) {
@@ -29,6 +30,7 @@ export default function RootLayout({ children }) {
         <html lang="en" className={`${sora.variable} ${inter.variable} ${plusJakarta.variable}`}>
             <body className="font-inter antialiased">
                 {children}
+                <CookieConsent />
             </body>
         </html>
     );

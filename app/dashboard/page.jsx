@@ -279,10 +279,13 @@ export default function DashboardPage() {
                 {tasks.filter(task => task.status !== 'completed').length === 0 ? (
                     <div className="text-center py-10">
                         <p className="text-white/60 mb-4">No active tasks</p>
-                        <button className="px-6 py-2.5 rounded-full bg-gradient-to-b from-white to-[#dcdcdc] text-black font-semibold shadow-[0_10px_40px_rgba(0,0,0,0.35)] hover:brightness-105 transition-all inline-flex items-center gap-2">
+                        <Link
+                            href="/dashboard/tasks?action=create"
+                            className="px-6 py-2.5 rounded-full bg-gradient-to-b from-white to-[#dcdcdc] text-black font-semibold shadow-[0_10px_40px_rgba(0,0,0,0.35)] hover:brightness-105 transition-all inline-flex items-center gap-2"
+                        >
                             <Plus className="h-4 w-4" />
                             Create your first task
-                        </button>
+                        </Link>
                     </div>
                 ) : (
                     <div className="space-y-3">
