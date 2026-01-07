@@ -3,6 +3,8 @@ import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { CheckCircle, XCircle, Mail } from 'lucide-react';
 
+export const dynamic = 'force-dynamic';
+
 function UnsubscribeContent() {
     const searchParams = useSearchParams();
     const token = searchParams.get('token');

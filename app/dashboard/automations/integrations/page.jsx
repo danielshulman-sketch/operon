@@ -5,6 +5,8 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { ArrowLeft, Check, X, Shield, HelpCircle, Lock, BarChart3, TrendingUp, Users as UsersIcon, Mail, Info } from 'lucide-react';
 import { supportsOAuth, supportsCredentialAuth } from '../../../lib/integrations';
 
+export const dynamic = 'force-dynamic';
+
 function IntegrationsContent() {
     const router = useRouter();
     const searchParams = useSearchParams();

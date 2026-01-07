@@ -4,6 +4,8 @@ import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { CheckSquare, Circle, CheckCircle2, Clock, AlertCircle, Plus, X } from 'lucide-react';
 
+export const dynamic = 'force-dynamic';
+
 function TasksContent() {
     const searchParams = useSearchParams();
     const [tasks, setTasks] = useState([]);
