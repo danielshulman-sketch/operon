@@ -1,9 +1,9 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { CheckCircle, XCircle, Mail } from 'lucide-react';
 
-export default function UnsubscribePage() {
+function UnsubscribeContent() {
     const searchParams = useSearchParams();
     const token = searchParams.get('token');
 
@@ -119,5 +119,17 @@ export default function UnsubscribePage() {
                 </div>
             </div>
         </div>
+    );
+}
+
+export default function UnsubscribePage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+                <div className="animate-spin h-12 w-12 border-4 border-blue-600 border-t-transparent rounded-full"></div>
+            </div>
+        }>
+            <UnsubscribeContent />
+        </Suspense>
     );
 }

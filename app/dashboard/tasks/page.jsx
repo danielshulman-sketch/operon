@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { CheckSquare, Circle, CheckCircle2, Clock, AlertCircle, Plus, X } from 'lucide-react';
 
-export default function TasksPage() {
+function TasksContent() {
     const searchParams = useSearchParams();
     const [tasks, setTasks] = useState([]);
     const [user, setUser] = useState(null);
@@ -527,5 +527,13 @@ export default function TasksPage() {
             )
             }
         </div >
+    );
+}
+
+export default function TasksPage() {
+    return (
+        <Suspense fallback={<div className="p-8"><p>Loading...</p></div>}>
+            <TasksContent />
+        </Suspense>
     );
 }

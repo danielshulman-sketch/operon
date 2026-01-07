@@ -1,16 +1,15 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ArrowLeft, Check, X, Shield, HelpCircle, Lock, BarChart3, TrendingUp, Users as UsersIcon, Mail, Info } from 'lucide-react';
 import { supportsOAuth, supportsCredentialAuth } from '../../../lib/integrations';
 
-export default function IntegrationsPage() {
+function IntegrationsContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const [integrations, setIntegrations] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [connectingIntegration, setConnectingIntegration] = useState(null);
     const [credentials, setCredentials] = useState({});
     const [integrationStats, setIntegrationStats] = useState({});
     const [expandedStats, setExpandedStats] = useState({});
@@ -529,5 +528,13 @@ export default function IntegrationsPage() {
                 </div>
             )}
         </div>
+    );
+}
+
+export default function IntegrationsPage() {
+    return (
+        <Suspense fallback={<div className="p-8"><p>Loading...</p></div>}>
+            <IntegrationsContent />
+        </Suspense>
     );
 }
