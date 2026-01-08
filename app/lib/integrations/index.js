@@ -547,6 +547,36 @@ export const INTEGRATIONS = {
                 { name: 'limit', label: 'Limit', type: 'number' }
             ]
         }
+    },
+
+    calendly: {
+        name: 'Calendly',
+        description: 'Appointment scheduling and calendar management',
+        icon: '📅',
+        authType: 'api_key',
+        color: '#006BFF',
+        actions: ['get_events', 'get_event_invitees', 'get_user', 'cancel_event'],
+        helpUrl: 'https://developer.calendly.com/api-docs/ZG9jOjM2MzE2MDM4-overview',
+        setupInstructions: '1. Log in to your Calendly account\n2. Go to Integrations > API & Webhooks\n3. Click "Get a Personal Access Token"\n4. Generate your token (starts with eyJ...)\n5. Copy the token and paste it below\n6. Keep this token secure - it provides full access to your account',
+        authFields: [
+            { name: 'apiKey', label: 'Personal Access Token', type: 'password', required: true, help: 'Found in Integrations > API & Webhooks' }
+        ],
+        actionSchemas: {
+            get_events: [
+                { name: 'user_uri', label: 'User URI', type: 'text', help: 'Optional: Filter by user URI' },
+                { name: 'status', label: 'Status', type: 'select', options: ['active', 'canceled'], help: 'Event status' },
+                { name: 'min_start_time', label: 'Min Start Time', type: 'datetime-local', help: 'ISO 8601 format' },
+                { name: 'max_start_time', label: 'Max Start Time', type: 'datetime-local', help: 'ISO 8601 format' }
+            ],
+            get_event_invitees: [
+                { name: 'event_uuid', label: 'Event UUID', type: 'text', required: true, help: 'The UUID of the scheduled event' }
+            ],
+            get_user: [],
+            cancel_event: [
+                { name: 'event_uuid', label: 'Event UUID', type: 'text', required: true },
+                { name: 'reason', label: 'Cancellation Reason', type: 'textarea', help: 'Optional reason for cancellation' }
+            ]
+        }
     }
 };
 
