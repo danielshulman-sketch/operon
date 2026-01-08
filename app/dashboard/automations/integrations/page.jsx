@@ -12,6 +12,7 @@ function IntegrationsContent() {
     const searchParams = useSearchParams();
     const [integrations, setIntegrations] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [connectingIntegration, setConnectingIntegration] = useState(null);
     const [credentials, setCredentials] = useState({});
     const [integrationStats, setIntegrationStats] = useState({});
     const [expandedStats, setExpandedStats] = useState({});
