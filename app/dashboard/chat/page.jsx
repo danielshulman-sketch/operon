@@ -3,6 +3,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { Send, Bot, Briefcase, Plus, Loader2, Trash2 } from 'lucide-react';
 import InfoTooltip from '../../components/InfoTooltip';
+import VoiceInputButton from '../../components/VoiceInputButton';
+import SpeakerButton from '../../components/SpeakerButton';
+import useVoiceRecognition from '../../hooks/useVoiceRecognition';
+import useTextToSpeech from '../../hooks/useTextToSpeech';
 import DOMPurify from 'isomorphic-dompurify';
 
 export default function ChatPage() {
@@ -14,7 +18,30 @@ export default function ChatPage() {
     const [isLoading, setIsLoading] = useState(false);
     const [conversationFilter, setConversationFilter] = useState('all'); // 'all' | 'general' | 'business'
     const [isDeleting, setIsDeleting] = useState(false);
+    const [speakingMessageId, setSpeakingMessageId] = useState(null);
     const messagesEndRef = useRef(null);
+
+    // Voice recognition hook
+    const {
+        isListening,
+        transcript,
+        error: voiceError,
+        isSupported: isVoiceSupported,
+        startListening,
+        stopListening,
+        resetTranscript
+    } = useVoiceRecognition();
+
+    // Text-to-speech hook
+    const {
+        speak,
+        pause,
+        resume,
+        cancel: cancelSpeech,
+        isSpeaking,
+        isPaused,
+        isSupported: isTTSSupported
+    } = useTextToSpeech();
 
     useEffect(() => {
         fetchConversations();
@@ -29,6 +56,21 @@ export default function ChatPage() {
     useEffect(() => {
         scrollToBottom();
     }, [messages]);
+
+    // Update input with voice transcript
+    useEffect(() => {
+        if (transcript) {
+            setInputMessage(transcript);
+        }
+    }, [transcript]);
+
+    // Stop speech when new message arrives
+    useEffect(() => {
+        if (messages.length > 0) {
+            cancelSpeech();
+            setSpeakingMessageId(null);
+        }
+    }, [messages.length, cancelSpeech]);
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -137,6 +179,33 @@ export default function ChatPage() {
         setChatType(type);
         setConversationFilter(type);
         startNewConversation();
+        // Stop any ongoing speech
+        cancelSpeech();
+        setSpeakingMessageId(null);
+    };
+
+    const handleVoiceStart = () => {
+        resetTranscript();
+        startListening();
+    };
+
+    const handleVoiceStop = () => {
+        stopListening();
+    };
+
+    const handleSpeakMessage = (messageId, content) => {
+        // Cancel if same message is playing
+        if (speakingMessageId === messageId && isSpeaking) {
+            cancelSpeech();
+            setSpeakingMessageId(null);
+        } else {
+            // Start new speech
+            cancelSpeech();
+            setSpeakingMessageId(messageId);
+            // Strip HTML tags for speech
+            const textContent = content.replace(/<[^>]*>/g, '');
+            speak(textContent);
+        }
     };
 
     const deleteConversation = async (conversationId) => {
@@ -204,6 +273,7 @@ export default function ChatPage() {
             {/* Chat Type Tabs */}
             <div className="flex gap-2 mb-6">
                 <button
+                    data-tour="general-ai-tab"
                     onClick={() => handleChatTypeChange('general')}
                     className={`flex items-center gap-2 px-6 py-3 rounded-xl font-plus-jakarta font-semibold transition-all ${chatType === 'general'
                         ? 'bg-black dark:bg-white text-white dark:text-black'
@@ -214,6 +284,7 @@ export default function ChatPage() {
                     General AI
                 </button>
                 <button
+                    data-tour="business-ai-tab"
                     onClick={() => handleChatTypeChange('business')}
                     className={`flex items-center gap-2 px-6 py-3 rounded-xl font-plus-jakarta font-semibold transition-all ${chatType === 'business'
                         ? 'bg-black dark:bg-white text-white dark:text-black'
@@ -224,6 +295,7 @@ export default function ChatPage() {
                     Business AI
                 </button>
                 <button
+                    data-tour="persona-ai-tab"
                     onClick={() => handleChatTypeChange('persona')}
                     className={`flex items-center gap-2 px-6 py-3 rounded-xl font-plus-jakarta font-semibold transition-all ${chatType === 'persona'
                         ? 'bg-black dark:bg-white text-white dark:text-black'
@@ -376,14 +448,29 @@ export default function ChatPage() {
                                             : 'bg-gray-100 dark:bg-white text-black'
                                             }`}
                                     >
-                                        {msg.role === 'assistant' ? (
-                                            <div
-                                                className="font-inter text-sm leading-relaxed space-y-3 ai-response text-black"
-                                                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(msg.content) }}
-                                            />
-                                        ) : (
-                                            <p className="font-inter text-sm whitespace-pre-wrap text-black">{msg.content}</p>
-                                        )}
+                                        <div className="flex items-start gap-2">
+                                            <div className="flex-1">
+                                                {msg.role === 'assistant' ? (
+                                                    <div
+                                                        className="font-inter text-sm leading-relaxed space-y-3 ai-response text-black"
+                                                        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(msg.content) }}
+                                                    />
+                                                ) : (
+                                                    <p className="font-inter text-sm whitespace-pre-wrap text-black">{msg.content}</p>
+                                                )}
+                                            </div>
+                                            {msg.role === 'assistant' && (
+                                                <SpeakerButton
+                                                    isSpeaking={speakingMessageId === idx && isSpeaking}
+                                                    isPaused={speakingMessageId === idx && isPaused}
+                                                    onSpeak={() => handleSpeakMessage(idx, msg.content)}
+                                                    onPause={pause}
+                                                    onResume={resume}
+                                                    onStop={cancelSpeech}
+                                                    isSupported={isTTSSupported}
+                                                />
+                                            )}
+                                        </div>
                                     </div>
                                     {msg.role === 'user' && (
                                         <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0">
@@ -412,14 +499,35 @@ export default function ChatPage() {
 
                     {/* Input Area */}
                     <div className="border-t border-[#E6E6E6] dark:border-[#333333] p-4">
+                        {isListening && (
+                            <div className="mb-2 px-4 py-2 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl">
+                                <p className="text-sm text-red-600 dark:text-red-400 font-medium">
+                                    🎤 Listening... {transcript && `"${transcript}"`}
+                                </p>
+                            </div>
+                        )}
+                        {voiceError && (
+                            <div className="mb-2 px-4 py-2 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-xl">
+                                <p className="text-sm text-yellow-700 dark:text-yellow-400">
+                                    Voice input error: {voiceError}
+                                </p>
+                            </div>
+                        )}
                         <form onSubmit={handleSendMessage} className="flex gap-3">
                             <input
                                 type="text"
                                 value={inputMessage}
                                 onChange={(e) => setInputMessage(e.target.value)}
                                 placeholder={`Ask ${chatType === 'general' ? 'anything' : chatType === 'business' ? 'about your company' : 'in your voice'}...`}
-                                disabled={isLoading}
+                                disabled={isLoading || isListening}
                                 className="flex-1 px-4 py-3 rounded-xl border border-[#E6E6E6] dark:border-[#333333] bg-white dark:bg-[#0A0A0A] text-black dark:text-white font-inter focus:outline-none focus:border-black dark:focus:border-white transition-colors disabled:opacity-50"
+                            />
+                            <VoiceInputButton
+                                isListening={isListening}
+                                onStart={handleVoiceStart}
+                                onStop={handleVoiceStop}
+                                disabled={isLoading}
+                                isSupported={isVoiceSupported}
                             />
                             <button
                                 type="submit"

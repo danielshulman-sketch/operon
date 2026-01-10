@@ -1,23 +1,36 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import DashboardSidebar from '../components/DashboardSidebar';
 import dynamic from 'next/dynamic';
 import { Menu } from 'lucide-react';
+import { WalkthroughProvider } from '../components/WalkthroughProvider';
+import Walkthrough from '../components/Walkthrough';
+import { walkthroughs } from '@/utils/walkthroughs';
+import { useWalkthrough } from '../components/WalkthroughProvider';
 
 const HelpCenterButton = dynamic(() => import('../components/HelpCenterButton'), {
     ssr: false,
 });
 
-export default function DashboardLayout({ children }) {
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+function DashboardContent({ children, isSidebarOpen, setIsSidebarOpen }) {
+    const { startWalkthrough, isWalkthroughCompleted } = useWalkthrough();
+
+    useEffect(() => {
+        // Check if this is the first time user is seeing the dashboard
+        const needsIntro = localStorage.getItem('operon_needs_intro');
+        const hasSeenIntro = localStorage.getItem('operon_has_seen_intro');
+
+        if (!hasSeenIntro && needsIntro) {
+            // Delay walkthrough start slightly to allow UI to render
+            setTimeout(() => {
+                startWalkthrough(walkthroughs.firstLogin);
+            }, 500);
+        }
+    }, [startWalkthrough]);
 
     return (
-        <div className="min-h-screen bg-[#050c1b] text-white">
-            <DashboardSidebar
-                isOpen={isSidebarOpen}
-                onClose={() => setIsSidebarOpen(false)}
-            />
+        <>
             {isSidebarOpen && (
                 <button
                     type="button"
@@ -43,6 +56,28 @@ export default function DashboardLayout({ children }) {
                 </main>
                 <HelpCenterButton />
             </div>
-        </div>
+            <Walkthrough />
+        </>
+    );
+}
+
+export default function DashboardLayout({ children }) {
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+    return (
+        <WalkthroughProvider>
+            <div className="min-h-screen bg-[#050c1b] text-white">
+                <DashboardSidebar
+                    isOpen={isSidebarOpen}
+                    onClose={() => setIsSidebarOpen(false)}
+                />
+                <DashboardContent
+                    isSidebarOpen={isSidebarOpen}
+                    setIsSidebarOpen={setIsSidebarOpen}
+                >
+                    {children}
+                </DashboardContent>
+            </div>
+        </WalkthroughProvider>
     );
 }

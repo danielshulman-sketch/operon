@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operon User Guide: Login & Account Setup</title>
+    <style>
+        @media print {
+            body {
+                max-width: 100%;
+                margin: 0;
+                padding: 20px;
+            }
+            .page-break {
+                page-break-before: always;
+            }
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: #fff;
+        }
+        h1 {
+            color: #2563eb;
+            border-bottom: 3px solid #2563eb;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        h2 {
+            color: #1e40af;
+            margin-top: 40px;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 8px;
+        }
+        h3 {
+            color: #1e40af;
+            margin-top: 30px;
+        }
+        h4 {
+            color: #374151;
+            margin-top: 20px;
+        }
+        code {
+            background: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        pre {
+            background: #1f2937;
+            color: #f3f4f6;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+        a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .note, .important, .warning, .tip {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+        .note {
+            background: #dbeafe;
+            border-color: #2563eb;
+        }
+        .important {
+            background: #fef3c7;
+            border-color: #f59e0b;
+        }
+        .warning {
+            background: #fee2e2;
+            border-color: #ef4444;
+        }
+        .tip {
+            background: #d1fae5;
+            border-color: #10b981;
+        }
+        ul, ol {
+            margin: 10px 0;
+            padding-left: 30px;
+        }
+        li {
+            margin: 5px 0;
+        }
+        strong {
+            color: #1f2937;
+        }
+        hr {
+            border: none;
+            border-top: 2px solid #e5e7eb;
+            margin: 40px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #e5e7eb;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background: #f3f4f6;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+<h1>Operon User Guide: Login &amp; Account Setup</h1>
+
+<h2>Table of Contents</h2>
+<ol>
+<li><a href="#logging-in-to-operon">Logging In to Operon</a></li>
+<li><a href="#connecting-your-openai-account">Connecting Your OpenAI Account</a></li>
+<li><a href="#connecting-your-email-account">Connecting Your Email Account</a></li>
+<li><a href="#troubleshooting">Troubleshooting</a></li>
+</ol>
+
+<hr>
+
+<h2 id="logging-in-to-operon">Logging In to Operon</h2>
+
+<h3>Prerequisites</h3>
+<ul>
+<li>A registered Operon account with valid credentials</li>
+<li>Internet connection</li>
+</ul>
+
+<h3>Step-by-Step Login Process</h3>
+
+<h4>1. Navigate to the Login Page</h4>
+<ul>
+<li>Open your web browser and go to your Operon instance login page</li>
+<li>You should see the Operon logo and a "Sign in" form</li>
+</ul>
+
+<h4>2. Enter Your Credentials</h4>
+<ul>
+<li><strong>Email</strong>: Enter your registered email address (e.g., <code>you@company.com</code>)</li>
+<li><strong>Password</strong>: Enter your password
+<ul>
+<li>Passwords are case-sensitive</li>
+<li>Ensure Caps Lock is off</li>
+</ul>
+</li>
+</ul>
+
+<h4>3. Sign In</h4>
+<ul>
+<li>Click the <strong>"Continue"</strong> button</li>
+<li>The system will validate your credentials</li>
+</ul>
+
+<h4>4. Successful Login</h4>
+<ul>
+<li>Upon successful authentication, you'll be redirected to the <strong>Dashboard</strong></li>
+<li>Your authentication token is automatically stored for the session</li>
+<li>You'll see your dashboard with:
+<ul>
+<li>Real-time metrics and analytics</li>
+<li>Revenue tracking</li>
+<li>Active user count</li>
+<li>Quick access to Email Stream, Tasks, Automations, and more</li>
+</ul>
+</li>
+</ul>
+
+<div class="note">
+<strong>📝 NOTE</strong><br>
+If you're exploring the platform, there's a "Skip to dashboard (demo)" option on the login page for demonstration purposes.
+</div>
+
+<hr>
+
+<h2 id="connecting-your-openai-account">Connecting Your OpenAI Account</h2>
+
+<p>Connecting your OpenAI account enables AI-powered features including email classification, automated draft generation, and the AI assistant chatbot.</p>
+
+<h3>Prerequisites</h3>
+<ul>
+<li>An OpenAI account (create one at <a href="https://platform.openai.com/signup" target="_blank">platform.openai.com/signup</a>)</li>
+<li>A valid payment method added to your OpenAI account</li>
+<li>Admin privileges in your Operon organization (standard users cannot configure API keys)</li>
+</ul>
+
+<h3>Step-by-Step Setup Guide</h3>
+
+<h4>Step 1: Create an OpenAI Account</h4>
+<ol>
+<li>Visit <a href="https://platform.openai.com/signup" target="_blank">platform.openai.com/signup</a></li>
+<li>Sign up with your email, Google account, or Microsoft account</li>
+<li>Verify your email address</li>
+<li>Complete the onboarding process</li>
+</ol>
+
+<h4>Step 2: Add Billing Information</h4>
+
+<div class="important">
+<strong>⚠️ IMPORTANT</strong><br>
+OpenAI requires a payment method to use their API. You cannot generate API keys without billing configured.
+</div>
+
+<ol>
+<li>Log in to your OpenAI account</li>
+<li>Navigate to <a href="https://platform.openai.com/account/billing" target="_blank">Billing Settings</a></li>
+<li>Click <strong>"Add payment method"</strong></li>
+<li>Enter your credit card or payment details</li>
+<li>Set a usage limit to control costs:
+<ul>
+<li><strong>Recommended</strong>: Start with a $10-20 monthly limit</li>
+<li>Monitor usage in the first month</li>
+<li>Adjust as needed</li>
+</ul>
+</li>
+</ol>
+
+<h4>Step 3: Generate Your API Key</h4>
+<ol>
+<li>Go to the <a href="https://platform.openai.com/api-keys" target="_blank">API Keys Page</a></li>
+<li>Click <strong>"Create new secret key"</strong></li>
+<li>Give your key a descriptive name (e.g., "Operon Production" or "My Company Chat")</li>
+<li>Click <strong>"Create secret key"</strong></li>
+<li><strong>CRITICAL</strong>: Copy the API key immediately
+<ul>
+<li>It starts with <code>sk-</code></li>
+<li>This is the ONLY time you'll see the full key</li>
+<li>Store it securely (password manager recommended)</li>
+</ul>
+</li>
+</ol>
+
+<h4>Step 4: Configure Operon with Your API Key</h4>
+<ol>
+<li>Log in to your Operon dashboard</li>
+<li>Navigate to <strong>Settings</strong> (from the sidebar)</li>
+<li>Click on <strong>"API Settings"</strong> or go directly to <code>/dashboard/api-settings</code></li>
+<li>You'll see the <strong>"AI Provider Settings"</strong> page</li>
+</ol>
+
+<h4>Step 5: Enter Your OpenAI Credentials</h4>
+<ol>
+<li><strong>Default Provider</strong>: Select <strong>"OpenAI"</strong> from the dropdown</li>
+<li><strong>Default Model</strong>:
+<ul>
+<li>Enter your preferred model (e.g., <code>gpt-4o-mini</code>, <code>gpt-4o</code>, <code>gpt-4-turbo</code>)</li>
+<li>Leave blank to use OpenAI's default</li>
+<li><strong>Recommended for cost efficiency</strong>: <code>gpt-4o-mini</code></li>
+<li><strong>Recommended for best quality</strong>: <code>gpt-4o</code></li>
+</ul>
+</li>
+<li><strong>OpenAI API Key</strong>:
+<ul>
+<li>Paste your API key (starts with <code>sk-</code>)</li>
+<li>Click the eye icon to toggle visibility if needed</li>
+</ul>
+</li>
+<li>Click <strong>"Save AI Settings"</strong></li>
+</ol>
+
+<h4>Step 6: Verify Configuration</h4>
+<ul>
+<li>After saving, you should see a green success message: <strong>"AI Keys Configured"</strong></li>
+<li>This confirms your organization can now use AI features</li>
+<li>The actual API key is encrypted and stored securely</li>
+</ul>
+
+<h3>Understanding Pricing</h3>
+
+<div class="tip">
+<strong>💡 TIP</strong><br>
+<strong>Pricing Information</strong>: OpenAI charges based on usage, measured in tokens (~750 words per 1,000 tokens).
+</div>
+
+<p><strong>Common Pricing (as of 2024)</strong>:</p>
+<ul>
+<li><strong>GPT-4o-mini</strong>: ~$0.15 per 1M input tokens, ~$0.60 per 1M output tokens (most cost-effective)</li>
+<li><strong>GPT-4o</strong>: ~$2.50 per 1M input tokens, ~$10 per 1M output tokens (balanced)</li>
+<li><strong>GPT-4 Turbo</strong>: Higher cost, premium performance</li>
+</ul>
+
+<p><strong>Cost Control</strong>:</p>
+<ul>
+<li>Set monthly spending limits in your OpenAI dashboard</li>
+<li>Monitor usage under <strong>"Usage"</strong> in OpenAI platform</li>
+<li>Start with conservative limits and scale up as needed</li>
+</ul>
+
+<h3>Alternative AI Providers</h3>
+<p>Operon also supports:</p>
+<ul>
+<li><strong>Anthropic (Claude)</strong>: For Claude AI models
+<ul>
+<li>Get keys from <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a></li>
+</ul>
+</li>
+<li><strong>Google (Gemini)</strong>: For Gemini AI models
+<ul>
+<li>Get keys from <a href="https://makersuite.google.com" target="_blank">makersuite.google.com</a></li>
+</ul>
+</li>
+</ul>
+
+<p>The setup process is similar—just select the appropriate provider and enter the corresponding API key.</p>
+
+<hr>
+
+<div class="page-break"></div>
+
+<h2 id="connecting-your-email-account">Connecting Your Email Account</h2>
+
+<p>Connecting your email enables Operon to sync, classify, and manage your inbox with AI assistance.</p>
+
+<h3>Supported Email Providers</h3>
+<ul>
+<li>Gmail</li>
+<li>Outlook/Hotmail</li>
+<li>Yahoo Mail</li>
+<li>Custom IMAP/SMTP servers</li>
+</ul>
+
+<h3>Prerequisites</h3>
+<ul>
+<li>Access to your email account</li>
+<li>For Gmail/Yahoo: Ability to generate App Passwords (requires 2FA enabled)</li>
+<li>For Custom: IMAP and SMTP server details from your email provider</li>
+</ul>
+
+<hr>
+
+<h3>Method 1: Connecting Gmail</h3>
+
+<div class="warning">
+<strong>⚠️ WARNING</strong><br>
+Gmail requires an <strong>App Password</strong> for third-party applications. You cannot use your regular Gmail password.
+</div>
+
+<h4>Step 1: Enable 2-Factor Authentication on Google</h4>
+<ol>
+<li>Go to <a href="https://myaccount.google.com/security" target="_blank">myaccount.google.com/security</a></li>
+<li>Under "Signing in to Google", select <strong>"2-Step Verification"</strong></li>
+<li>Follow the prompts to enable 2FA using your phone</li>
+<li>Complete the setup</li>
+</ol>
+
+<h4>Step 2: Generate an App Password</h4>
+<ol>
+<li>Return to <a href="https://myaccount.google.com/security" target="_blank">myaccount.google.com/security</a></li>
+<li>Click <strong>"App passwords"</strong> (only visible after 2FA is enabled)</li>
+<li>You may need to sign in again</li>
+<li>Select <strong>"Mail"</strong> as the app</li>
+<li>Select <strong>"Other (custom name)"</strong> as the device</li>
+<li>Enter a name like "Operon" or "Work Automation"</li>
+<li>Click <strong>"Generate"</strong></li>
+<li><strong>Copy the 16-character password</strong> (no spaces)</li>
+<li>Save it securely—you won't see it again</li>
+</ol>
+
+<h4>Step 3: Connect in Operon</h4>
+<ol>
+<li>Log in to Operon</li>
+<li>Go to <strong>Dashboard</strong> → <strong>Settings</strong> → <strong>Email Accounts</strong> tab</li>
+<li>Click <strong>"Add Email Account"</strong> or navigate to <code>/dashboard/email-connect</code></li>
+<li>Select <strong>"Gmail"</strong> as your provider</li>
+<li>Fill in the form:
+<ul>
+<li><strong>Email Address</strong>: Your full Gmail address (e.g., <code>yourname@gmail.com</code>)</li>
+<li><strong>Password (App Password)</strong>: Paste the 16-character App Password you generated</li>
+<li><strong>IMAP Host</strong>: <code>imap.gmail.com</code> (pre-filled)</li>
+<li><strong>IMAP Port</strong>: <code>993</code> (pre-filled)</li>
+<li><strong>SMTP Host</strong>: <code>smtp.gmail.com</code> (pre-filled)</li>
+<li><strong>SMTP Port</strong>: <code>587</code> (pre-filled)</li>
+</ul>
+</li>
+<li>Click <strong>"Connect Email Account"</strong></li>
+<li>Wait for validation—this may take a few seconds</li>
+</ol>
+
+<h4>Step 4: Verify Connection</h4>
+<ul>
+<li>You'll be redirected to the dashboard upon success</li>
+<li>Go to <strong>Settings</strong> → <strong>Email Accounts</strong> to see your connected Gmail</li>
+<li>Click <strong>"Sync Now"</strong> to fetch your first batch of emails</li>
+</ul>
+
+<hr>
+
+<h3>Method 2: Connecting Outlook/Hotmail</h3>
+
+<h4>Step 1: Determine If You Need an App Password</h4>
+<p><strong>Microsoft Personal Accounts</strong> (Outlook.com, Hotmail.com, Live.com):</p>
+<ul>
+<li>Try your regular password first</li>
+<li>If it fails, generate an App Password at <a href="https://account.microsoft.com/security" target="_blank">account.microsoft.com/security</a></li>
+</ul>
+
+<p><strong>Microsoft 365/Work Accounts</strong>:</p>
+<ul>
+<li>Usually work with regular passwords</li>
+<li>Contact your IT admin if you encounter issues (they may require OAuth)</li>
+</ul>
+
+<h4>Step 2: Connect in Operon</h4>
+<ol>
+<li>Navigate to <strong>Settings</strong> → <strong>Email Accounts</strong> → <strong>Add Email Account</strong></li>
+<li>Select <strong>"Outlook/Hotmail"</strong> as the provider</li>
+<li>Fill in the form:
+<ul>
+<li><strong>Email Address</strong>: Your Outlook email (e.g., <code>you@outlook.com</code>)</li>
+<li><strong>Password</strong>: Your account password or App Password</li>
+<li><strong>IMAP Host</strong>: <code>outlook.office365.com</code> (pre-filled)</li>
+<li><strong>IMAP Port</strong>: <code>993</code> (pre-filled)</li>
+<li><strong>SMTP Host</strong>: <code>smtp.office365.com</code> (pre-filled)</li>
+<li><strong>SMTP Port</strong>: <code>587</code> (pre-filled)</li>
+</ul>
+</li>
+<li>Click <strong>"Connect Email Account"</strong></li>
+</ol>
+
+<hr>
+
+<h3>Method 3: Connecting Yahoo Mail</h3>
+
+<div class="important">
+<strong>⚠️ IMPORTANT</strong><br>
+Yahoo requires an <strong>App Password</strong>. Your regular Yahoo password will NOT work.
+</div>
+
+<h4>Step 1: Generate Yahoo App Password</h4>
+<ol>
+<li>Go to <a href="https://login.yahoo.com/account/security" target="_blank">Yahoo Account Security</a></li>
+<li>Sign in to your Yahoo account</li>
+<li>Scroll to <strong>"App passwords"</strong> (you may need to enable 2FA first)</li>
+<li>Click <strong>"Generate app password"</strong></li>
+<li>Select <strong>"Other app"</strong> and name it "Operon"</li>
+<li>Click <strong>"Generate"</strong></li>
+<li><strong>Copy the password</strong> displayed (it won't be shown again)</li>
+</ol>
+
+<h4>Step 2: Connect in Operon</h4>
+<ol>
+<li>Navigate to <code>/dashboard/email-connect</code></li>
+<li>Select <strong>"Yahoo Mail"</strong></li>
+<li>Fill in:
+<ul>
+<li><strong>Email Address</strong>: Your Yahoo email (e.g., <code>you@yahoo.com</code>)</li>
+<li><strong>Password (App Password)</strong>: The app password you just generated</li>
+<li><strong>IMAP Host</strong>: <code>imap.mail.yahoo.com</code> (pre-filled)</li>
+<li><strong>IMAP Port</strong>: <code>993</code> (pre-filled)</li>
+<li><strong>SMTP Host</strong>: <code>smtp.mail.yahoo.com</code> (pre-filled)</li>
+<li><strong>SMTP Port</strong>: <code>587</code> (pre-filled)</li>
+</ul>
+</li>
+<li>Click <strong>"Connect Email Account"</strong></li>
+</ol>
+
+<hr>
+
+<h3>Method 4: Custom IMAP/SMTP Server</h3>
+<p>For other email providers (ProtonMail, custom domains, corporate servers, etc.):</p>
+
+<h4>Step 1: Gather Server Information</h4>
+<p>Contact your email provider or IT administrator for:</p>
+<ul>
+<li><strong>IMAP Server Address</strong> (e.g., <code>mail.example.com</code>)</li>
+<li><strong>IMAP Port</strong> (usually <code>993</code> for SSL)</li>
+<li><strong>SMTP Server Address</strong> (e.g., <code>smtp.example.com</code>)</li>
+<li><strong>SMTP Port</strong> (usually <code>587</code> for TLS or <code>465</code> for SSL)</li>
+<li>Your <strong>email username</strong> (sometimes the full email, sometimes just the local part)</li>
+<li>Your <strong>email password</strong></li>
+</ul>
+
+<h4>Step 2: Connect in Operon</h4>
+<ol>
+<li>Go to <code>/dashboard/email-connect</code></li>
+<li>Select <strong>"Custom IMAP/SMTP"</strong></li>
+<li>Fill in ALL fields manually:
+<ul>
+<li><strong>Email Address</strong>: Your full email address</li>
+<li><strong>Password</strong>: Your email account password</li>
+<li><strong>IMAP Host</strong>: Your IMAP server address</li>
+<li><strong>IMAP Port</strong>: Your IMAP port (usually <code>993</code>)</li>
+<li><strong>SMTP Host</strong>: Your SMTP server address</li>
+<li><strong>SMTP Port</strong>: Your SMTP port (usually <code>587</code>)</li>
+</ul>
+</li>
+<li>Click <strong>"Connect Email Account"</strong></li>
+</ol>
+
+<hr>
+
+<div class="page-break"></div>
+
+<h3>Managing Connected Email Accounts</h3>
+<p>Once connected, you can manage your email accounts from <strong>Settings</strong> → <strong>Email Accounts</strong>:</p>
+
+<h4>View Connected Accounts</h4>
+<ul>
+<li>See all connected mailboxes</li>
+<li>View last sync time</li>
+<li>Check server details (IMAP/SMTP hosts and ports)</li>
+</ul>
+
+<h4>Sync Emails Manually</h4>
+<ul>
+<li>Click <strong>"Sync Now"</strong> to fetch new emails immediately</li>
+<li>Useful for testing or getting the latest messages</li>
+</ul>
+
+<h4>Remove an Email Account</h4>
+<ul>
+<li>Click <strong>"Remove"</strong> next to any mailbox</li>
+<li>Confirm the deletion</li>
+<li><strong>Note</strong>: This does not delete emails from your provider—only disconnects from Operon</li>
+</ul>
+
+<h4>Enable Auto-Sync (Optional)</h4>
+<ol>
+<li>Go to <strong>Settings</strong> → <strong>Automations</strong> tab</li>
+<li>Enable <strong>"Auto Email Sync"</strong></li>
+<li>Choose sync interval (5 min, 15 min, 30 min, 1 hour, etc.)</li>
+<li>Click <strong>"Save Auto Sync"</strong></li>
+<li>Operon will automatically fetch new emails on your schedule</li>
+</ol>
+
+<hr>
+
+<h2 id="troubleshooting">Troubleshooting</h2>
+
+<h3>Login Issues</h3>
+
+<p><strong>Problem: "Failed to sign in" or "Invalid credentials"</strong></p>
+<p><strong>Solutions</strong>:</p>
+<ul>
+<li>Double-check your email and password (passwords are case-sensitive)</li>
+<li>Ensure Caps Lock is OFF</li>
+<li>Try resetting your password (contact your admin)</li>
+<li>Clear browser cache and cookies</li>
+<li>Try a different browser or incognito/private mode</li>
+</ul>
+
+<p><strong>Problem: Stuck on loading after login</strong></p>
+<p><strong>Solutions</strong>:</p>
+<ul>
+<li>Check your internet connection</li>
+<li>Refresh the page</li>
+<li>Clear browser cache</li>
+<li>Check browser console for errors (F12 → Console tab)</li>
+</ul>
+
+<hr>
+
+<h3>OpenAI Connection Issues</h3>
+
+<p><strong>Problem: "Failed to save API key"</strong></p>
+<p><strong>Solutions</strong>:</p>
+<ul>
+<li>Verify the API key starts with <code>sk-</code></li>
+<li>Ensure you copied the entire key (no extra spaces)</li>
+<li>Confirm billing is set up in your OpenAI account</li>
+<li>Check that the key hasn't been revoked in OpenAI platform</li>
+<li>Generate a new API key and try again</li>
+</ul>
+
+<p><strong>Problem: "Insufficient quota" errors</strong></p>
+<p><strong>Solutions</strong>:</p>
+<ul>
+<li>Check your OpenAI billing dashboard for usage limits</li>
+<li>Increase your spending limit</li>
+<li>Add or update your payment method</li>
+<li>Wait for your quota to reset (if on a free tier)</li>
+</ul>
+
+<p><strong>Problem: AI features not working after setup</strong></p>
+<p><strong>Solutions</strong>:</p>
+<ul>
+<li>Verify the green "AI Keys Configured" badge is showing</li>
+<li>Ensure you selected the correct provider (OpenAI)</li>
+<li>Check that your model name is valid (e.g., <code>gpt-4o-mini</code>)</li>
+<li>Refresh the page and try again</li>
+<li>Check browser console for API errors</li>
+</ul>
+
+<hr>
+
+<h3>Email Connection Issues</h3>
+
+<p><strong>Problem: "Failed to connect email" with Gmail</strong></p>
+<p><strong>Solutions</strong>:</p>
+<ul>
+<li>Ensure you're using an <strong>App Password</strong>, not your regular password</li>
+<li>Verify 2-Factor Authentication is enabled on your Google account</li>
+<li>Double-check the App Password (16 characters, no spaces)</li>
+<li>Try generating a new App Password</li>
+<li>Ensure IMAP is enabled in Gmail settings:
+<ul>
+<li>Go to Gmail → Settings → Forwarding and POP/IMAP</li>
+<li>Enable IMAP access</li>
+</ul>
+</li>
+</ul>
+
+<p><strong>Problem: "Failed to connect email" with Outlook</strong></p>
+<p><strong>Solutions</strong>:</p>
+<ul>
+<li>Try your regular password first</li>
+<li>If that fails, generate an App Password</li>
+<li>For work/school accounts, contact your IT administrator</li>
+<li>Verify your Outlook account allows IMAP access</li>
+</ul>
+
+<p><strong>Problem: "Failed to connect email" with Yahoo</strong></p>
+<p><strong>Solutions</strong>:</p>
+<ul>
+<li>Ensure you're using an <strong>App Password</strong>, not your regular password</li>
+<li>Generate a new App Password if the old one isn't working</li>
+<li>Verify your Yahoo account security settings allow third-party apps</li>
+</ul>
+
+<p><strong>Problem: "Failed to connect email" with Custom IMAP/SMTP</strong></p>
+<p><strong>Solutions</strong>:</p>
+<ul>
+<li>Double-check all server addresses (IMAP host, SMTP host)</li>
+<li>Verify port numbers (commonly <code>993</code> for IMAP, <code>587</code> for SMTP)</li>
+<li>Confirm your email and password are correct</li>
+<li>Check if your provider requires specific security settings (SSL/TLS)</li>
+<li>Contact your email provider or IT admin for correct settings</li>
+<li>Test your credentials in an email client like Thunderbird or Outlook first</li>
+</ul>
+
+<p><strong>Problem: Emails not syncing</strong></p>
+<p><strong>Solutions</strong>:</p>
+<ul>
+<li>Click <strong>"Sync Now"</strong> manually to test</li>
+<li>Check the "Last synced" timestamp in Settings</li>
+<li>Verify your email account is still connected</li>
+<li>Ensure your email provider hasn't changed passwords or security settings</li>
+<li>Reconnect the email account (remove and add again)</li>
+<li>Enable Auto-Sync in Settings → Automations tab</li>
+</ul>
+
+<hr>
+
+<h2>Quick Reference</h2>
+
+<h3>Gmail Setup Summary</h3>
+<ol>
+<li>Enable 2FA on Google Account</li>
+<li>Generate App Password (16 characters)</li>
+<li>Connect in Operon with App Password</li>
+<li>Default ports: IMAP <code>993</code>, SMTP <code>587</code></li>
+</ol>
+
+<h3>OpenAI Setup Summary</h3>
+<ol>
+<li>Create account at platform.openai.com</li>
+<li>Add billing/payment method</li>
+<li>Generate API key (starts with <code>sk-</code>)</li>
+<li>Add to Operon at Settings → API Settings</li>
+<li>Select provider and model, then save</li>
+</ol>
+
+<h3>Email Auto-Sync Setup</h3>
+<ol>
+<li>Go to Settings → Automations</li>
+<li>Enable "Auto Email Sync"</li>
+<li>Choose interval (15 min recommended)</li>
+<li>Save settings</li>
+</ol>
+
+<hr>
+
+<h2>Additional Resources</h2>
+<ul>
+<li><strong>Platform Support</strong>: Contact your Operon administrator</li>
+<li><strong>OpenAI Documentation</strong>: <a href="https://platform.openai.com/docs" target="_blank">platform.openai.com/docs</a></li>
+<li><strong>Gmail App Passwords</strong>: <a href="https://support.google.com/accounts/answer/185833" target="_blank">support.google.com/accounts/answer/185833</a></li>
+<li><strong>Yahoo App Passwords</strong>: <a href="https://help.yahoo.com/kb/generate-third-party-passwords-sln15241.html" target="_blank">help.yahoo.com/kb/generate-third-party-passwords-sln15241.html</a></li>
+</ul>
+
+<hr>
+
+<p><strong>Last Updated</strong>: January 2026<br>
+<strong>Version</strong>: 1.0</p>
+
+</body>
+</html>

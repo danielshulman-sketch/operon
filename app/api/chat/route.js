@@ -3,6 +3,7 @@ import { query, getClient } from '@/utils/db';
 import { requireAuth } from '@/utils/auth';
 import { generateChatResponse } from '@/utils/openai';
 import { formatAssistantMessage } from './format-message';
+import operonGuide from '@/utils/operon-guide';
 
 const ALLOWED_CHAT_TYPES = ['general', 'business', 'persona'];
 
@@ -103,6 +104,14 @@ export async function POST(request) {
         let systemPrompt = 'You are a helpful AI assistant.';
 
         if (chatType === 'business') {
+            // Start with Operon platform guide
+            let knowledgeSections = [];
+
+            // Always include Operon guide for platform questions
+            const operonGuideContent = operonGuide.getKnowledgeBaseContent();
+            knowledgeSections.push('=== OPERON PLATFORM GUIDE ===\n' + operonGuideContent);
+
+            // Get company-specific knowledge base
             const kbResult = await client.query(
                 `SELECT title, content, category
                  FROM knowledge_base
@@ -114,22 +123,30 @@ export async function POST(request) {
 
             if (kbResult.rows.length > 0) {
                 // Truncate content to prevent token overflow
-                const context = kbResult.rows.map(doc => {
+                const companyKnowledge = kbResult.rows.map(doc => {
                     const truncatedContent = doc.content.length > 1000
                         ? doc.content.substring(0, 1000) + '...'
                         : doc.content;
                     return `Title: ${doc.title}\nCategory: ${doc.category || 'General'}\nContent: ${truncatedContent}`;
                 }).join('\n\n---\n\n');
 
-                systemPrompt = `You are a business assistant trained on the company's SOPs and documentation. Use the following knowledge base to answer questions accurately. If the answer is not in the knowledge base, say so clearly.
+                knowledgeSections.push('=== COMPANY KNOWLEDGE BASE ===\n' + companyKnowledge);
+            }
+
+            const fullContext = knowledgeSections.join('\n\n');
+
+            systemPrompt = `You are a business assistant with expertise in two areas:
+
+1. **Operon Platform**: You can answer questions about how to use Operon, including setup, features, integrations, and best practices.
+2. **Company Knowledge**: You can answer questions about the company's SOPs, processes, and documentation.
+
+When users ask "how to" questions about Operon (e.g., "How do I connect Gmail?", "How do I assign tasks?"), refer to the Operon Platform Guide.
+When users ask about company-specific topics, refer to the Company Knowledge Base.
 
 KNOWLEDGE BASE:
-${context}
+${fullContext}
 
-Answer questions based on this information. Be concise and helpful.`;
-            } else {
-                systemPrompt = 'You are a business assistant. Note: No company documentation has been uploaded yet. Please ask your admin to add SOPs and documentation to the knowledge base.';
-            }
+Answer questions accurately and concisely. If the answer is not in the knowledge base, say so clearly.`;
         }
 
         if (chatType === 'persona') {

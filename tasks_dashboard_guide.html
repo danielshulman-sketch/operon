@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operon User Guide: Tasks & Dashboard</title>
+    <style>
+        @media print {
+            body {
+                max-width: 100%;
+                margin: 0;
+                padding: 20px;
+            }
+
+            .page-break {
+                page-break-before: always;
+            }
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: #fff;
+        }
+
+        h1 {
+            color: #2563eb;
+            border-bottom: 3px solid #2563eb;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        h2 {
+            color: #1e40af;
+            margin-top: 40px;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 8px;
+        }
+
+        h3 {
+            color: #1e40af;
+            margin-top: 30px;
+        }
+
+        h4 {
+            color: #374151;
+            margin-top: 20px;
+        }
+
+        code {
+            background: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background: #1f2937;
+            color: #f3f4f6;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+
+        a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .note,
+        .important,
+        .warning,
+        .tip {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+
+        .note {
+            background: #dbeafe;
+            border-color: #2563eb;
+        }
+
+        .important {
+            background: #fef3c7;
+            border-color: #f59e0b;
+        }
+
+        .warning {
+            background: #fee2e2;
+            border-color: #ef4444;
+        }
+
+        .tip {
+            background: #d1fae5;
+            border-color: #10b981;
+        }
+
+        ul,
+        ol {
+            margin: 10px 0;
+            padding-left: 30px;
+        }
+
+        li {
+            margin: 5px 0;
+        }
+
+        strong {
+            color: #1f2937;
+        }
+
+        hr {
+            border: none;
+            border-top: 2px solid #e5e7eb;
+            margin: 40px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th,
+        td {
+            border: 1px solid #e5e7eb;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background: #f3f4f6;
+            font-weight: 600;
+        }
+
+        .emoji {
+            font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Operon User Guide: Tasks &amp; Dashboard</h1>
+
+    <h2>Table of Contents</h2>
+    <ol>
+        <li><a href="#understanding-the-dashboard">Understanding the Dashboard</a></li>
+        <li><a href="#tasks-overview">Tasks Overview</a></li>
+        <li><a href="#creating-tasks">Creating Tasks</a></li>
+        <li><a href="#managing-tasks">Managing Tasks</a></li>
+        <li><a href="#task-filters">Task Filters &amp; Organization</a></li>
+        <li><a href="#admin-features">Admin Features: Assigning Tasks</a></li>
+        <li><a href="#dashboard-metrics">Dashboard Metrics</a></li>
+        <li><a href="#troubleshooting">Troubleshooting</a></li>
+    </ol>
+
+    <hr>
+
+    <h2 id="understanding-the-dashboard">Understanding the Dashboard</h2>
+
+    <p>The <strong>Dashboard</strong> is your central command center in Operon. It provides a quick overview of your
+        task status, recent activity, and key metrics.</p>
+
+    <h3>What You'll See on the Dashboard</h3>
+
+    <ol>
+        <li><strong>Welcome Header</strong>: Personalized greeting with your name</li>
+        <li><strong>Task Statistics</strong>: Four key metric cards showing:
+            <ul>
+                <li><strong>Pending Tasks</strong> - Tasks waiting to be started</li>
+                <li><strong>In Progress</strong> - Tasks currently being worked on</li>
+                <li><strong>Completed</strong> - Tasks finished this week</li>
+                <li><strong>Urgent</strong> - High-priority tasks requiring attention</li>
+            </ul>
+        </li>
+        <li><strong>Recent Tasks</strong>: Quick view of your active tasks (up to 5 most recent)</li>
+    </ol>
+
+    <h3>Dashboard Quick Links</h3>
+
+    <p>Each metric card is clickable and will take you to a filtered view in the Tasks page:</p>
+    <ul>
+        <li>Click <strong>Pending Tasks</strong> → See all pending tasks</li>
+        <li>Click <strong>In Progress</strong> → See tasks you're actively working on</li>
+        <li>Click <strong>Completed</strong> → View completed tasks</li>
+        <li>Click <strong>Urgent</strong> → See all high-priority tasks</li>
+    </ul>
+
+    <div class="tip">
+        <strong>💡 TIP</strong><br>
+        The dashboard updates in real-time. Refresh the page to see the latest stats!
+    </div>
+
+    <hr>
+
+    <h2 id="tasks-overview">Tasks Overview</h2>
+
+    <p><strong>Tasks</strong> in Operon help you track action items, to-dos, and work assignments across your team.
+        Tasks can be created manually or extracted automatically from your emails using AI.</p>
+
+    <h3>Key Features</h3>
+
+    <ul>
+        <li>✅ <strong>Status Tracking</strong>: pending, in progress, completed</li>
+        <li>🎯 <strong>Priority Levels</strong>: high, medium, low</li>
+        <li>📅 <strong>Due Dates</strong>: Set deadlines for tasks</li>
+        <li>👥 <strong>Assignments</strong> (Admin): Assign tasks to team members</li>
+        <li>🔍 <strong>Smart Filters</strong>: Filter by status and priority</li>
+        <li>📝 <strong>Descriptions</strong>: Add detailed notes to each task</li>
+    </ul>
+
+    <h3>Task Lifecycle</h3>
+
+    <pre>
+Created → Pending → In Progress → Completed
+</pre>
+
+    <ul>
+        <li><strong>Pending</strong>: Task created, not yet started</li>
+        <li><strong>In Progress</strong>: Actively being worked on</li>
+        <li><strong>Completed</strong>: Task finished ✓</li>
+    </ul>
+
+    <hr>
+
+    <div class="page-break"></div>
+
+    <h2 id="creating-tasks">Creating Tasks</h2>
+
+    <h3>Method 1: From the Dashboard</h3>
+
+    <ol>
+        <li>Navigate to your <strong>Dashboard</strong></li>
+        <li>Scroll to the <strong>Recent Tasks</strong> section</li>
+        <li>Click <strong>"+ Create your first task"</strong> (if no tasks exist)</li>
+    </ol>
+
+    <h3>Method 2: From the Tasks Page</h3>
+
+    <ol>
+        <li>Go to <strong>Tasks</strong> from the sidebar</li>
+        <li>Click the <strong>"+ Create Task"</strong> button (top right)</li>
+        <li>Fill out the task creation form</li>
+    </ol>
+
+    <h3>Task Creation Form</h3>
+
+    <h4>1. Title* (Required)</h4>
+    <ul>
+        <li>Enter a clear, concise task title</li>
+        <li><strong>Example</strong>: "Review Q3 Report", "Follow up with John", "Update documentation"</li>
+        <li><strong>Best Practice</strong>: Start with an action verb (Review, Create, Send, Update, etc.)</li>
+    </ul>
+
+    <h4>2. Description (Optional)</h4>
+    <ul>
+        <li>Add detailed information about the task</li>
+        <li>Include context, links, or specific requirements</li>
+        <li><strong>Example</strong>: "Review the Q3 sales report and highlight key metrics for the team meeting"</li>
+    </ul>
+
+    <h4>3. Priority (Default: Medium)</h4>
+    <ul>
+        <li><strong>Low</strong>: Can be done whenever there's time</li>
+        <li><strong>Medium</strong>: Standard priority, no immediate urgency</li>
+        <li><strong>High</strong>: Urgent, needs attention soon</li>
+    </ul>
+
+    <div class="important">
+        <strong>⚠️ IMPORTANT</strong><br>
+        High-priority tasks appear in the "Urgent" count on your dashboard!
+    </div>
+
+    <h4>4. Due Date (Optional)</h4>
+    <ul>
+        <li>Select a deadline for the task</li>
+        <li>Helps with time management and planning</li>
+        <li>Format: Click the calendar picker and choose a date</li>
+    </ul>
+
+    <hr>
+
+    <h2 id="managing-tasks">Managing Tasks</h2>
+
+    <h3>Viewing Your Tasks</h3>
+
+    <p>Navigate to <strong>Dashboard</strong> → <strong>Tasks</strong> to see all your tasks.</p>
+
+    <p>The task list shows:</p>
+    <ul>
+        <li>☑️ <strong>Checkbox</strong>: Quick complete/uncomplete toggle</li>
+        <li><strong>Status Dropdown</strong>: Change task status (Pending/In Progress/Completed)</li>
+        <li><strong>Task Title</strong>: Main task name</li>
+        <li><strong>Description</strong>: Additional details (if provided)</li>
+        <li><strong>Priority Badge</strong>: Color-coded priority indicator
+            <ul>
+                <li>🔴 High (Red)</li>
+                <li>🟠 Medium (Orange)</li>
+                <li>🟢 Low (Green)</li>
+            </ul>
+        </li>
+        <li><strong>Due Date</strong>: When the task is due</li>
+        <li><strong>Created Date</strong>: When the task was created</li>
+    </ul>
+
+    <h3>Changing Task Status</h3>
+
+    <p><strong>Method 1: Using the Checkbox</strong></p>
+    <ul>
+        <li>☐ Unchecked → Task is pending or in progress</li>
+        <li>☑ Checked → Task is completed</li>
+    </ul>
+
+    <p><strong>Method 2: Using the Status Dropdown</strong></p>
+    <ol>
+        <li>Find the task you want to update</li>
+        <li>Click the <strong>status dropdown</strong> next to the checkbox</li>
+        <li>Select new status: Pending, In Progress, or Completed</li>
+        <li>Status updates immediately (no save button needed)</li>
+    </ol>
+
+    <h3>Updating Priority</h3>
+
+    <ol>
+        <li>Find the task you want to update</li>
+        <li>Click the <strong>priority badge</strong> (colored pill showing current priority)</li>
+        <li>This opens a dropdown menu</li>
+        <li>Select new priority: Low, Medium, or High</li>
+        <li>Priority updates immediately with color change</li>
+    </ol>
+
+    <h3>Task Indicator Colors</h3>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Priority</th>
+                <th>Color</th>
+                <th>Use When</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>High</strong></td>
+                <td>🔴 Red</td>
+                <td>Urgent, time-sensitive tasks</td>
+            </tr>
+            <tr>
+                <td><strong>Medium</strong></td>
+                <td>🟠 Orange</td>
+                <td>Standard tasks, moderate importance</td>
+            </tr>
+            <tr>
+                <td><strong>Low</strong></td>
+                <td>🟢 Green</td>
+                <td>Nice-to-have, non-urgent tasks</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <hr>
+
+    <div class="page-break"></div>
+
+    <h2 id="task-filters">Task Filters &amp; Organization</h2>
+
+    <p>The Tasks page includes powerful filtering to help you focus on what matters.</p>
+
+    <h3>Status Filters</h3>
+
+    <p>Located at the top of the Tasks page:</p>
+    <ul>
+        <li><strong>All</strong>: Show all tasks regardless of status</li>
+        <li><strong>Pending</strong>: Only show tasks not yet started</li>
+        <li><strong>In Progress</strong>: Only show tasks actively being worked on</li>
+        <li><strong>Completed</strong>: Only show finished tasks</li>
+    </ul>
+
+    <h3>Priority Filters</h3>
+
+    <p>Second row of filters:</p>
+    <ul>
+        <li><strong>All Priorities</strong>: Show tasks of any priority</li>
+        <li><strong>High</strong>: Show only urgent tasks</li>
+        <li><strong>Medium</strong>: Show medium-priority tasks</li>
+        <li><strong>Low</strong>: Show low-priority tasks</li>
+    </ul>
+
+    <h3>Combining Filters</h3>
+
+    <p>You can use <strong>both</strong> status and priority filters together!</p>
+
+    <p><strong>Example</strong>: Show all "In Progress" tasks that are "High" priority</p>
+    <ol>
+        <li>Click <strong>"In Progress"</strong> status filter</li>
+        <li>Click <strong>"High"</strong> priority filter</li>
+        <li>See only tasks matching both criteria</li>
+    </ol>
+
+    <div class="tip">
+        <strong>💡 TIP</strong><br>
+        Use filters to create focused work sessions. For example, filter to "Pending" + "High" to tackle urgent items
+        first!
+    </div>
+
+    <hr>
+
+    <h2 id="admin-features">Admin Features: Assigning Tasks</h2>
+
+    <p>If you're an <strong>administrator</strong> in your organization, you have additional capabilities for managing
+        team tasks.</p>
+
+    <h3>What Admins Can Do</h3>
+
+    <ul>
+        <li>✅ Create tasks for any team member</li>
+        <li>✅ Assign existing tasks to team members</li>
+        <li>✅ Reassign tasks between team members</li>
+        <li>✅ View all organization tasks (not just your own)</li>
+        <li>✅ See who each task is assigned to</li>
+    </ul>
+
+    <h3>How to Assign a Task</h3>
+
+    <h4>Prerequisites</h4>
+    <ul>
+        <li>You must be an admin in your organization</li>
+        <li>Team members must already be added to your organization</li>
+    </ul>
+
+    <h4>Assignment Process</h4>
+
+    <ol>
+        <li><strong>Navigate to Tasks page</strong></li>
+        <li><strong>Find the task</strong> you want to assign</li>
+        <li><strong>Look for the assignment dropdown</strong> (appears next to priority badge)
+            <ul>
+                <li>Shows "Unassigned" if not assigned</li>
+                <li>Shows current assignee's name if already assigned</li>
+            </ul>
+        </li>
+        <li><strong>Click the dropdown</strong></li>
+        <li><strong>Select a team member</strong> from the list
+            <ul>
+                <li>Team members shown as: "First Last" or email address</li>
+                <li>Or select "Unassigned" to remove assignment</li>
+            </ul>
+        </li>
+        <li><strong>Assignment saves automatically</strong></li>
+    </ol>
+
+    <div class="important">
+        <strong>⚠️ IMPORTANT</strong><br>
+        When you assign a task, the team member will see it in their Tasks view and dashboard.
+    </div>
+
+    <h3>Reassigning Tasks</h3>
+
+    <p>To change who a task is assigned to:</p>
+    <ol>
+        <li>Click the <strong>assignment dropdown</strong> on the task</li>
+        <li>Select a different team member</li>
+        <li>Confirm the change if prompted</li>
+        <li>Task is instantly reassigned</li>
+    </ol>
+
+    <hr>
+
+    <div class="page-break"></div>
+
+    <h2 id="dashboard-metrics">Dashboard Metrics</h2>
+
+    <p>The dashboard provides real-time insights into task performance.</p>
+
+    <h3>Metric Cards Explained</h3>
+
+    <h4>1. Pending Tasks</h4>
+    <ul>
+        <li><strong>Icon</strong>: 🔵 Clock</li>
+        <li><strong>Label</strong>: "Today"</li>
+        <li><strong>Shows</strong>: Number of tasks in "Pending" status</li>
+        <li><strong>What it means</strong>: Tasks created but not started yet</li>
+        <li><strong>Action</strong>: Click to view and start working on pending tasks</li>
+    </ul>
+
+    <h4>2. In Progress</h4>
+    <ul>
+        <li><strong>Icon</strong>: 🟠 Trending Up</li>
+        <li><strong>Label</strong>: "Active"</li>
+        <li><strong>Shows</strong>: Tasks currently being worked on</li>
+        <li><strong>What it means</strong>: Tasks you or your team are actively completing</li>
+        <li><strong>Action</strong>: Click to see what's actively being worked on</li>
+    </ul>
+
+    <h4>3. Completed</h4>
+    <ul>
+        <li><strong>Icon</strong>: 🟢 Check Circle</li>
+        <li><strong>Label</strong>: "This week"</li>
+        <li><strong>Shows</strong>: Tasks completed this week</li>
+        <li><strong>What it means</strong>: Your productivity measure for the week</li>
+        <li><strong>Action</strong>: Click to review completed work</li>
+    </ul>
+
+    <h4>4. Urgent</h4>
+    <ul>
+        <li><strong>Icon</strong>: 🔴 X Circle</li>
+        <li><strong>Label</strong>: "High Priority"</li>
+        <li><strong>Shows</strong>: Number of high-priority tasks</li>
+        <li><strong>What it means</strong>: Tasks needing immediate attention</li>
+        <li><strong>Action</strong>: Click to tackle urgent items</li>
+    </ul>
+
+    <h3>Understanding the Numbers</h3>
+
+    <p><strong>Healthy Task Distribution:</strong></p>
+    <ul>
+        <li><strong>Low Pending</strong>: Good! You're staying on top of new tasks</li>
+        <li><strong>Moderate In Progress</strong>: Indicates active work without overload</li>
+        <li><strong>Growing Completed</strong>: Shows consistent productivity</li>
+        <li><strong>Low Urgent</strong>: Means you're managing priorities well</li>
+    </ul>
+
+    <p><strong>Warning Signs:</strong></p>
+    <ul>
+        <li>🚨 <strong>High Pending + Low In Progress</strong>: Tasks piling up, not being started</li>
+        <li>🚨 <strong>Many Urgent</strong>: Too many high-priority items, consider delegating</li>
+        <li>🚨 <strong>Low Completed</strong>: May need to focus on finishing tasks</li>
+    </ul>
+
+    <hr>
+
+    <h2 id="troubleshooting">Troubleshooting</h2>
+
+    <h3>Tasks Not Showing Up</h3>
+
+    <p><strong>Problem</strong>: I created a task but don't see it in the list</p>
+
+    <p><strong>Solutions</strong>:</p>
+    <ul>
+        <li>✅ Check your status filters - make sure "All" is selected</li>
+        <li>✅ Check your priority filters - make sure "All Priorities" is selected</li>
+        <li>✅ Refresh the page (F5 or Ctrl+R)</li>
+        <li>✅ Make sure you're logged in</li>
+    </ul>
+
+    <h3>Can't Change Task Status</h3>
+
+    <p><strong>Problem</strong>: Clicking the status dropdown doesn't work</p>
+
+    <p><strong>Solutions</strong>:</p>
+    <ul>
+        <li>✅ Ensure you're logged in (session may have expired)</li>
+        <li>✅ Refresh the page and try again</li>
+        <li>✅ Check browser console for errors (F12 → Console)</li>
+        <li>✅ Try a different browser</li>
+    </ul>
+
+    <h3>Assignment Dropdown Not Visible</h3>
+
+    <p><strong>Problem</strong>: I don't see the option to assign tasks</p>
+
+    <p><strong>Solutions</strong>:</p>
+    <ul>
+        <li>✅ <strong>Verify you're an admin</strong> - Only admins can assign tasks</li>
+        <li>✅ Contact your organization admin to grant admin privileges</li>
+    </ul>
+
+    <div class="note">
+        <strong>📝 NOTE</strong><br>
+        Regular users cannot assign tasks. This is an admin-only feature to maintain task management control.
+    </div>
+
+    <hr>
+
+    <h2>Best Practices</h2>
+
+    <h3>For All Users</h3>
+
+    <ol>
+        <li><strong>Use Descriptive Titles</strong>
+            <ul>
+                <li>✅ Good: "Review Q3 budget and prepare summary"</li>
+                <li>❌ Bad: "Budget stuff"</li>
+            </ul>
+        </li>
+        <li><strong>Set Realistic Due Dates</strong>
+            <ul>
+                <li>Don't over-commit</li>
+                <li>Leave buffer time for unexpected issues</li>
+            </ul>
+        </li>
+        <li><strong>Update Status Regularly</strong>
+            <ul>
+                <li>Move tasks to "In Progress" when you start</li>
+                <li>Mark completed promptly</li>
+            </ul>
+        </li>
+        <li><strong>Prioritize Thoughtfully</strong>
+            <ul>
+                <li>Don't mark everything as "High"</li>
+                <li>Save high priority for truly urgent items</li>
+            </ul>
+        </li>
+    </ol>
+
+    <h3>For Admins</h3>
+
+    <ol>
+        <li><strong>Assign Tasks Clearly</strong>
+            <ul>
+                <li>Ensure assignments match team member's skills</li>
+                <li>Don't overload any single person</li>
+            </ul>
+        </li>
+        <li><strong>Balance Workload</strong>
+            <ul>
+                <li>Check dashboard to see team distribution</li>
+                <li>Reassign if someone has too many tasks</li>
+            </ul>
+        </li>
+        <li><strong>Use Urgent Sparingly</strong>
+            <ul>
+                <li>If everything is urgent, nothing is</li>
+                <li>Reserve for genuinely time-sensitive items</li>
+            </ul>
+        </li>
+    </ol>
+
+    <hr>
+
+    <h2>Quick Reference</h2>
+
+    <h3>Task Status Flow</h3>
+    <pre>
+☐ Pending → ⏳ In Progress → ✅ Completed
+</pre>
+
+    <h3>Priority Guide</h3>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Priority</th>
+                <th>When to Use</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>🔴 <strong>High</strong></td>
+                <td>Due today/tomorrow, blocks other work, executive request</td>
+            </tr>
+            <tr>
+                <td>🟠 <strong>Medium</strong></td>
+                <td>Due this week, standard importance, routine work</td>
+            </tr>
+            <tr>
+                <td>🟢 <strong>Low</strong></td>
+                <td>Nice-to-have, no deadline, low impact</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Permissions Overview</h3>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Feature</th>
+                <th>Regular User</th>
+                <th>Admin</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>View own tasks</td>
+                <td>✅</td>
+                <td>✅</td>
+            </tr>
+            <tr>
+                <td>View all org tasks</td>
+                <td>✅</td>
+                <td>✅</td>
+            </tr>
+            <tr>
+                <td>Create tasks</td>
+                <td>✅</td>
+                <td>✅</td>
+            </tr>
+            <tr>
+                <td>Change status/priority</td>
+                <td>✅</td>
+                <td>✅</td>
+            </tr>
+            <tr>
+                <td><strong>Assign tasks</strong></td>
+                <td>❌</td>
+                <td>✅</td>
+            </tr>
+            <tr>
+                <td><strong>View assignments</strong></td>
+                <td>❌</td>
+                <td>✅</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <hr>
+
+    <p><strong>Last Updated</strong>: January 2026<br>
+        <strong>Version</strong>: 1.0
+    </p>
+
+</body>
+
+</html>

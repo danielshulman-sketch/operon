@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operon User Guide: Integrations & OAuth</title>
+    <style>
+        @media print {
+            body {
+                max-width: 100%;
+                margin: 0;
+                padding: 20px;
+            }
+
+            .page-break {
+                page-break-before: always;
+            }
+
+            details {
+                border: 1px solid #e5e7eb;
+                page-break-inside: avoid;
+            }
+
+            details[open] {
+                page-break-inside: auto;
+            }
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: #fff;
+        }
+
+        h1 {
+            color: #2563eb;
+            border-bottom: 3px solid #2563eb;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        h2 {
+            color: #1e40af;
+            margin-top: 40px;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 8px;
+        }
+
+        h3 {
+            color: #1e40af;
+            margin-top: 30px;
+        }
+
+        h4 {
+            color: #374151;
+            margin-top: 20px;
+        }
+
+        code {
+            background: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background: #1f2937;
+            color: #f3f4f6;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+
+        a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .note,
+        .important,
+        .warning,
+        .tip {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+
+        .note {
+            background: #dbeafe;
+            border-color: #2563eb;
+        }
+
+        .important {
+            background: #fef3c7;
+            border-color: #f59e0b;
+        }
+
+        .warning {
+            background: #fee2e2;
+            border-color: #ef4444;
+        }
+
+        .tip {
+            background: #d1fae5;
+            border-color: #10b981;
+        }
+
+        ul,
+        ol {
+            margin: 10px 0;
+            padding-left: 30px;
+        }
+
+        li {
+            margin: 5px 0;
+        }
+
+        strong {
+            color: #1f2937;
+        }
+
+        hr {
+            border: none;
+            border-top: 2px solid #e5e7eb;
+            margin: 40px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th,
+        td {
+            border: 1px solid #e5e7eb;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background: #f3f4f6;
+            font-weight: 600;
+        }
+
+        details {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+        }
+
+        summary {
+            cursor: pointer;
+            font-weight: 600;
+            color: #1e40af;
+            user-select: none;
+        }
+
+        summary:hover {
+            color: #2563eb;
+        }
+
+        details[open] summary {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Operon User Guide: Integrations &amp; OAuth</h1>
+
+    <h2>Table of Contents</h2>
+    <ol>
+        <li><a href="#what-are-integrations">What Are Integrations?</a></li>
+        <li><a href="#understanding-oauth">Understanding OAuth</a></li>
+        <li><a href="#connecting-integrations">Connecting Integrations</a></li>
+        <li><a href="#integration-types">Integration Types</a></li>
+        <li><a href="#step-by-step-setup-guides">Step-by-Step Setup Guides</a></li>
+        <li><a href="#troubleshooting">Troubleshooting</a></li>
+    </ol>
+
+    <hr>
+
+    <h2 id="what-are-integrations">What Are Integrations?</h2>
+
+    <p>Integrations allow Operon to connect with your favorite tools and services, enabling powerful automation
+        workflows. Once connected, you can create automations that trigger actions across multiple platforms—like
+        sending a Slack message when you receive a high-priority email, or adding new email contacts to your CRM.</p>
+
+    <h3>Benefits of Integrations</h3>
+    <ul>
+        <li><strong>Automation</strong>: Connect tools together to automate repetitive tasks</li>
+        <li><strong>Centralization</strong>: Manage multiple platforms from one place</li>
+        <li><strong>Efficiency</strong>: Reduce manual data entry and context switching</li>
+        <li><strong>Scalability</strong>: Build complex workflows without writing code</li>
+    </ul>
+
+    <hr>
+
+    <h2 id="understanding-oauth">Understanding OAuth</h2>
+
+    <h3>What is OAuth?</h3>
+
+    <p><strong>OAuth (Open Authorization)</strong> is a secure way to connect Operon to your other apps <strong>without
+            sharing your password</strong>. Think of it like a digital key that gives Operon permission to access
+        specific features of another service on your behalf.</p>
+
+    <h3>How OAuth Works (Simple Explanation)</h3>
+
+    <ol>
+        <li><strong>You click "Connect"</strong> in Operon for a service (like Slack or Google Sheets)</li>
+        <li><strong>You're redirected</strong> to that service's login page (e.g., slack.com)</li>
+        <li><strong>You log in</strong> with your normal credentials on their official website</li>
+        <li><strong>You grant permission</strong> by clicking "Allow" or "Authorize"</li>
+        <li><strong>You're redirected back</strong> to Operon with a secure access token</li>
+        <li><strong>Operon can now access</strong> only the permissions you granted</li>
+    </ol>
+
+    <h3>Why OAuth is Secure</h3>
+
+    <div class="important">
+        <strong>⚠️ IMPORTANT</strong><br>
+        <ul>
+            <li><strong>Your password never leaves the original service</strong> - Operon never sees it</li>
+            <li><strong>Permissions are limited</strong> - You control what Operon can access</li>
+            <li><strong>You can revoke access anytime</strong> - Just disconnect the integration</li>
+            <li><strong>Tokens expire</strong> - Even if stolen, they won't work forever</li>
+        </ul>
+    </div>
+
+    <h3>OAuth vs. API Keys</h3>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Feature</th>
+                <th>OAuth</th>
+                <th>API Keys</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Security</strong></td>
+                <td>Very secure - no passwords shared</td>
+                <td>Secure, but keys are like passwords</td>
+            </tr>
+            <tr>
+                <td><strong>Setup</strong></td>
+                <td>Easier - click and grant</td>
+                <td>Requires finding/generating keys</td>
+            </tr>
+            <tr>
+                <td><strong>Permissions</strong></td>
+                <td>Granular - you choose what to allow</td>
+                <td>Usually full access</td>
+            </tr>
+            <tr>
+                <td><strong>Revocation</strong></td>
+                <td>Easy - disconnect in settings</td>
+                <td>Must delete key manually</td>
+            </tr>
+            <tr>
+                <td><strong>Use Case</strong></td>
+                <td>Personal accounts, Google, Slack</td>
+                <td>Developer tools, APIs</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p><strong>When to use OAuth</strong>: For services where you log in with your Google/Microsoft/Slack account<br>
+        <strong>When to use API Keys</strong>: For services like Stripe, Mailchimp that provide developer API keys
+    </p>
+
+    <hr>
+
+    <div class="page-break"></div>
+
+    <h2 id="connecting-integrations">Connecting Integrations</h2>
+
+    <h3>Prerequisites</h3>
+    <ul>
+        <li>Admin privileges in your Operon organization</li>
+        <li>An account with the service you want to connect</li>
+        <li>For OAuth: Browser access to authorize</li>
+        <li>For API Keys: Access to the service's API settings</li>
+    </ul>
+
+    <h3>General Connection Process</h3>
+
+    <h4>Step 1: Navigate to Integrations</h4>
+    <ol>
+        <li>Log in to Operon</li>
+        <li>Go to <strong>Dashboard</strong> → <strong>Automations</strong> → <strong>Integrations</strong></li>
+        <li>Browse available integrations</li>
+    </ol>
+
+    <h4>Step 2: Choose Your Integration</h4>
+    <ul>
+        <li>Integrations show a <strong>green checkmark</strong> (✓) if already connected</li>
+        <li>Click <strong>"Connect"</strong> or <strong>"Connect with OAuth"</strong> / <strong>"Connect with API
+                Key"</strong></li>
+    </ul>
+
+    <h4>Step 3: Complete Authentication</h4>
+
+    <p><strong>For OAuth Integrations</strong>:</p>
+    <ol>
+        <li>Click <strong>"Connect with OAuth"</strong></li>
+        <li>You'll be redirected to the service's login page</li>
+        <li>Log in and click <strong>"Authorize"</strong> or <strong>"Allow"</strong></li>
+        <li>You'll be redirected back to Operon</li>
+        <li>✅ Connection complete!</li>
+    </ol>
+
+    <p><strong>For API Key Integrations</strong>:</p>
+    <ol>
+        <li>Click <strong>"Connect with API Key"</strong> or <strong>"Connect"</strong></li>
+        <li>A modal opens asking for credentials</li>
+        <li>Enter your API key/credentials</li>
+        <li>Click <strong>"Save &amp; Connect"</strong></li>
+        <li>✅ Connection complete!</li>
+    </ol>
+
+    <hr>
+
+    <h2 id="integration-types">Integration Types</h2>
+
+    <p>Operon supports 20+ integrations across several categories:</p>
+
+    <h3>📢 Communication &amp; Collaboration</h3>
+    <ul>
+        <li><strong>Slack</strong> - Send messages, create channels</li>
+        <li><strong>Email (SMTP/IMAP)</strong> - Send and receive emails</li>
+    </ul>
+
+    <h3>📊 Productivity &amp; Data</h3>
+    <ul>
+        <li><strong>Google Sheets</strong> - Read/write spreadsheet data</li>
+        <li><strong>Notion</strong> - Create and update pages/databases</li>
+        <li><strong>Airtable</strong> - Manage bases, tables, and records</li>
+    </ul>
+
+    <h3>📅 Scheduling &amp; Meetings</h3>
+    <ul>
+        <li><strong>Google Calendar</strong> - Create and manage events</li>
+        <li><strong>Outlook Calendar</strong> - Microsoft calendar integration</li>
+        <li><strong>Zoom</strong> - Create and manage meetings</li>
+        <li><strong>Calendly</strong> - Get scheduled events and invitees</li>
+    </ul>
+
+    <h3>💳 Payments &amp; Commerce</h3>
+    <ul>
+        <li><strong>Stripe</strong> - Process payments, manage customers</li>
+        <li><strong>Wix</strong> - Manage orders and contacts</li>
+        <li><strong>WordPress</strong> - Manage posts and comments</li>
+    </ul>
+
+    <h3>📧 Marketing &amp; CRM</h3>
+    <ul>
+        <li><strong>MailerLite</strong> - Email marketing and newsletters</li>
+        <li><strong>Mailchimp</strong> - Marketing platform and campaigns</li>
+        <li><strong>Kartra</strong> - Marketing automation and funnels</li>
+        <li><strong>Kajabi</strong> - Course and membership management</li>
+        <li><strong>GoHighLevel</strong> - CRM and marketing automation</li>
+    </ul>
+
+    <hr>
+
+    <div class="page-break"></div>
+
+    <h2 id="step-by-step-setup-guides">Step-by-Step Setup Guides</h2>
+
+    <h3>Setting Up OAuth Integrations</h3>
+
+    <p>Most OAuth integrations require creating an OAuth app in the service's developer portal first.</p>
+
+    <h4>General OAuth Setup Process</h4>
+
+    <ol>
+        <li><strong>Configure OAuth Settings in Operon</strong> (one-time setup)</li>
+        <li><strong>Create OAuth App in External Service</strong></li>
+        <li><strong>Save Credentials in Operon</strong></li>
+        <li><strong>Connect the Integration</strong></li>
+    </ol>
+
+    <hr>
+
+    <details>
+        <summary><strong>🔵 Slack Setup Instructions</strong></summary>
+
+        <h4>Prerequisites</h4>
+        <ul>
+            <li>Slack workspace admin access</li>
+        </ul>
+
+        <h4>Setup Steps</h4>
+
+        <ol>
+            <li><strong>Create Slack App</strong>
+                <ul>
+                    <li>Go to <a href="https://api.slack.com/apps" target="_blank">api.slack.com/apps</a></li>
+                    <li>Click "Create New App" → "From scratch"</li>
+                    <li>Name your app (e.g., "Operon Automation")</li>
+                    <li>Choose your workspace</li>
+                </ul>
+            </li>
+
+            <li><strong>Configure OAuth & Permissions</strong>
+                <ul>
+                    <li>Go to "OAuth & Permissions"</li>
+                    <li>Add Bot Token Scopes: <code>chat:write</code>, <code>channels:manage</code>,
+                        <code>channels:read</code>, <code>users:read</code>, <code>team:read</code></li>
+                </ul>
+            </li>
+
+            <li><strong>Add Redirect URL</strong>
+                <ul>
+                    <li>Add: <code>https://your-operon-url.com/api/integrations/oauth/callback</code></li>
+                </ul>
+            </li>
+
+            <li><strong>Get Client Credentials</strong>
+                <ul>
+                    <li>Go to "Basic Information"</li>
+                    <li>Copy Client ID and Client Secret</li>
+                </ul>
+            </li>
+
+            <li><strong>Save in Operon</strong>
+                <ul>
+                    <li>Paste in Operon → OAuth Settings → Slack</li>
+                </ul>
+            </li>
+
+            <li><strong>Connect</strong>
+                <ul>
+                    <li>Click "Connect with OAuth" in Operon ✅</li>
+                </ul>
+            </li>
+        </ol>
+
+    </details>
+
+    <details>
+        <summary><strong>📊 Google Sheets Setup Instructions</strong></summary>
+
+        <ol>
+            <li>Go to <a href="https://console.cloud.google.com/" target="_blank">Google Cloud Console</a></li>
+            <li>Enable Google Sheets API</li>
+            <li>Configure OAuth consent screen</li>
+            <li>Create OAuth client ID (web application)</li>
+            <li>Add redirect URI: <code>https://your-operon-url.com/api/integrations/oauth/callback</code></li>
+            <li>Copy Client ID and Client Secret</li>
+            <li>Save in Operon → OAuth Settings</li>
+            <li>Connect ✅</li>
+        </ol>
+
+    </details>
+
+    <details>
+        <summary><strong>💳 Stripe Setup Instructions (API Key)</strong></summary>
+
+        <ol>
+            <li>Log in to <a href="https://dashboard.stripe.com/" target="_blank">Stripe Dashboard</a></li>
+            <li>Go to Developers → API keys</li>
+            <li>Copy your Secret key (starts with <code>sk_test_</code> or <code>sk_live_</code>)</li>
+            <li>In Operon, click Connect on Stripe</li>
+            <li>Paste your API key</li>
+            <li>Click Save & Connect ✅</li>
+        </ol>
+
+        <div class="warning">
+            <strong>⚠️ WARNING</strong><br>
+            Keep your secret key secure! Never share it publicly.
+        </div>
+
+    </details>
+
+    <details>
+        <summary><strong>📅 Google Calendar Setup Instructions</strong></summary>
+
+        <p>Similar to Google Sheets:</p>
+        <ol>
+            <li>Go to Google Cloud Console</li>
+            <li>Enable Google Calendar API</li>
+            <li>Create OAuth client ID</li>
+            <li>Add redirect URI</li>
+            <li>Save credentials in Operon</li>
+            <li>Connect ✅</li>
+        </ol>
+
+    </details>
+
+    <details>
+        <summary><strong>📆 Outlook Calendar Setup Instructions</strong></summary>
+
+        <ol>
+            <li>Go to <a href="https://portal.azure.com/" target="_blank">Azure Portal</a></li>
+            <li>Create App registration</li>
+            <li>Add redirect URI: <code>https://your-operon-url.com/api/integrations/oauth/callback</code></li>
+            <li>Create client secret</li>
+            <li>Add API permissions: <code>Calendars.ReadWrite</code>, <code>offline_access</code>,
+                <code>User.Read</code></li>
+            <li>Save Application ID and Secret in Operon</li>
+            <li>Connect ✅</li>
+        </ol>
+
+    </details>
+
+    <details>
+        <summary><strong>🎥 Zoom Setup Instructions</strong></summary>
+
+        <ol>
+            <li>Go to <a href="https://marketplace.zoom.us/" target="_blank">Zoom App Marketplace</a></li>
+            <li>Create OAuth app</li>
+            <li>Add redirect URL</li>
+            <li>Add scopes: <code>meeting:write:admin</code>, <code>meeting:read:admin</code></li>
+            <li>Activate app</li>
+            <li>Copy Client ID and Secret</li>
+            <li>Save in Operon and connect ✅</li>
+        </ol>
+
+    </details>
+
+    <details>
+        <summary><strong>📧 MailerLite Setup Instructions (API Key)</strong></summary>
+
+        <ol>
+            <li>Log in to MailerLite</li>
+            <li>Go to Integrations → Developer API</li>
+            <li>Generate new token</li>
+            <li>Copy token (starts with <code>eyJ...</code>)</li>
+            <li>Paste in Operon and connect ✅</li>
+        </ol>
+
+    </details>
+
+    <details>
+        <summary><strong>📧 Mailchimp Setup Instructions (API Key)</strong></summary>
+
+        <ol>
+            <li>Log in to Mailchimp</li>
+            <li>Go to Account → Extras → API keys</li>
+            <li>Create API key</li>
+            <li>Note your server prefix (e.g., <code>us1</code> from URL)</li>
+            <li>Enter API key and server prefix in Operon</li>
+            <li>Connect ✅</li>
+        </ol>
+
+    </details>
+
+    <details>
+        <summary><strong>🌐 WordPress Setup Instructions (Application Password)</strong></summary>
+
+        <ol>
+            <li>Log in to WordPress Admin</li>
+            <li>Go to Users → Profile</li>
+            <li>Scroll to "Application Passwords"</li>
+            <li>Create new password (name it "Operon")</li>
+            <li>Copy the generated password</li>
+            <li>In Operon, enter Site URL, Username, and Application Password</li>
+            <li>Connect ✅</li>
+        </ol>
+
+    </details>
+
+    <details>
+        <summary><strong>📅 Calendly Setup Instructions (API Key)</strong></summary>
+
+        <ol>
+            <li>Log in to Calendly</li>
+            <li>Go to Integrations → API & Webhooks</li>
+            <li>Generate Personal Access Token</li>
+            <li>Copy token</li>
+            <li>Paste in Operon and connect ✅</li>
+        </ol>
+
+    </details>
+
+    <hr>
+
+    <div class="page-break"></div>
+
+    <h2 id="troubleshooting">Troubleshooting</h2>
+
+    <h3>General Issues</h3>
+
+    <p><strong>Problem: "OAuth configuration missing" error</strong></p>
+    <p><strong>Solution</strong>:</p>
+    <ul>
+        <li>Go to Integrations → OAuth Settings</li>
+        <li>Add Client ID and Client Secret</li>
+        <li>Save and try connecting again</li>
+    </ul>
+
+    <p><strong>Problem: "Invalid redirect URI" error</strong></p>
+    <p><strong>Solution</strong>:</p>
+    <ul>
+        <li>Verify redirect URI matches exactly: <code>https://your-domain.com/api/integrations/oauth/callback</code>
+        </li>
+        <li>Remove trailing slashes</li>
+        <li>Use <code>https://</code> not <code>http://</code></li>
+    </ul>
+
+    <p><strong>Problem: API key not working</strong></p>
+    <p><strong>Solutions</strong>:</p>
+    <ul>
+        <li>Verify you copied the entire key</li>
+        <li>Check if key has expired</li>
+        <li>Ensure you're using the correct key type (test vs. live)</li>
+        <li>Regenerate and try again</li>
+    </ul>
+
+    <h3>Service-Specific Issues</h3>
+
+    <p><strong>Slack: "Can't find channel"</strong></p>
+    <ul>
+        <li>Use Channel ID (e.g., <code>C12345678</code>) instead of name</li>
+        <li>Ensure Slack app is added to the channel</li>
+    </ul>
+
+    <p><strong>Google Sheets: "Spreadsheet not found"</strong></p>
+    <ul>
+        <li>Share spreadsheet with OAuth account</li>
+        <li>Use Spreadsheet ID from URL</li>
+    </ul>
+
+    <p><strong>Stripe: "No such customer/charge"</strong></p>
+    <ul>
+        <li>Verify correct mode (test vs. live)</li>
+        <li>Check IDs match current mode</li>
+    </ul>
+
+    <hr>
+
+    <h2>Security Best Practices</h2>
+
+    <h3>For OAuth Integrations</h3>
+    <ul>
+        <li>✅ Only grant necessary permissions</li>
+        <li>✅ Review connected apps regularly</li>
+        <li>✅ Monitor activity for unusual behavior</li>
+    </ul>
+
+    <h3>For API Key Integrations</h3>
+    <ul>
+        <li>✅ Never share API keys</li>
+        <li>✅ Rotate keys periodically (every 3-6 months)</li>
+        <li>✅ Use environment-specific keys</li>
+        <li>✅ Revoke compromised keys immediately</li>
+    </ul>
+
+    <hr>
+
+    <h2>Quick Reference</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Integration</th>
+                <th>Auth Type</th>
+                <th>Common Use Cases</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Slack</strong></td>
+                <td>OAuth</td>
+                <td>Notifications, team alerts</td>
+            </tr>
+            <tr>
+                <td><strong>Google Sheets</strong></td>
+                <td>OAuth</td>
+                <td>Data logging, reporting</td>
+            </tr>
+            <tr>
+                <td><strong>Stripe</strong></td>
+                <td>API Key</td>
+                <td>Payment processing</td>
+            </tr>
+            <tr>
+                <td><strong>Mailchimp</strong></td>
+                <td>API Key</td>
+                <td>Email campaigns</td>
+            </tr>
+            <tr>
+                <td><strong>Google Calendar</strong></td>
+                <td>OAuth</td>
+                <td>Event creation, scheduling</td>
+            </tr>
+            <tr>
+                <td><strong>Zoom</strong></td>
+                <td>OAuth</td>
+                <td>Meeting automation</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <hr>
+
+    <p><strong>Last Updated</strong>: January 2026<br>
+        <strong>Version</strong>: 1.0
+    </p>
+
+</body>
+
+</html>

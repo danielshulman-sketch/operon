@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Info } from 'lucide-react';
 
-export default function InfoTooltip({ content, position = 'top' }) {
+export default function InfoTooltip({ content, title, position = 'top', className = '' }) {
     const [isVisible, setIsVisible] = useState(false);
 
     const positionClasses = {
@@ -13,14 +13,26 @@ export default function InfoTooltip({ content, position = 'top' }) {
         right: 'left-full top-1/2 -translate-y-1/2 ml-2',
     };
 
+    const handleClick = (e) => {
+        e.stopPropagation();
+        setIsVisible(!isVisible);
+    };
+
+    const handleBlur = () => {
+        // Delay hiding to allow clicking links inside tooltip
+        setTimeout(() => setIsVisible(false), 200);
+    };
+
     return (
-        <div className="relative inline-block">
+        <div className={`relative inline-block ${className}`}>
             <button
                 type="button"
                 onMouseEnter={() => setIsVisible(true)}
                 onMouseLeave={() => setIsVisible(false)}
-                onClick={() => setIsVisible(!isVisible)}
-                className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors"
+                onClick={handleClick}
+                onBlur={handleBlur}
+                className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                aria-label={title || "More information"}
             >
                 <Info className="h-3 w-3" />
             </button>
@@ -28,10 +40,17 @@ export default function InfoTooltip({ content, position = 'top' }) {
             {isVisible && (
                 <div
                     className={`absolute ${positionClasses[position]} z-50 w-64 px-3 py-2 text-sm text-white bg-gray-900 dark:bg-gray-800 rounded-lg shadow-lg border border-gray-700`}
-                    style={{ pointerEvents: 'none' }}
+                    onMouseEnter={() => setIsVisible(true)}
+                    onMouseLeave={() => setIsVisible(false)}
+                    onClick={(e) => e.stopPropagation()}
                 >
                     <div className="relative">
-                        {content}
+                        {title && (
+                            <div className="font-semibold mb-1">{title}</div>
+                        )}
+                        <div className="font-normal">
+                            {content}
+                        </div>
                         {/* Arrow */}
                         <div
                             className={`absolute w-2 h-2 bg-gray-900 dark:bg-gray-800 border-gray-700 transform rotate-45 ${position === 'top' ? 'bottom-[-4px] left-1/2 -translate-x-1/2 border-r border-b' :

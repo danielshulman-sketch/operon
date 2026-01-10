@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operon Admin Guide: User Management</title>
+    <style>
+        @media print {
+            body {
+                max-width: 100%;
+                margin: 0;
+                padding: 20px;
+            }
+
+            .page-break {
+                page-break-before: always;
+            }
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: #fff;
+        }
+
+        h1 {
+            color: #2563eb;
+            border-bottom: 3px solid #2563eb;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        h2 {
+            color: #1e40af;
+            margin-top: 40px;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 8px;
+        }
+
+        h3 {
+            color: #1e40af;
+            margin-top: 30px;
+        }
+
+        h4 {
+            color: #374151;
+            margin-top: 20px;
+        }
+
+        h5 {
+            color: #4b5563;
+            margin-top: 15px;
+            font-size: 1em;
+        }
+
+        code {
+            background: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background: #1f2937;
+            color: #f3f4f6;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+
+        a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .note,
+        .important,
+        .warning,
+        .tip {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+
+        .note {
+            background: #dbeafe;
+            border-color: #2563eb;
+        }
+
+        .important {
+            background: #fef3c7;
+            border-color: #f59e0b;
+        }
+
+        .warning {
+            background: #fee2e2;
+            border-color: #ef4444;
+        }
+
+        .tip {
+            background: #d1fae5;
+            border-color: #10b981;
+        }
+
+        ul,
+        ol {
+            margin: 10px 0;
+            padding-left: 30px;
+        }
+
+        li {
+            margin: 5px 0;
+        }
+
+        strong {
+            color: #1f2937;
+        }
+
+        hr {
+            border: none;
+            border-top: 2px solid #e5e7eb;
+            margin: 40px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th,
+        td {
+            border: 1px solid #e5e7eb;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background: #f3f4f6;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Operon Admin Guide: User Management</h1>
+
+    <h2>Table of Contents</h2>
+    <ol>
+        <li><a href="#accessing">Accessing the Admin Dashboard</a></li>
+        <li><a href="#overview">Admin Dashboard Overview</a></li>
+        <li><a href="#creating">Creating New Users</a></li>
+        <li><a href="#managing">Managing Existing Users</a></li>
+        <li><a href="#roles">Understanding Roles &amp; Permissions</a></li>
+        <li><a href="#stats">Organization Statistics</a></li>
+        <li><a href="#activity">Activity Monitoring</a></li>
+        <li><a href="#troubleshooting">Troubleshooting</a></li>
+    </ol>
+
+    <hr>
+
+    <h2 id="accessing">Accessing the Admin Dashboard</h2>
+
+    <h3>Prerequisites</h3>
+
+    <p>To access the Admin Dashboard, you must:</p>
+    <ul>
+        <li>✅ Have an account in the organization</li>
+        <li>✅ Have <strong>admin privileges</strong> granted to your account</li>
+        <li>✅ Be logged in to Operon</li>
+    </ul>
+
+    <h3>How to Access</h3>
+
+    <ol>
+        <li><strong>Log in</strong> to your Operon account</li>
+        <li>Navigate to <strong>Dashboard</strong> from the main menu</li>
+        <li>Click on <strong>"Admin"</strong> in the sidebar</li>
+    </ol>
+
+    <div class="important">
+        <strong>⚠️ IMPORTANT</strong><br>
+        If you see "Admin Access Required" message, contact your organization owner to grant you admin permissions.
+    </div>
+
+    <hr>
+
+    <h2 id="overview">Admin Dashboard Overview</h2>
+
+    <p>The Admin Dashboard is your central hub for managing your organization's users and monitoring platform activity.
+    </p>
+
+    <h3>What You'll See</h3>
+
+    <ol>
+        <li><strong>Organization Stats</strong> (4 metric cards):
+            <ul>
+                <li><strong>Active Users</strong>: Current active users vs. max allowed</li>
+                <li><strong>Drafts (7d)</strong>: Total drafts generated in last 7 days</li>
+                <li><strong>Open Tasks</strong>: Total outstanding tasks</li>
+                <li><strong>Emails (7d)</strong>: Email activity in last 7 days</li>
+            </ul>
+        </li>
+        <li><strong>Outstanding Tasks</strong>: View all organization tasks</li>
+        <li><strong>Team Members</strong>: List of all users</li>
+        <li><strong>Activity Feed</strong>: Real-time log of important events</li>
+    </ol>
+
+    <hr>
+
+    <div class="page-break"></div>
+
+    <h2 id="creating">Creating New Users</h2>
+
+    <h3>Step-by-Step Process</h3>
+
+    <h4>1. Open Create User Modal</h4>
+
+    <ol>
+        <li>Navigate to <strong>Admin Dashboard</strong></li>
+        <li>Scroll to the <strong>"Team Members"</strong> section</li>
+        <li>Click the <strong>"+ Create User"</strong> button</li>
+        <li>A modal will appear with a user creation form</li>
+    </ol>
+
+    <h4>2. Fill in User Details</h4>
+
+    <h5>Email Address* (Required)</h5>
+    <ul>
+        <li>Enter the user's work email address</li>
+        <li>Must be a valid email format</li>
+        <li><strong>Example</strong>: <code>jane.doe@company.com</code></li>
+        <li>This will be their username for login</li>
+    </ul>
+
+    <div class="warning">
+        <strong>⚠️ WARNING</strong><br>
+        Each email can only be used once per organization. You cannot create multiple users with the same email.
+    </div>
+
+    <h5>First Name (Optional)</h5>
+    <ul>
+        <li>User's first name</li>
+        <li>Helps identify them in the system</li>
+        <li>Displays in the UI instead of email</li>
+    </ul>
+
+    <h5>Last Name (Optional)</h5>
+    <ul>
+        <li>User's last name</li>
+        <li>Combined with first name for full display name</li>
+    </ul>
+
+    <h5>Password* (Required)</h5>
+    <ul>
+        <li>Set the initial password for the user</li>
+        <li><strong>Minimum</strong>: 8 characters</li>
+        <li><strong>Best Practice</strong>: Use a strong, unique password</li>
+        <li>User can change this later in their settings</li>
+    </ul>
+
+    <div class="tip">
+        <strong>💡 TIP</strong><br>
+        Create a temporary password and share it securely with the user. Ask them to change it on first login.
+    </div>
+
+    <h5>Role (Default: Member)</h5>
+    <ul>
+        <li>Choose from three roles:
+            <ul>
+                <li><strong>Member</strong>: Standard user</li>
+                <li><strong>Manager</strong>: Mid-level permissions</li>
+                <li><strong>Admin</strong>: Full permissions (organizational label)</li>
+            </ul>
+        </li>
+    </ul>
+
+    <div class="note">
+        <strong>📝 NOTE</strong><br>
+        The "Role" field is mainly for organizational purposes. The actual admin permissions are controlled by the
+        "Grant admin access" checkbox.
+    </div>
+
+    <h5>Grant Admin Access (Checkbox)</h5>
+    <ul>
+        <li>☐ Unchecked (default): User is a regular member</li>
+        <li>☑ Checked: User has admin privileges</li>
+    </ul>
+
+    <p><strong>Admin users can:</strong></p>
+    <ul>
+        <li>Access the Admin Dashboard</li>
+        <li>Create and manage other users</li>
+        <li>View all organization tasks</li>
+        <li>Assign tasks to team members</li>
+        <li>View activity logs</li>
+        <li>Reset passwords for other users</li>
+    </ul>
+
+    <h4>3. Submit the Form</h4>
+
+    <ol>
+        <li>Review all entered information</li>
+        <li>Click <strong>"Create User"</strong> button</li>
+        <li>Wait for confirmation message</li>
+        <li>User is immediately added to your organization</li>
+    </ol>
+
+    <h3>After Creating a User</h3>
+
+    <p><strong>You should:</strong></p>
+    <ul>
+        <li>✉️ <strong>Notify the user</strong> - Send them their login credentials securely</li>
+        <li>📋 <strong>Provide instructions</strong> - Share the login URL and initial setup steps</li>
+        <li>🔐 <strong>Recommend password change</strong> - Ask them to update their password on first login</li>
+    </ul>
+
+    <hr>
+
+    <div class="page-break"></div>
+
+    <h2 id="managing">Managing Existing Users</h2>
+
+    <h3>Viewing User Information</h3>
+
+    <p>Each user card displays:</p>
+    <ul>
+        <li><strong>Avatar</strong>: First letter of their email</li>
+        <li><strong>Name/Email</strong>: Display name or email address</li>
+        <li><strong>Admin Badge</strong>: Yellow "Admin" badge if they have admin access</li>
+        <li><strong>Inactive Badge</strong>: Red "Inactive" badge if account is deactivated</li>
+        <li><strong>Activity Stats</strong>: Drafts, tasks, and actions in last 7 days</li>
+    </ul>
+
+    <h3>User Management Actions</h3>
+
+    <p>Click the <strong>⋮ (three dots)</strong> menu on any user card to access management options:</p>
+
+    <h4>1. Reset Password</h4>
+
+    <p><strong>When to use</strong>: User forgot their password or you want to set a new one</p>
+
+    <p><strong>Steps</strong>:</p>
+    <ol>
+        <li>Click <strong>⋮</strong> next to the user</li>
+        <li>Select <strong>"Reset Password"</strong></li>
+        <li>Enter a new password (minimum 8 characters)</li>
+        <li>Click <strong>"Reset Password"</strong></li>
+        <li>Securely share the new password with the user</li>
+    </ol>
+
+    <div class="important">
+        <strong>⚠️ IMPORTANT</strong><br>
+        The user will be logged out immediately after password reset. They must log in again with the new password.
+    </div>
+
+    <h4>2. Activate / Deactivate User</h4>
+
+    <p><strong>Deactivating a user</strong>:</p>
+    <ul>
+        <li>Prevents them from logging in</li>
+        <li>Keeps their data intact</li>
+        <li>Doesn't delete their account</li>
+        <li>Can be reversed anytime</li>
+    </ul>
+
+    <p><strong>Steps to Deactivate</strong>:</p>
+    <ol>
+        <li>Click <strong>⋮</strong> next to the user</li>
+        <li>Select <strong>"Deactivate"</strong></li>
+        <li>User account is immediately deactivated</li>
+        <li>User shows "Inactive" badge</li>
+    </ol>
+
+    <p><strong>When to deactivate</strong>:</p>
+    <ul>
+        <li>Employee leaves the company (temporarily)</li>
+        <li>User violates policies</li>
+        <li>Seasonal workers during off-season</li>
+        <li>Contractors between projects</li>
+    </ul>
+
+    <h4>3. Remove User</h4>
+
+    <p><strong>What happens when you remove a user</strong>:</p>
+    <ul>
+        <li>User is completely removed from the organization</li>
+        <li>They can no longer log in</li>
+        <li>Their tasks may remain (assigned to them but visible)</li>
+        <li>Their activity history remains</li>
+    </ul>
+
+    <p><strong>Steps</strong>:</p>
+    <ol>
+        <li>Click <strong>⋮</strong> next to the user</li>
+        <li>Select <strong>"Remove User"</strong></li>
+        <li>Confirm the action in the dialog box</li>
+        <li>User is immediately removed</li>
+    </ol>
+
+    <div class="warning">
+        <strong>⚠️ WARNING</strong><br>
+        This action cannot be easily undone! If you want to temporarily block access, use "Deactivate" instead.
+    </div>
+
+    <hr>
+
+    <div class="page-break"></div>
+
+    <h2 id="roles">Understanding Roles &amp; Permissions</h2>
+
+    <h3>Admin Permissions</h3>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Feature</th>
+                <th>Regular User</th>
+                <th>Admin</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>View own dashboard</td>
+                <td>✅</td>
+                <td>✅</td>
+            </tr>
+            <tr>
+                <td>Manage own tasks</td>
+                <td>✅</td>
+                <td>✅</td>
+            </tr>
+            <tr>
+                <td>Connect email</td>
+                <td>✅</td>
+                <td>✅</td>
+            </tr>
+            <tr>
+                <td><strong>Access Admin Dashboard</strong></td>
+                <td>❌</td>
+                <td>✅</td>
+            </tr>
+            <tr>
+                <td><strong>Create new users</strong></td>
+                <td>❌</td>
+                <td>✅</td>
+            </tr>
+            <tr>
+                <td><strong>Manage all users</strong></td>
+                <td>❌</td>
+                <td>✅</td>
+            </tr>
+            <tr>
+                <td><strong>Reset user passwords</strong></td>
+                <td>❌</td>
+                <td>✅</td>
+            </tr>
+            <tr>
+                <td><strong>Activate/deactivate users</strong></td>
+                <td>❌</td>
+                <td>✅</td>
+            </tr>
+            <tr>
+                <td><strong>Assign tasks to others</strong></td>
+                <td>❌</td>
+                <td>✅</td>
+            </tr>
+            <tr>
+                <td><strong>View activity feed</strong></td>
+                <td>❌</td>
+                <td>✅</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <hr>
+
+    <h2 id="stats">Organization Statistics</h2>
+
+    <h3>Active Users</h3>
+
+    <p><strong>Display</strong>: X / Y (e.g., "5 / 10")</p>
+    <ul>
+        <li><strong>X</strong> = Number of active users</li>
+        <li><strong>Y</strong> = Maximum users allowed in your plan</li>
+    </ul>
+
+    <p><strong>Warning signs</strong>:</p>
+    <ul>
+        <li>🚨 At or near max users → Consider upgrading plan</li>
+        <li>🚨 Many inactive users → Clean up unused accounts</li>
+    </ul>
+
+    <h3>Drafts (7d)</h3>
+
+    <p><strong>What it means</strong>:</p>
+    <ul>
+        <li>Total AI-generated email drafts created in last 7 days</li>
+        <li>Across all users in the organization</li>
+        <li>Indicates AI usage and productivity</li>
+    </ul>
+
+    <h3>Open Tasks</h3>
+
+    <p><strong>What it means</strong>:</p>
+    <ul>
+        <li>Tasks not yet completed across entire organization</li>
+        <li>All users combined</li>
+        <li>Helps track overall workload</li>
+    </ul>
+
+    <hr>
+
+    <div class="page-break"></div>
+
+    <h2 id="activity">Activity Monitoring</h2>
+
+    <p>The <strong>Activity Feed</strong> shows real-time organization events.</p>
+
+    <h3>What's Tracked</h3>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Activity Type</th>
+                <th>Description</th>
+                <th>Icon</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>User Created</strong></td>
+                <td>New user added</td>
+                <td>👤</td>
+            </tr>
+            <tr>
+                <td><strong>Email Connected</strong></td>
+                <td>User connected email account</td>
+                <td>📧</td>
+            </tr>
+            <tr>
+                <td><strong>Email Synced</strong></td>
+                <td>Emails synced from provider</td>
+                <td>🔄</td>
+            </tr>
+            <tr>
+                <td><strong>Draft Generated</strong></td>
+                <td>AI created email draft</td>
+                <td>✍️</td>
+            </tr>
+            <tr>
+                <td><strong>Task Created</strong></td>
+                <td>New task created</td>
+                <td>📋</td>
+            </tr>
+            <tr>
+                <td><strong>Password Reset</strong></td>
+                <td>Admin reset a password</td>
+                <td>🔐</td>
+            </tr>
+            <tr>
+                <td><strong>User Sign In</strong></td>
+                <td>User logged into system</td>
+                <td>🔑</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Using Activity Feed for</h3>
+
+    <p><strong>Security Monitoring</strong>:</p>
+    <ul>
+        <li>Watch for unexpected password resets</li>
+        <li>Monitor unusual login times</li>
+        <li>Track user sign-in patterns</li>
+    </ul>
+
+    <p><strong>Productivity Insights</strong>:</p>
+    <ul>
+        <li>See which users are most active</li>
+        <li>Track feature adoption</li>
+        <li>Identify training opportunities</li>
+    </ul>
+
+    <hr>
+
+    <h2 id="troubleshooting">Troubleshooting</h2>
+
+    <h3>Can't Access Admin Dashboard</h3>
+
+    <p><strong>Problem</strong>: "Admin Access Required" error</p>
+
+    <p><strong>Solutions</strong>:</p>
+    <ul>
+        <li>✅ Verify you have admin privileges with your organization owner</li>
+        <li>✅ Log out and log back in</li>
+        <li>✅ Clear browser cache and cookies</li>
+    </ul>
+
+    <h3>User Creation Fails</h3>
+
+    <p><strong>Common causes &amp; solutions</strong>:</p>
+
+    <p><strong>"Email already exists"</strong>:</p>
+    <ul>
+        <li>This email is already registered</li>
+        <li>Use a different email address</li>
+        <li>Or remove the old account first</li>
+    </ul>
+
+    <p><strong>"Password too short"</strong>:</p>
+    <ul>
+        <li>Password must be at least 8 characters</li>
+        <li>Use a longer, stronger password</li>
+    </ul>
+
+    <p><strong>"Organization user limit reached"</strong>:</p>
+    <ul>
+        <li>You've hit your plan's max users</li>
+        <li>Deactivate or remove unused users</li>
+        <li>Or upgrade your subscription plan</li>
+    </ul>
+
+    <h3>Password Reset Not Working</h3>
+
+    <p><strong>Problem</strong>: User still can't log in after password reset</p>
+
+    <p><strong>Solutions</strong>:</p>
+    <ul>
+        <li>✅ Verify you entered the correct new password</li>
+        <li>✅ Check that user account is <strong>Active</strong> (not deactivated)</li>
+        <li>✅ Ensure user is trying to log in with their <strong>email</strong> (not name)</li>
+        <li>✅ Have user try a different browser</li>
+    </ul>
+
+    <hr>
+
+    <h2>Best Practices</h2>
+
+    <h3>For User Creation</h3>
+
+    <ol>
+        <li><strong>Use Real Email Addresses</strong>
+            <ul>
+                <li>Avoid placeholder emails like test@test.com</li>
+                <li>Users need valid emails for notifications</li>
+            </ul>
+        </li>
+        <li><strong>Set Temporary Passwords</strong>
+            <ul>
+                <li>Create initial password securely</li>
+                <li>Ask users to change on first login</li>
+            </ul>
+        </li>
+        <li><strong>Don't Over-Assign Admin Rights</strong>
+            <ul>
+                <li>Only give admin access to those who truly need it</li>
+                <li>Fewer admins = better security</li>
+            </ul>
+        </li>
+    </ol>
+
+    <h3>For User Management</h3>
+
+    <ol>
+        <li><strong>Deactivate, Don't Delete</strong>
+            <ul>
+                <li>When someone leaves temporarily, deactivate</li>
+                <li>Only delete if permanent or mistake</li>
+            </ul>
+        </li>
+        <li><strong>Regular Audits</strong>
+            <ul>
+                <li>Review user list monthly</li>
+                <li>Remove or deactivate inactive accounts</li>
+            </ul>
+        </li>
+        <li><strong>Monitor Activity Feed</strong>
+            <ul>
+                <li>Check weekly for unusual patterns</li>
+                <li>Track feature adoption</li>
+            </ul>
+        </li>
+    </ol>
+
+    <hr>
+
+    <h2>Quick Reference</h2>
+
+    <h3>User Creation Checklist</h3>
+
+    <ul>
+        <li>☐ Have user's email address</li>
+        <li>☐ Determined appropriate role</li>
+        <li>☐ Decided if admin access needed</li>
+        <li>☐ Created strong temporary password</li>
+        <li>☐ Clicked "Create User"</li>
+        <li>☐ Notified user of their credentials</li>
+        <li>☐ Asked user to change password on first login</li>
+    </ul>
+
+    <h3>User Management Quick Actions</h3>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Action</th>
+                <th>Steps</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Reset Password</strong></td>
+                <td>⋮ → Reset Password → Enter new password → Confirm</td>
+            </tr>
+            <tr>
+                <td><strong>Deactivate User</strong></td>
+                <td>⋮ → Deactivate → Confirm</td>
+            </tr>
+            <tr>
+                <td><strong>Reactivate User</strong></td>
+                <td>⋮ → Activate</td>
+            </tr>
+            <tr>
+                <td><strong>Remove User</strong></td>
+                <td>⋮ → Remove User → Confirm (careful!)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <hr>
+
+    <p><strong>Last Updated</strong>: January 2026<br>
+        <strong>Version</strong>: 1.0
+    </p>
+
+</body>
+
+</html>
