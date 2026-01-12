@@ -577,6 +577,199 @@ export const INTEGRATIONS = {
                 { name: 'reason', label: 'Cancellation Reason', type: 'textarea', help: 'Optional reason for cancellation' }
             ]
         }
+    },
+
+    dropbox: {
+        name: 'Dropbox',
+        description: 'Cloud file storage and sharing',
+        icon: '📦',
+        authType: 'oauth2',
+        color: '#0061FF',
+        actions: ['upload_file', 'create_folder', 'list_folder', 'share_file', 'download_file'],
+        helpUrl: 'https://www.dropbox.com/developers/documentation/http/documentation',
+        setupInstructions: '1. Go to Dropbox App Console (https://www.dropbox.com/developers/apps)\n2. Click "Create app"\n3. Choose "Scoped access" API\n4. Choose "Full Dropbox" access type\n5. Name your app\n6. Add redirect URI: {APP_URL}/api/integrations/oauth/callback\n7. Copy App key and App secret\n8. In Permissions tab, enable: files.metadata.write, files.metadata.read, files.content.write, files.content.read, sharing.write\n9. Paste them into Operon OAuth Settings and connect',
+        oauth: {
+            authUrl: 'https://www.dropbox.com/oauth2/authorize',
+            tokenUrl: 'https://api.dropbox.com/oauth2/token',
+            scopes: []
+        },
+        actionSchemas: {
+            upload_file: [
+                { name: 'path', label: 'File Path', type: 'text', required: true, help: 'e.g. /documents/file.pdf' },
+                { name: 'content', label: 'File Content', type: 'textarea', required: true },
+                { name: 'mode', label: 'Write Mode', type: 'select', options: ['add', 'overwrite'], help: 'add or overwrite' }
+            ],
+            create_folder: [
+                { name: 'path', label: 'Folder Path', type: 'text', required: true, help: 'e.g. /documents/new_folder' }
+            ],
+            list_folder: [
+                { name: 'path', label: 'Folder Path', type: 'text', required: true, help: 'Empty string for root' },
+                { name: 'recursive', label: 'Recursive', type: 'checkbox', help: 'List all subfolders' }
+            ],
+            share_file: [
+                { name: 'path', label: 'File Path', type: 'text', required: true },
+                { name: 'access_level', label: 'Access Level', type: 'select', options: ['viewer', 'editor'] }
+            ],
+            download_file: [
+                { name: 'path', label: 'File Path', type: 'text', required: true }
+            ]
+        }
+    },
+
+    gmail: {
+        name: 'Gmail',
+        description: 'Send and manage emails with Gmail OAuth',
+        icon: '📧',
+        authType: 'oauth2',
+        color: '#EA4335',
+        actions: ['send_email', 'read_emails', 'create_draft', 'search_emails', 'list_labels'],
+        helpUrl: 'https://developers.google.com/gmail/api/guides/sending',
+        setupInstructions: '1. Go to Google Cloud Console (https://console.cloud.google.com/)\n2. Create or select a project\n3. Enable Gmail API\n4. Go to "APIs & Services" > "OAuth consent screen" and configure it\n5. Go to "Credentials" > "Create Credentials" > "OAuth client ID"\n6. Choose "Web application"\n7. Add redirect URI: {APP_URL}/api/integrations/oauth/callback\n8. Copy Client ID and Client Secret\n9. Paste them into Operon OAuth Settings and connect',
+        oauth: {
+            authUrl: 'https://accounts.google.com/o/oauth2/v2/auth',
+            tokenUrl: 'https://oauth2.googleapis.com/token',
+            scopes: ['https://www.googleapis.com/auth/gmail.send', 'https://www.googleapis.com/auth/gmail.readonly', 'https://www.googleapis.com/auth/gmail.modify']
+        },
+        actionSchemas: {
+            send_email: [
+                { name: 'to', label: 'To', type: 'text', required: true, help: 'Comma-separated email addresses' },
+                { name: 'subject', label: 'Subject', type: 'text', required: true },
+                { name: 'body', label: 'Body', type: 'textarea', required: true },
+                { name: 'cc', label: 'CC', type: 'text', help: 'Optional CC recipients' },
+                { name: 'bcc', label: 'BCC', type: 'text', help: 'Optional BCC recipients' }
+            ],
+            read_emails: [
+                { name: 'max_results', label: 'Max Results', type: 'number', help: 'Max 50' },
+                { name: 'label_ids', label: 'Label IDs', type: 'text', help: 'Comma-separated, e.g. INBOX, SENT' }
+            ],
+            create_draft: [
+                { name: 'to', label: 'To', type: 'text', required: true },
+                { name: 'subject', label: 'Subject', type: 'text', required: true },
+                { name: 'body', label: 'Body', type: 'textarea', required: true }
+            ],
+            search_emails: [
+                { name: 'query', label: 'Search Query', type: 'text', required: true, help: 'e.g. from:user@example.com' },
+                { name: 'max_results', label: 'Max Results', type: 'number', help: 'Default: 10' }
+            ],
+            list_labels: []
+        }
+    },
+
+    onedrive: {
+        name: 'OneDrive',
+        description: 'Microsoft cloud file storage',
+        icon: '☁️',
+        authType: 'oauth2',
+        color: '#0078D4',
+        actions: ['upload_file', 'create_folder', 'share_file', 'download_file', 'search_files'],
+        helpUrl: 'https://learn.microsoft.com/en-us/graph/onedrive-concept-overview',
+        setupInstructions: '1. Go to Azure Portal (https://portal.azure.com/)\n2. Create app registration for "Operon OneDrive Integration"\n3. Add redirect URI: {APP_URL}/api/integrations/oauth/callback\n4. Go to "API permissions" and add: Files.ReadWrite.All, Files.Read.All, offline_access, User.Read\n5. Grant admin consent if required\n6. Go to "Certificates & secrets" and create client secret\n7. Copy Application (client) ID and secret value\n8. Paste them into Operon OAuth Settings and connect',
+        oauth: {
+            authUrl: 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize',
+            tokenUrl: 'https://login.microsoftonline.com/common/oauth2/v2.0/token',
+            scopes: ['Files.ReadWrite.All', 'Files.Read.All', 'offline_access', 'User.Read']
+        },
+        actionSchemas: {
+            upload_file: [
+                { name: 'file_name', label: 'File Name', type: 'text', required: true, help: 'e.g. document.pdf' },
+                { name: 'content', label: 'File Content', type: 'textarea', required: true },
+                { name: 'folder_path', label: 'Folder Path', type: 'text', help: 'Optional folder, e.g. /Documents' }
+            ],
+            create_folder: [
+                { name: 'folder_name', label: 'Folder Name', type: 'text', required: true },
+                { name: 'parent_path', label: 'Parent Path', type: 'text', help: 'Optional parent folder' }
+            ],
+            share_file: [
+                { name: 'file_id', label: 'File ID', type: 'text', required: true },
+                { name: 'permission_type', label: 'Permission Type', type: 'select', options: ['view', 'edit'], required: true }
+            ],
+            download_file: [
+                { name: 'file_id', label: 'File ID', type: 'text', required: true }
+            ],
+            search_files: [
+                { name: 'query', label: 'Search Query', type: 'text', required: true },
+                { name: 'max_results', label: 'Max Results', type: 'number', help: 'Default: 10' }
+            ]
+        }
+    },
+
+    sharepoint: {
+        name: 'SharePoint',
+        description: 'Microsoft document management and collaboration',
+        icon: '📁',
+        authType: 'oauth2',
+        color: '#0078D4',
+        actions: ['upload_file', 'create_folder', 'list_items', 'download_file', 'delete_item'],
+        helpUrl: 'https://learn.microsoft.com/en-us/graph/api/resources/sharepoint',
+        setupInstructions: '1. Go to Azure Portal (https://portal.azure.com/)\n2. Navigate to "App registrations" and create a new registration\n3. Name it "Operon SharePoint Integration"\n4. Add redirect URI: {APP_URL}/api/integrations/oauth/callback\n5. Go to "API permissions" and add: Sites.ReadWrite.All, Files.ReadWrite.All, offline_access\n6. Grant admin consent for these permissions\n7. Go to "Certificates & secrets" and create client secret\n8. Copy Application (client) ID and secret value\n9. Paste them into Operon OAuth Settings and connect',
+        oauth: {
+            authUrl: 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize',
+            tokenUrl: 'https://login.microsoftonline.com/common/oauth2/v2.0/token',
+            scopes: ['Sites.ReadWrite.All', 'Files.ReadWrite.All', 'offline_access']
+        },
+        actionSchemas: {
+            upload_file: [
+                { name: 'site_id', label: 'Site ID', type: 'text', required: true, help: 'SharePoint site ID' },
+                { name: 'folder_path', label: 'Folder Path', type: 'text', required: true, help: 'e.g. /Shared Documents' },
+                { name: 'file_name', label: 'File Name', type: 'text', required: true },
+                { name: 'content', label: 'File Content', type: 'textarea', required: true }
+            ],
+            create_folder: [
+                { name: 'site_id', label: 'Site ID', type: 'text', required: true },
+                { name: 'parent_path', label: 'Parent Path', type: 'text', required: true },
+                { name: 'folder_name', label: 'Folder Name', type: 'text', required: true }
+            ],
+            list_items: [
+                { name: 'site_id', label: 'Site ID', type: 'text', required: true },
+                { name: 'folder_path', label: 'Folder Path', type: 'text', required: true }
+            ],
+            download_file: [
+                { name: 'site_id', label: 'Site ID', type: 'text', required: true },
+                { name: 'file_id', label: 'File ID', type: 'text', required: true }
+            ],
+            delete_item: [
+                { name: 'site_id', label: 'Site ID', type: 'text', required: true },
+                { name: 'item_id', label: 'Item ID', type: 'text', required: true }
+            ]
+        }
+    },
+
+    teams: {
+        name: 'Microsoft Teams',
+        description: 'Chat, channels, and team collaboration',
+        icon: '💬',
+        authType: 'oauth2',
+        color: '#6264A7',
+        actions: ['send_message', 'create_channel', 'list_teams', 'list_channels', 'post_announcement'],
+        helpUrl: 'https://learn.microsoft.com/en-us/graph/api/resources/teams-api-overview',
+        setupInstructions: '1. Go to Azure Portal (https://portal.azure.com/)\n2. Navigate to "App registrations" and create a new registration\n3. Name it "Operon Teams Integration"\n4. Add redirect URI: {APP_URL}/api/integrations/oauth/callback\n5. Go to "API permissions" and add: Team.ReadBasic.All, Channel.ReadWrite.All, ChatMessage.Send, offline_access\n6. Grant admin consent for permissions\n7. Go to "Certificates & secrets" and create a client secret\n8. Copy the Application (client) ID and client secret value\n9. Paste them into Operon OAuth Settings and connect',
+        oauth: {
+            authUrl: 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize',
+            tokenUrl: 'https://login.microsoftonline.com/common/oauth2/v2.0/token',
+            scopes: ['Team.ReadBasic.All', 'Channel.ReadWrite.All', 'ChatMessage.Send', 'offline_access']
+        },
+        actionSchemas: {
+            send_message: [
+                { name: 'team_id', label: 'Team ID', type: 'text', required: true },
+                { name: 'channel_id', label: 'Channel ID', type: 'text', required: true },
+                { name: 'message', label: 'Message', type: 'textarea', required: true }
+            ],
+            create_channel: [
+                { name: 'team_id', label: 'Team ID', type: 'text', required: true },
+                { name: 'channel_name', label: 'Channel Name', type: 'text', required: true },
+                { name: 'description', label: 'Description', type: 'textarea' }
+            ],
+            list_teams: [],
+            list_channels: [
+                { name: 'team_id', label: 'Team ID', type: 'text', required: true }
+            ],
+            post_announcement: [
+                { name: 'team_id', label: 'Team ID', type: 'text', required: true },
+                { name: 'channel_id', label: 'Channel ID', type: 'text', required: true },
+                { name: 'title', label: 'Title', type: 'text', required: true },
+                { name: 'message', label: 'Message', type: 'textarea', required: true }
+            ]
+        }
     }
 };
 
