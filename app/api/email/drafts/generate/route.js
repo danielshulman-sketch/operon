@@ -6,7 +6,7 @@ import { generateDraft } from '@/utils/openai';
 export async function POST(request) {
     try {
         const user = await requireAuth(request);
-        const { email_id } = await request.json();
+        const { email_id, user_prompt } = await request.json();
 
         if (!email_id) {
             return NextResponse.json(
@@ -40,7 +40,10 @@ export async function POST(request) {
 
         // Generate draft
         const emailContent = `From: ${email.from_address}\nSubject: ${email.subject}\n\n${email.body_text}`;
-        const draft = await generateDraft(emailContent, voiceProfile, { orgId: user.org_id });
+        const draft = await generateDraft(emailContent, voiceProfile, {
+            orgId: user.org_id,
+            userPrompt: user_prompt
+        });
 
         // Save draft
         const draftResult = await query(

@@ -21,6 +21,8 @@ export default function EmailStreamPage() {
     const [editingDraft, setEditingDraft] = useState(null);
     const [editedSubject, setEditedSubject] = useState('');
     const [editedBody, setEditedBody] = useState('');
+    const [showPromptModal, setShowPromptModal] = useState(null);
+    const [replyPrompt, setReplyPrompt] = useState('');
 
     const filters = [
         { id: 'all', label: 'All' },
@@ -141,7 +143,7 @@ export default function EmailStreamPage() {
         setSortOrder(sortOrder === 'newest' ? 'oldest' : 'newest');
     };
 
-    const generateDraft = async (emailId) => {
+    const generateDraft = async (emailId, prompt = '') => {
         setGeneratingDraft(emailId);
         try {
             const token = localStorage.getItem('auth_token');
@@ -151,7 +153,10 @@ export default function EmailStreamPage() {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email_id: emailId }),
+                body: JSON.stringify({
+                    email_id: emailId,
+                    user_prompt: prompt
+                }),
             });
 
             if (res.ok) {
@@ -167,6 +172,17 @@ export default function EmailStreamPage() {
             alert('Failed to generate draft. Please try again.');
         }
         setGeneratingDraft(null);
+    };
+
+    const showReplyPrompt = (emailId) => {
+        setShowPromptModal(emailId);
+        setReplyPrompt('');
+    };
+
+    const generateWithPrompt = () => {
+        const emailId = showPromptModal;
+        setShowPromptModal(null);
+        generateDraft(emailId, replyPrompt);
     };
 
     const toggleDraftView = (emailId) => {
@@ -577,7 +593,7 @@ export default function EmailStreamPage() {
                                             <button
                                                 onClick={(e) => {
                                                     e.stopPropagation();
-                                                    generateDraft(email.id);
+                                                    showReplyPrompt(email.id);
                                                 }}
                                                 className="px-4 py-2 rounded-full bg-blue-500 text-white font-plus-jakarta font-medium text-sm hover:bg-blue-600 transition-colors flex items-center gap-2"
                                             >
@@ -784,6 +800,68 @@ export default function EmailStreamPage() {
                         >
                             <X className="h-5 w-5" />
                         </button>
+                    </div>
+                </div>
+            )}
+
+            {/* Reply Prompt Modal */}
+            {showPromptModal && (
+                <div
+                    className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-6"
+                    onClick={() => setShowPromptModal(null)}
+                >
+                    <div
+                        className="bg-white dark:bg-[#1E1E1E] rounded-2xl border border-[#E6E6E6] dark:border-[#333333] max-w-2xl w-full p-8"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <h2 className="text-2xl font-sora font-bold text-black dark:text-white mb-2">
+                            Generate Email Reply
+                        </h2>
+                        <p className="text-gray-600 dark:text-gray-400 font-inter mb-6">
+                            Tell the AI what you want to say, and it will draft a professional response for you
+                        </p>
+
+                        <div className="mb-4">
+                            <label className="block text-sm font-plus-jakarta font-medium text-black dark:text-white mb-2">
+                                What do you want to say?
+                            </label>
+                            <textarea
+                                value={replyPrompt}
+                                onChange={(e) => setReplyPrompt(e.target.value)}
+                                rows={4}
+                                className="w-full px-4 py-3 border border-[#E6E6E6] dark:border-[#333333] rounded-xl bg-white dark:bg-[#0A0A0A] text-black dark:text-white font-inter focus:outline-none focus:border-black dark:focus:border-white transition-colors resize-none"
+                                placeholder="E.g., Accept the meeting request for next Tuesday..."
+                                autoFocus
+                            />
+                        </div>
+
+                        <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 mb-6">
+                            <p className="text-sm font-semibold text-blue-900 dark:text-blue-100 mb-2">
+                                💡 Examples:
+                            </p>
+                            <ul className="text-sm text-blue-800 dark:text-blue-200 space-y-1 list-disc list-inside">
+                                <li>Decline politely due to scheduling conflict</li>
+                                <li>Request more information about pricing</li>
+                                <li>Schedule a meeting for next week</li>
+                                <li>Acknowledge receipt and confirm next steps</li>
+                            </ul>
+                        </div>
+
+                        <div className="flex gap-3">
+                            <button
+                                onClick={() => setShowPromptModal(null)}
+                                className="flex-1 px-6 py-3 rounded-full bg-[#F3F3F3] dark:bg-[#1E1E1E] text-black dark:text-white font-plus-jakarta font-semibold hover:bg-[#E6E6E6] dark:hover:bg-[#333333] transition-colors"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={generateWithPrompt}
+                                className="flex-1 px-6 py-3 rounded-full bg-green-500 text-white font-plus-jakarta font-semibold hover:bg-green-600 transition-colors flex items-center justify-center gap-2"
+                            >
+                                <Sparkles className="h-5 w-5" />
+                                Generate Reply
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}

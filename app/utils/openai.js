@@ -301,26 +301,28 @@ Respond in JSON format:
 }
 
 export async function generateDraft(emailContent, voiceProfile, options = {}) {
-    const { orgId } = options;
+    const { orgId, userPrompt } = options;
     const profile = voiceProfile || {};
     const writingStyle = profile.writing_style || {};
 
-    return runStructuredPrompt({
-        orgId,
-        systemPrompt: `You are an email draft generator. Generate a professional email response based on the user's voice profile.
+    let systemPrompt = `You are an email draft generator. Generate a professional email response based on the user's voice profile.
 
 Voice Profile:
 - Tone: ${profile.tone || 'professional'}
 - Formality: ${profile.formality_level || 3}/5
 - Greeting: ${writingStyle.greeting || 'Hi'}
 - Closing: ${writingStyle.closing || 'Best regards'}
-- Sentence length: ${writingStyle.sentence_length || 'medium'}
+- Sentence length: ${writingStyle.sentence_length || 'medium'}`;
 
-Respond in JSON format:
-{
-  "subject": "Re: Original subject",
-  "body": "Full email body"
-}`,
+    if (userPrompt) {
+        systemPrompt += `\n\nUser Instructions: ${userPrompt}\nMake sure to incorporate these instructions in your reply while maintaining the voice profile.`;
+    }
+
+    systemPrompt += `\n\nRespond in JSON format:\n{\n  "subject": "Re: Original subject",\n  "body": "Full email body"\n}`;
+
+    return runStructuredPrompt({
+        orgId,
+        systemPrompt,
         userPrompt: `Generate a reply to this email:\n\n${emailContent}`,
         maxTokens: 900,
     });
