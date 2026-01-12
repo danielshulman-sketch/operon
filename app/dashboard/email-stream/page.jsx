@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Mail, CheckSquare, Square, Sparkles, RefreshCw, Filter, X, ArrowUpDown, Send, Edit, RotateCw, ChevronDown, ChevronUp, Trash2 } from 'lucide-react';
+import { Mail, CheckSquare, Square, Sparkles, RefreshCw, Filter, X, ArrowUpDown, Send, Edit, RotateCw, ChevronDown, ChevronUp, Trash2, Save } from 'lucide-react';
 
 export default function EmailStreamPage() {
     const [emails, setEmails] = useState([]);
@@ -18,6 +18,9 @@ export default function EmailStreamPage() {
     const [generatingDraft, setGeneratingDraft] = useState(null);
     const [hasPersona, setHasPersona] = useState(null);
     const [user, setUser] = useState(null);
+    const [editingDraft, setEditingDraft] = useState(null);
+    const [editedSubject, setEditedSubject] = useState('');
+    const [editedBody, setEditedBody] = useState('');
 
     const filters = [
         { id: 'all', label: 'All' },
@@ -284,6 +287,60 @@ export default function EmailStreamPage() {
         } catch (error) {
             console.error('Send failed:', error);
             alert('Failed to send. Please try again.');
+        }
+    };
+
+    const startEditing = (emailId) => {
+        const draft = drafts[emailId];
+        setEditingDraft(emailId);
+        setEditedSubject(draft.subject || '');
+        setEditedBody(draft.body || '');
+    };
+
+    const cancelEditing = () => {
+        setEditingDraft(null);
+        setEditedSubject('');
+        setEditedBody('');
+    };
+
+    const saveDraftEdits = async (emailId) => {
+        const draft = drafts[emailId];
+
+        if (!editedSubject.trim() || !editedBody.trim()) {
+            alert('Subject and body cannot be empty');
+            return;
+        }
+
+        try {
+            const token = localStorage.getItem('auth_token');
+            const res = await fetch('/api/email/drafts', {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: draft.id,
+                    subject: editedSubject,
+                    body: editedBody
+                })
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                setDrafts(prev => ({
+                    ...prev,
+                    [emailId]: data.draft
+                }));
+                cancelEditing();
+                alert('Draft updated successfully!');
+            } else {
+                const data = await res.json();
+                alert(data.error || 'Failed to save draft');
+            }
+        } catch (error) {
+            console.error('Save draft failed:', error);
+            alert('Failed to save draft. Please try again.');
         }
     };
 
@@ -560,34 +617,100 @@ export default function EmailStreamPage() {
 
                                                 {expandedDrafts.has(email.id) && (
                                                     <div className="mt-3 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-200 dark:border-blue-800">
-                                                        <p className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">
-                                                            {drafts[email.id].subject}
-                                                        </p>
-                                                        <p className="text-sm text-gray-600 dark:text-gray-400 whitespace-pre-wrap">
-                                                            {drafts[email.id].body}
-                                                        </p>
-                                                        <div className="flex gap-2 mt-4">
-                                                            <button
-                                                                onClick={(e) => {
-                                                                    e.stopPropagation();
-                                                                    sendDraft(email.id);
-                                                                }}
-                                                                className="px-4 py-2 rounded-full bg-green-500 text-white font-plus-jakarta font-medium text-sm hover:bg-green-600 transition-colors flex items-center gap-2"
-                                                            >
-                                                                <Send className="h-4 w-4" />
-                                                                Approve & Send
-                                                            </button>
-                                                            <button
-                                                                onClick={(e) => {
-                                                                    e.stopPropagation();
-                                                                    generateDraft(email.id);
-                                                                }}
-                                                                className="px-4 py-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-plus-jakarta font-medium text-sm hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors flex items-center gap-2"
-                                                            >
-                                                                <RotateCw className="h-4 w-4" />
-                                                                Regenerate
-                                                            </button>
-                                                        </div>
+                                                        {editingDraft === email.id ? (
+                                                            // EDIT MODE
+                                                            <>
+                                                                <div className="space-y-3">
+                                                                    <div>
+                                                                        <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
+                                                                            Subject
+                                                                        </label>
+                                                                        <input
+                                                                            type="text"
+                                                                            value={editedSubject}
+                                                                            onChange={(e) => setEditedSubject(e.target.value)}
+                                                                            className="w-full px-3 py-2 border border-blue-300 dark:border-blue-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                                            placeholder="Email subject"
+                                                                        />
+                                                                    </div>
+                                                                    <div>
+                                                                        <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
+                                                                            Body
+                                                                        </label>
+                                                                        <textarea
+                                                                            value={editedBody}
+                                                                            onChange={(e) => setEditedBody(e.target.value)}
+                                                                            rows={8}
+                                                                            className="w-full px-3 py-2 border border-blue-300 dark:border-blue-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                                                                            placeholder="Email body"
+                                                                        />
+                                                                    </div>
+                                                                </div>
+                                                                <div className="flex gap-2 mt-4">
+                                                                    <button
+                                                                        onClick={(e) => {
+                                                                            e.stopPropagation();
+                                                                            saveDraftEdits(email.id);
+                                                                        }}
+                                                                        className="px-4 py-2 rounded-full bg-blue-500 text-white font-plus-jakarta font-medium text-sm hover:bg-blue-600 transition-colors flex items-center gap-2"
+                                                                    >
+                                                                        <Save className="h-4 w-4" />
+                                                                        Save
+                                                                    </button>
+                                                                    <button
+                                                                        onClick={(e) => {
+                                                                            e.stopPropagation();
+                                                                            cancelEditing();
+                                                                        }}
+                                                                        className="px-4 py-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-plus-jakarta font-medium text-sm hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                                                                    >
+                                                                        Cancel
+                                                                    </button>
+                                                                </div>
+                                                            </>
+                                                        ) : (
+                                                            // NORMAL VIEW
+                                                            <>
+                                                                <p className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">
+                                                                    {drafts[email.id].subject}
+                                                                </p>
+                                                                <p className="text-sm text-gray-600 dark:text-gray-400 whitespace-pre-wrap">
+                                                                    {drafts[email.id].body}
+                                                                </p>
+                                                                <div className="flex gap-2 mt-4">
+                                                                    <button
+                                                                        onClick={(e) => {
+                                                                            e.stopPropagation();
+                                                                            startEditing(email.id);
+                                                                        }}
+                                                                        className="px-4 py-2 rounded-full bg-blue-500 text-white font-plus-jakarta font-medium text-sm hover:bg-blue-600 transition-colors flex items-center gap-2"
+                                                                    >
+                                                                        <Edit className="h-4 w-4" />
+                                                                        Edit
+                                                                    </button>
+                                                                    <button
+                                                                        onClick={(e) => {
+                                                                            e.stopPropagation();
+                                                                            sendDraft(email.id);
+                                                                        }}
+                                                                        className="px-4 py-2 rounded-full bg-green-500 text-white font-plus-jakarta font-medium text-sm hover:bg-green-600 transition-colors flex items-center gap-2"
+                                                                    >
+                                                                        <Send className="h-4 w-4" />
+                                                                        Approve & Send
+                                                                    </button>
+                                                                    <button
+                                                                        onClick={(e) => {
+                                                                            e.stopPropagation();
+                                                                            generateDraft(email.id);
+                                                                        }}
+                                                                        className="px-4 py-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-plus-jakarta font-medium text-sm hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors flex items-center gap-2"
+                                                                    >
+                                                                        <RotateCw className="h-4 w-4" />
+                                                                        Regenerate
+                                                                    </button>
+                                                                </div>
+                                                            </>
+                                                        )}
                                                     </div>
                                                 )}
                                             </div>
