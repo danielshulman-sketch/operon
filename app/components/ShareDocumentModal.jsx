@@ -68,7 +68,7 @@ export default function ShareDocumentModal({ document, isOpen, onClose, onShare 
                 },
                 body: JSON.stringify({
                     documentId: document.id,
-                    user Ids: selectedUsers
+                    userIds: selectedUsers
                 })
             });
 

@@ -1,13 +1,15 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Book, Plus, X, Edit2, Trash2, Save, Tag } from 'lucide-react';
+import { Book, Plus, X, Edit2, Trash2, Save, Tag, Users } from 'lucide-react';
 import InfoTooltip from '../../components/InfoTooltip';
+import ShareDocumentModal from '../../components/ShareDocumentModal';
 
 export default function KnowledgeBasePage() {
     const [documents, setDocuments] = useState([]);
     const [showCreateModal, setShowCreateModal] = useState(false);
     const [editingDoc, setEditingDoc] = useState(null);
+    const [sharingDoc, setSharingDoc] = useState(null);
     const [newDoc, setNewDoc] = useState({
         title: '',
         content: '',
@@ -246,6 +248,13 @@ export default function KnowledgeBasePage() {
 
                         <div className="flex items-center gap-2 pt-4 border-t border-[#E6E6E6] dark:border-[#333333]">
                             <button
+                                onClick={() => setSharingDoc(doc)}
+                                className="flex-1 px-3 py-2 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-inter text-sm hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors flex items-center justify-center gap-2"
+                            >
+                                <Users className="h-4 w-4" />
+                                Share
+                            </button>
+                            <button
                                 onClick={() => setEditingDoc(doc)}
                                 className="flex-1 px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-inter text-sm hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors flex items-center justify-center gap-2"
                             >
@@ -283,6 +292,17 @@ export default function KnowledgeBasePage() {
                     </button>
                 </div>
             )}
+
+            {/* Create/Edit Modal */}
+            {/* Share Document Modal */}
+            <ShareDocumentModal
+                document={sharingDoc}
+                isOpen={!!sharingDoc}
+                onClose={() => setSharingDoc(null)}
+                onShare={() => {
+                    fetchDocuments();
+                }}
+            />
 
             {/* Create/Edit Modal */}
             {(showCreateModal || editingDoc) && (
