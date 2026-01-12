@@ -37,6 +37,14 @@ export default function SettingsPage() {
         isAdmin: false
     });
     const [hasVoiceProfile, setHasVoiceProfile] = useState(false);
+    const [passwordChange, setPasswordChange] = useState({
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: '',
+        loading: false,
+        message: '',
+        error: ''
+    });
 
     useEffect(() => {
         fetchUser();
@@ -380,6 +388,75 @@ export default function SettingsPage() {
         }
     };
 
+    const handleChangePassword = async (e) => {
+        e.preventDefault();
+
+        // Reset messages
+        setPasswordChange(prev => ({ ...prev, message: '', error: '' }));
+
+        // Validation
+        if (!passwordChange.currentPassword || !passwordChange.newPassword || !passwordChange.confirmPassword) {
+            setPasswordChange(prev => ({ ...prev, error: 'All fields are required' }));
+            return;
+        }
+
+        if (passwordChange.newPassword.length < 8) {
+            setPasswordChange(prev => ({ ...prev, error: 'New password must be at least 8 characters' }));
+            return;
+        }
+
+        if (passwordChange.newPassword !== passwordChange.confirmPassword) {
+            setPasswordChange(prev => ({ ...prev, error: 'New passwords do not match' }));
+            return;
+        }
+
+        if (passwordChange.currentPassword === passwordChange.newPassword) {
+            setPasswordChange(prev => ({ ...prev, error: 'New password must be different from current password' }));
+            return;
+        }
+
+        try {
+            setPasswordChange(prev => ({ ...prev, loading: true }));
+            const token = localStorage.getItem('auth_token');
+            const res = await fetch('/api/user/password', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    currentPassword: passwordChange.currentPassword,
+                    newPassword: passwordChange.newPassword,
+                }),
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+                setPasswordChange({
+                    currentPassword: '',
+                    newPassword: '',
+                    confirmPassword: '',
+                    loading: false,
+                    message: 'Password changed successfully!',
+                    error: ''
+                });
+            } else {
+                setPasswordChange(prev => ({
+                    ...prev,
+                    loading: false,
+                    error: data.error || 'Failed to change password'
+                }));
+            }
+        } catch (error) {
+            setPasswordChange(prev => ({
+                ...prev,
+                loading: false,
+                error: 'Failed to change password'
+            }));
+        }
+    };
+
     return (
         <div className="p-8">
             <h1 className="text-3xl font-bold text-white mb-8">Settings</h1>
@@ -529,47 +606,136 @@ export default function SettingsPage() {
 
             {/* Profile Tab */}
             {activeTab === 'profile' && (
-                <div className="bg-[#1a1a1a] rounded-2xl p-6 border border-gray-800">
-                    <h2 className="text-xl font-semibold text-white mb-6">Profile Information</h2>
-                    <div className="space-y-4">
-                        <div>
-                            <label className="block text-gray-400 text-sm mb-2">Email</label>
-                            <input
-                                type="email"
-                                value={user?.email || ''}
-                                disabled
-                                className="w-full px-4 py-3 bg-[#0d0d0d] border border-gray-700 rounded-xl text-gray-500"
-                            />
+                <div className="space-y-6">
+                    {/* Profile Information */}
+                    <div className="bg-[#1a1a1a] rounded-2xl p-6 border border-gray-800">
+                        <h2 className="text-xl font-semibold text-white mb-6">Profile Information</h2>
+                        <div className="space-y-4">
+                            <div>
+                                <label className="block text-gray-400 text-sm mb-2">Email</label>
+                                <input
+                                    type="email"
+                                    value={user?.email || ''}
+                                    disabled
+                                    className="w-full px-4 py-3 bg-[#0d0d0d] border border-gray-700 rounded-xl text-gray-500"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-gray-400 text-sm mb-2">First Name</label>
+                                <input
+                                    type="text"
+                                    value={user?.first_name || ''}
+                                    className="w-full px-4 py-3 bg-[#0d0d0d] border border-gray-700 rounded-xl text-white focus:border-blue-500 focus:outline-none"
+                                    placeholder="Your first name"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-gray-400 text-sm mb-2">Last Name</label>
+                                <input
+                                    type="text"
+                                    value={user?.last_name || ''}
+                                    className="w-full px-4 py-3 bg-[#0d0d0d] border border-gray-700 rounded-xl text-white focus:border-blue-500 focus:outline-none"
+                                    placeholder="Your last name"
+                                />
+                            </div>
+                            <div className="flex flex-wrap gap-3">
+                                <button className="px-6 py-3 bg-white text-black rounded-xl font-semibold hover:bg-gray-100 transition-colors">
+                                    Save Changes
+                                </button>
+                                <button
+                                    onClick={() => router.push('/dashboard/voice-training')}
+                                    className="px-6 py-3 bg-blue-500 text-white rounded-xl font-semibold hover:bg-blue-600 transition-colors"
+                                >
+                                    {hasVoiceProfile ? 'Retrain Voice Profile' : 'Train Voice Profile'}
+                                </button>
+                            </div>
                         </div>
-                        <div>
-                            <label className="block text-gray-400 text-sm mb-2">First Name</label>
-                            <input
-                                type="text"
-                                value={user?.first_name || ''}
-                                className="w-full px-4 py-3 bg-[#0d0d0d] border border-gray-700 rounded-xl text-white focus:border-blue-500 focus:outline-none"
-                                placeholder="Your first name"
-                            />
+                    </div>
+
+                    {/* Password & Security */}
+                    <div className="bg-[#1a1a1a] rounded-2xl p-6 border border-gray-800">
+                        <div className="flex items-center gap-3 mb-6">
+                            <Lock className="h-5 w-5 text-blue-500" />
+                            <div>
+                                <h2 className="text-xl font-semibold text-white">Password & Security</h2>
+                                <p className="text-gray-400 text-sm">Change your password to keep your account secure</p>
+                            </div>
                         </div>
-                        <div>
-                            <label className="block text-gray-400 text-sm mb-2">Last Name</label>
-                            <input
-                                type="text"
-                                value={user?.last_name || ''}
-                                className="w-full px-4 py-3 bg-[#0d0d0d] border border-gray-700 rounded-xl text-white focus:border-blue-500 focus:outline-none"
-                                placeholder="Your last name"
-                            />
-                        </div>
-                        <div className="flex flex-wrap gap-3">
-                            <button className="px-6 py-3 bg-white text-black rounded-xl font-semibold hover:bg-gray-100 transition-colors">
-                                Save Changes
-                            </button>
-                            <button
-                                onClick={() => router.push('/dashboard/voice-training')}
-                                className="px-6 py-3 bg-blue-500 text-white rounded-xl font-semibold hover:bg-blue-600 transition-colors"
-                            >
-                                {hasVoiceProfile ? 'Retrain Voice Profile' : 'Train Voice Profile'}
-                            </button>
-                        </div>
+
+                        <form onSubmit={handleChangePassword} className="space-y-4">
+                            {passwordChange.message && (
+                                <div className="px-4 py-3 bg-green-500/10 border border-green-500/20 rounded-xl">
+                                    <p className="text-green-400 text-sm">{passwordChange.message}</p>
+                                </div>
+                            )}
+
+                            {passwordChange.error && (
+                                <div className="px-4 py-3 bg-red-500/10 border border-red-500/20 rounded-xl">
+                                    <p className="text-red-400 text-sm">{passwordChange.error}</p>
+                                </div>
+                            )}
+
+                            <div>
+                                <label className="block text-gray-400 text-sm mb-2">Current Password</label>
+                                <input
+                                    type="password"
+                                    value={passwordChange.currentPassword}
+                                    onChange={(e) => setPasswordChange(prev => ({ ...prev, currentPassword: e.target.value }))}
+                                    className="w-full px-4 py-3 bg-[#0d0d0d] border border-gray-700 rounded-xl text-white focus:border-blue-500 focus:outline-none"
+                                    placeholder="Enter your current password"
+                                    disabled={passwordChange.loading}
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block text-gray-400 text-sm mb-2">New Password (min 8 characters)</label>
+                                <input
+                                    type="password"
+                                    value={passwordChange.newPassword}
+                                    onChange={(e) => setPasswordChange(prev => ({ ...prev, newPassword: e.target.value }))}
+                                    className="w-full px-4 py-3 bg-[#0d0d0d] border border-gray-700 rounded-xl text-white focus:border-blue-500 focus:outline-none"
+                                    placeholder="Enter your new password"
+                                    disabled={passwordChange.loading}
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block text-gray-400 text-sm mb-2">Confirm New Password</label>
+                                <input
+                                    type="password"
+                                    value={passwordChange.confirmPassword}
+                                    onChange={(e) => setPasswordChange(prev => ({ ...prev, confirmPassword: e.target.value }))}
+                                    className="w-full px-4 py-3 bg-[#0d0d0d] border border-gray-700 rounded-xl text-white focus:border-blue-500 focus:outline-none"
+                                    placeholder="Confirm your new password"
+                                    disabled={passwordChange.loading}
+                                />
+                            </div>
+
+                            <div className="flex gap-3 pt-2">
+                                <button
+                                    type="submit"
+                                    disabled={passwordChange.loading}
+                                    className="px-6 py-3 bg-blue-500 text-white rounded-xl font-semibold hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    {passwordChange.loading ? 'Changing Password...' : 'Change Password'}
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setPasswordChange({
+                                        currentPassword: '',
+                                        newPassword: '',
+                                        confirmPassword: '',
+                                        loading: false,
+                                        message: '',
+                                        error: ''
+                                    })}
+                                    disabled={passwordChange.loading}
+                                    className="px-6 py-3 bg-gray-700 text-white rounded-xl font-semibold hover:bg-gray-600 transition-colors disabled:opacity-50"
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             )}
