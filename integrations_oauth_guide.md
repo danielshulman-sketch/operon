@@ -5,10 +5,21 @@
 2. [Understanding OAuth](#understanding-oauth)
 3. [Connecting Integrations](#connecting-integrations)
 4. [Integration Types](#integration-types)
-5. [Step-by-Step Setup Guides](#step-by-step-setup-gu
-
-ides)
-6. [Troubleshooting](#troubleshooting)
+5. [Step-by-Step Setup Guides](#step-by-step-setup-guides)
+   - [Google Sign-In (Authentication)](#-google-sign-in-authentication)
+   - [Google Sheets](#-google-sheets)
+   - [Google Calendar](#-google-calendar)
+   - [Slack](#-slack)
+   - [Stripe](#-stripe-api-key)
+   - [Outlook Calendar](#-outlook-calendar-microsoft)
+   - [Zoom](#-zoom)
+   - [MailerLite](#-mailerlite-api-key)
+   - [Mailchimp](#-mailchimp-api-key)
+   - [WordPress](#-wordpress-application-password)
+   - [Calendly](#-calendly-api-key)
+6. [Using Integrations in Automations](#using-integrations-in-automations)
+7. [Environment Variables Reference](#environment-variables-reference)
+8. [Troubleshooting](#troubleshooting)
 
 ---
 
@@ -154,7 +165,9 @@ Most OAuth integrations (Slack, Google Sheets, Notion, etc.) require creating an
 2. **Create OAuth App in External Service**
    - Each service has its own developer portal
    - You'll create an "OAuth app" or "integration"
-   - Add a **Redirect URI**: `{YOUR_OPERON_URL}/api/integrations/oauth/callback`
+   - Add a **Redirect URI**:
+     - For **integrations** (Slack, Google Sheets, etc.): `{YOUR_OPERON_URL}/api/integrations/oauth/callback`
+     - For **Google Sign-In authentication**: `{YOUR_OPERON_URL}/api/auth/google/callback`
    - Copy the Client ID and Client Secret
 
 3. **Save Credentials in Operon**
@@ -317,6 +330,83 @@ Most OAuth integrations (Slack, Google Sheets, Notion, etc.) require creating an
    - Click **"Connect"** or **"Connect with API Key"**
    - In the modal, paste your Secret API Key
    - Click **"Save & Connect"** ✅
+
+</details>
+
+---
+
+### 🔑 Google Sign-In (Authentication)
+
+<details>
+<summary><strong>Click to expand Google Sign-In setup instructions</strong></summary>
+
+> [!IMPORTANT]
+> This is **different** from Google Sheets/Calendar OAuth integration. Google Sign-In allows users to authenticate (log in) to Operon using their Google account.
+
+#### Prerequisites
+- Google account
+- Access to Google Cloud Console
+
+#### Required Environment Variables
+```bash
+GOOGLE_OAUTH_CLIENT_ID=your_client_id_here
+GOOGLE_OAUTH_CLIENT_SECRET=your_client_secret_here
+NEXT_PUBLIC_APP_URL=https://your-operon-url.com
+```
+
+#### Setup Steps
+
+1. **Go to Google Cloud Console**
+   - Visit [console.cloud.google.com](https://console.cloud.google.com/)
+   - Create a new project or select existing one
+
+2. **Enable Google+ API** (for user profile info)
+   - Click **"Enable APIs and Services"**
+   - Search for "Google+ API" or "Google People API"
+   - Click **"Enable"**
+
+3. **Configure OAuth Consent Screen**
+   - Go to **"APIs & Services"** → **"OAuth consent screen"**
+   - Choose **"External"** (unless using Google Workspace)
+   - Fill in app name (e.g., "Operon")
+   - Add your email as support contact
+   - Click **"Save and Continue"**
+   - For scopes, add:
+     - `email`
+     - `profile`
+     - `openid`
+   - Add test users if needed
+   - Save
+
+4. **Create OAuth Client ID**
+   - Go to **"Credentials"** → **"Create Credentials"** → **"OAuth client ID"**
+   - Choose **"Web application"**
+   - Name it (e.g., "Operon Sign-In")
+   - Under **"Authorized redirect URIs"**, click **"Add URI"**
+   - Enter: `https://your-operon-url.com/api/auth/google/callback`
+   - For local testing, also add: `http://localhost:3000/api/auth/google/callback`
+   - Click **"Create"**
+
+5. **Copy Credentials**
+   - Copy the **Client ID** and **Client Secret** shown in the popup
+
+6. **Save to Environment Variables**
+   - Add to your `.env.local` or environment configuration:
+     ```bash
+     GOOGLE_OAUTH_CLIENT_ID=your_client_id_here.apps.googleusercontent.com
+     GOOGLE_OAUTH_CLIENT_SECRET=your_client_secret_here
+     NEXT_PUBLIC_APP_URL=https://your-operon-url.com
+     ```
+
+7. **Test the Sign-In**
+   - Restart your Operon application
+   - Go to the login page
+   - Click **"Sign in with Google"**
+   - You should be redirected to Google's login page
+   - After authorizing, you'll be redirected back to Operon ✅
+
+> [!TIP]
+> **For Production**: Make sure to publish your OAuth consent screen in Google Cloud Console to allow any Google user to sign in. Otherwise, only test users can authenticate.
 
 </details>
 
@@ -799,6 +889,63 @@ Once connected, you can use these integrations to create powerful workflows:
 
 ---
 
+## Environment Variables Reference
+
+Below are all the environment variables needed for OAuth integrations in Operon:
+
+### User Authentication (Google Sign-In)
+```bash
+# Google Sign-In for user authentication
+GOOGLE_OAUTH_CLIENT_ID=your_client_id.apps.googleusercontent.com
+GOOGLE_OAUTH_CLIENT_SECRET=your_client_secret
+NEXT_PUBLIC_APP_URL=https://your-operon-url.com
+```
+
+### Email Integration (Gmail OAuth)
+```bash
+# Gmail API for email sending/receiving
+GOOGLE_CLIENT_ID=your_client_id.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=your_client_secret
+```
+
+> [!WARNING]
+> **Note**: `GOOGLE_OAUTH_CLIENT_ID` (for sign-in) and `GOOGLE_CLIENT_ID` (for email) are **different variables**. You may use the same Google Cloud project for both, but they serve different purposes:
+> - **GOOGLE_OAUTH_CLIENT_ID**: User authentication (login)
+> - **GOOGLE_CLIENT_ID**: Gmail integration (send/receive emails)
+
+### Other Common OAuth Variables
+
+These are typically configured through the Operon UI (**Integrations → OAuth Settings**), but can also be set as environment variables:
+
+```bash
+# Slack
+SLACK_CLIENT_ID=your_slack_client_id
+SLACK_CLIENT_SECRET=your_slack_client_secret
+
+# Microsoft (Outlook Calendar)
+MICROSOFT_CLIENT_ID=your_microsoft_app_id
+MICROSOFT_CLIENT_SECRET=your_microsoft_secret
+
+# Zoom
+ZOOM_CLIENT_ID=your_zoom_client_id
+ZOOM_CLIENT_SECRET=your_zoom_client_secret
+
+# Notion
+NOTION_CLIENT_ID=your_notion_client_id
+NOTION_CLIENT_SECRET=your_notion_client_secret
+```
+
+### API Key Integrations
+
+These are configured through the Operon UI and stored in the database:
+- Stripe API Key
+- Mailchimp API Key + Server Prefix
+- MailerLite API Token
+- Calendly Personal Access Token
+- WordPress Application Password
+
+---
+
 ## Need Help?
 
 - **Check Setup Instructions**: Click the ℹ️ icon next to any integration in Operon
@@ -807,5 +954,6 @@ Once connected, you can use these integrations to create powerful workflows:
 
 ---
 
-**Last Updated**: January 2026  
-**Version**: 1.0
+**Last Updated**: January 17, 2026  
+**Version**: 1.1
+
