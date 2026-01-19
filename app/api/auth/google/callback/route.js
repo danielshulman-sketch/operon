@@ -69,14 +69,17 @@ export async function GET(request) {
 
             // Insert or update Google auth account
             await query(
-                `INSERT INTO auth_accounts (user_id, provider, provider_user_id, access_token, refresh_token, token_expiry)
-                 VALUES ($1, 'google', $2, $3, $4, NOW() + INTERVAL '1 hour')
+                `INSERT INTO auth_accounts (user_id, provider, provider_user_id, credentials)
+                 VALUES ($1, 'google', $2, $3)
                  ON CONFLICT (user_id, provider) DO UPDATE SET
                    provider_user_id = $2,
-                   access_token = $3,
-                   refresh_token = $4,
-                   token_expiry = NOW() + INTERVAL '1 hour'`,
-                [userId, googleUser.id, tokens.access_token, tokens.refresh_token || null]
+                   credentials = $3`,
+                [userId, googleUser.id, JSON.stringify({
+                    access_token: tokens.access_token,
+                    refresh_token: tokens.refresh_token,
+                    scope: tokens.scope,
+                    token_type: tokens.token_type || 'Bearer'
+                })]
             );
         } else {
             // New user - create account and organization
@@ -96,9 +99,14 @@ export async function GET(request) {
 
             // Create Google auth account
             await query(
-                `INSERT INTO auth_accounts (user_id, provider, provider_user_id, access_token, refresh_token, token_expiry)
-                 VALUES ($1, 'google', $2, $3, $4, NOW() + INTERVAL '1 hour')`,
-                [userId, googleUser.id, tokens.access_token, tokens.refresh_token || null]
+                `INSERT INTO auth_accounts (user_id, provider, provider_user_id, credentials)
+                 VALUES ($1, 'google', $2, $3)`,
+                [userId, googleUser.id, JSON.stringify({
+                    access_token: tokens.access_token,
+                    refresh_token: tokens.refresh_token,
+                    scope: tokens.scope,
+                    token_type: tokens.token_type || 'Bearer'
+                })]
             );
 
             // Add user to organization as admin
@@ -121,10 +129,6 @@ export async function GET(request) {
 
         // Auto-connect Google integrations (Gmail, Drive, Docs, Sheets, Calendar)
         try {
-            // Dynamically import to avoid circular dependency
-            const { encrypt } = await import('@/lib/automation/encryption');
-            const { ensureIntegrationCredentialsTable } = await import('@/utils/ensure-integration-credentials');
-
             await ensureIntegrationCredentialsTable();
 
             const googleIntegrations = [
