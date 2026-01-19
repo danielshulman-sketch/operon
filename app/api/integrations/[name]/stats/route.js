@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { requireAuth } from '@/utils/auth';
 import { query } from '@/utils/db';
-import { decryptValue } from '@/lib/automation/encryption';
+import { decryptValue } from '@/app/lib/automation/encryption';
 import { ensureIntegrationCredentialsTable } from '@/utils/ensure-integration-credentials';
 
 // Import integrations

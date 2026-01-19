@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { query } from '@/utils/db';
 import { generateToken } from '@/utils/auth';
-import { encrypt } from '@/lib/automation/encryption';
+import { encrypt } from '@/app/lib/automation/encryption';
 import { ensureIntegrationCredentialsTable } from '@/utils/ensure-integration-credentials';
 
 export const dynamic = 'force-dynamic';
