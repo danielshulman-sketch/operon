@@ -5,6 +5,7 @@ import { encrypt } from '@/lib/automation/encryption';
 import { ensureIntegrationCredentialsTable } from '@/utils/ensure-integration-credentials';
 
 export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs'; // Use Node.js runtime for crypto module
 
 /**
  * Connect all Google services using existing Google authentication
@@ -12,18 +13,25 @@ export const dynamic = 'force-dynamic';
  */
 export async function GET(request) {
     try {
+        console.log('[connect-all] Starting connection process...');
+
         // Ensure table exists
+        console.log('[connect-all] Ensuring table exists...');
         await ensureIntegrationCredentialsTable();
 
         // Verify authentication
+        console.log('[connect-all] Checking authentication...');
         const user = await requireAuth(request);
+        console.log('[connect-all] User authenticated:', user.id);
 
         // Check if user has Google authentication
+        console.log('[connect-all] Querying Google auth account...');
         const authResult = await query(
             `SELECT access_token, refresh_token FROM auth_accounts 
              WHERE user_id = $1 AND provider = 'google' LIMIT 1`,
             [user.id]
         );
+        console.log('[connect-all] Auth result count:', authResult.rows.length);
 
         if (authResult.rows.length === 0) {
             return NextResponse.json(
@@ -79,12 +87,19 @@ export async function GET(request) {
         });
 
     } catch (error) {
-        console.error('Error connecting Google services:', error);
+        console.error('[connect-all] ERROR:', error);
+        console.error('[connect-all] Error stack:', error.stack);
+        console.error('[connect-all] Error message:', error.message);
+
         if (error.message === 'Unauthorized') {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
         return NextResponse.json(
-            { error: 'Failed to connect Google services', details: error.message },
+            {
+                error: 'Failed to connect Google services',
+                details: error.message,
+                stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+            },
             { status: 500 }
         );
     }
