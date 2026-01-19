@@ -27,7 +27,7 @@ export async function GET(request) {
         // Check if user has Google authentication
         console.log('[connect-all] Querying Google auth account...');
         const authResult = await query(
-            `SELECT access_token, refresh_token FROM auth_accounts 
+            `SELECT credentials FROM auth_accounts 
              WHERE user_id = $1 AND provider = 'google' LIMIT 1`,
             [user.id]
         );
@@ -40,7 +40,20 @@ export async function GET(request) {
             );
         }
 
-        const { access_token, refresh_token } = authResult.rows[0];
+        // Parse credentials (might be JSONB or JSON string)
+        let googleCreds;
+        try {
+            const credsData = authResult.rows[0].credentials;
+            googleCreds = typeof credsData === 'string' ? JSON.parse(credsData) : credsData;
+        } catch (e) {
+            console.error('[connect-all] Failed to parse credentials:', e);
+            return NextResponse.json(
+                { error: 'Invalid Google account credentials' },
+                { status: 500 }
+            );
+        }
+
+        const { access_token, refresh_token } = googleCreds;
 
         // Auto-connect all Google integrations
         const googleIntegrations = [
