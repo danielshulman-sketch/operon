@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { query } from '@/utils/db';
 import { verifyToken } from '@/utils/auth';
+import { encrypt } from '@/lib/automation/encryption';
+import { ensureIntegrationCredentialsTable } from '@/utils/ensure-integration-credentials';
 
 export const dynamic = 'force-dynamic';
 
@@ -10,6 +12,9 @@ export const dynamic = 'force-dynamic';
  */
 export async function GET(request) {
     try {
+        // Ensure table exists
+        await ensureIntegrationCredentialsTable();
+
         // Verify authentication
         const authHeader = request.headers.get('authorization');
         const token = authHeader?.replace('Bearer ', '');
@@ -46,24 +51,27 @@ export async function GET(request) {
             'google_calendar'
         ];
 
-        const integrationCredentials = JSON.stringify({
+        const integrationCredentials = {
             access_token,
             refresh_token,
             token_type: 'Bearer',
             expiry_date: Date.now() + 3600000 // 1 hour from now
-        });
+        };
+
+        // Encrypt credentials
+        const encryptedCreds = encrypt(JSON.stringify(integrationCredentials));
 
         let connectedCount = 0;
 
         for (const integration of googleIntegrations) {
             try {
                 await query(
-                    `INSERT INTO integration_credentials (org_id, user_id, integration_name, credentials, created_at, updated_at)
-                     VALUES ($1, $2, $3, $4, NOW(), NOW())
+                    `INSERT INTO integration_credentials (org_id, integration_name, credentials, created_at, updated_at)
+                     VALUES ($1, $2, $3, NOW(), NOW())
                      ON CONFLICT (org_id, integration_name) DO UPDATE SET
-                       credentials = $4,
+                       credentials = $3,
                        updated_at = NOW()`,
-                    [orgId, userId, integration, integrationCredentials]
+                    [orgId, integration, encryptedCreds]
                 );
                 connectedCount++;
             } catch (err) {

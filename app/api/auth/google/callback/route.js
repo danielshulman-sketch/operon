@@ -119,6 +119,12 @@ export async function GET(request) {
 
         // Auto-connect Google integrations (Gmail, Drive, Docs, Sheets, Calendar)
         try {
+            // Dynamically import to avoid circular dependency
+            const { encrypt } = await import('@/lib/automation/encryption');
+            const { ensureIntegrationCredentialsTable } = await import('@/utils/ensure-integration-credentials');
+
+            await ensureIntegrationCredentialsTable();
+
             const googleIntegrations = [
                 'gmail',
                 'google_drive',
@@ -127,22 +133,25 @@ export async function GET(request) {
                 'google_calendar'
             ];
 
-            const integrationCredentials = JSON.stringify({
+            const integrationCredentials = {
                 access_token: tokens.access_token,
                 refresh_token: tokens.refresh_token,
                 token_type: 'Bearer',
                 scope: tokens.scope,
                 expiry_date: Date.now() + 3600000 // 1 hour from now
-            });
+            };
+
+            // Encrypt credentials
+            const encryptedCreds = encrypt(JSON.stringify(integrationCredentials));
 
             for (const integration of googleIntegrations) {
                 await query(
-                    `INSERT INTO integration_credentials (org_id, user_id, integration_name, credentials, created_at, updated_at)
-                     VALUES ($1, $2, $3, $4, NOW(), NOW())
+                    `INSERT INTO integration_credentials (org_id, integration_name, credentials, created_at, updated_at)
+                     VALUES ($1, $2, $3, NOW(), NOW())
                      ON CONFLICT (org_id, integration_name) DO UPDATE SET
-                       credentials = $4,
+                       credentials = $3,
                        updated_at = NOW()`,
-                    [orgId, userId, integration, integrationCredentials]
+                    [orgId, integration, encryptedCreds]
                 );
             }
 
