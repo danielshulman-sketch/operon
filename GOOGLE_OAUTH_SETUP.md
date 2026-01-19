@@ -38,8 +38,8 @@ The script will:
 npm run dev
 
 # Visit http://localhost:3000
-# Click "Sign in with Google"
-# ✨ Done!
+# Sign in with email/password
+# Go to Dashboard -> Integrations to connect Google apps!
 ```
 
 ---
@@ -61,7 +61,7 @@ If you prefer to manually edit `.env.local`:
 
 ## 📋 What Gets Auto-Connected?
 
-When users sign in with Google, these integrations are **automatically connected**:
+When users connect the Google integration in the dashboard, these capabilities are **automatically enabled**:
 
 - ✅ Gmail
 - ✅ Google Drive
