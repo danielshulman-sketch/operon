@@ -1,0 +1,33 @@
+  ▲ Next.js 14.2.35
+  - Environments: .env.local
+
+   Creating an optimized production build ...
+Failed to compile.
+
+./app/api/auth/google/callback/route.js
+Module not found: Can't resolve '@/app/lib/automation/encryption'
+
+https://nextjs.org/docs/messages/module-not-found
+
+./app/api/automations/[id]/execute/route.js
+Module not found: Can't resolve '@/app/lib/automation/engine'
+
+https://nextjs.org/docs/messages/module-not-found
+
+./app/api/automations/webhooks/[id]/route.js
+Module not found: Can't resolve '@/app/lib/automation/engine'
+
+https://nextjs.org/docs/messages/module-not-found
+
+./app/api/integrations/[name]/stats/route.js
+Module not found: Can't resolve '@/app/lib/automation/encryption'
+
+https://nextjs.org/docs/messages/module-not-found
+
+./app/api/integrations/credentials/route.js
+Module not found: Can't resolve '@/app/lib/automation/encryption'
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+> Build failed because of webpack errors

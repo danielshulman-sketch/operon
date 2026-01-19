@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { query, getClient } from '@/utils/db';
 import { requireAuth } from '@/utils/auth';
-import { executeAutomation } from '@/app/lib/automation/engine';
+import { executeAutomation } from '@/lib/automation/engine';
 import { ensureAutomationTables } from '@/utils/ensure-automation-tables';
 
 // Manually execute automation

@@ -3,7 +3,7 @@ import { getIntegration, supportsOAuth } from '@/lib/integrations';
 import { requireAuth } from '@/utils/auth';
 import { query } from '@/utils/db';
 import { ensureOAuthClientCredentialsTable } from '@/utils/ensure-oauth-client-credentials';
-import { decryptValue } from '@/app/lib/automation/encryption';
+import { decryptValue } from '@/lib/automation/encryption';
 import { cookies } from 'next/headers';
 
 export const dynamic = 'force-dynamic';

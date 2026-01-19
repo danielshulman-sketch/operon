@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { query } from '@/utils/db';
-import { executeAutomation } from '@/app/lib/automation/engine';
+import { executeAutomation } from '@/lib/automation/engine';
 import { ensureAutomationTables } from '@/utils/ensure-automation-tables';
 
 export async function POST(request, { params }) {

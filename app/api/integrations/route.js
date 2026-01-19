@@ -4,7 +4,7 @@ import { getAllIntegrations, supportsOAuth } from '../../lib/integrations/index'
 import { query } from '@/utils/db';
 import { ensureIntegrationCredentialsTable } from '@/utils/ensure-integration-credentials';
 import { ensureOAuthClientCredentialsTable } from '@/utils/ensure-oauth-client-credentials';
-import { decryptValue } from '@/app/lib/automation/encryption';
+import { decryptValue } from '@/lib/automation/encryption';
 
 /**
  * Get all available integrations with connection status

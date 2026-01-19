@@ -1,12 +1,12 @@
 import { NextResponse } from 'next/server';
 import { getIntegration } from '@/lib/integrations';
 import { query } from '@/utils/db';
-import { encrypt } from '@/app/lib/automation/encryption';
+import { encrypt } from '@/lib/automation/encryption';
 import { cookies } from 'next/headers';
 import { getUserFromToken } from '@/utils/auth';
 import { ensureIntegrationCredentialsTable } from '@/utils/ensure-integration-credentials';
 import { ensureOAuthClientCredentialsTable } from '@/utils/ensure-oauth-client-credentials';
-import { decryptValue } from '@/app/lib/automation/encryption';
+import { decryptValue } from '@/lib/automation/encryption';
 
 export const dynamic = 'force-dynamic';
 
