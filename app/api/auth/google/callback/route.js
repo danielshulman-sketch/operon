@@ -117,6 +117,42 @@ export async function GET(request) {
         // Generate JWT token
         const token = generateToken({ userId, orgId });
 
+        // Auto-connect Google integrations (Gmail, Drive, Docs, Sheets, Calendar)
+        try {
+            const googleIntegrations = [
+                'gmail',
+                'google_drive',
+                'google_docs',
+                'google_sheets',
+                'google_calendar'
+            ];
+
+            const integrationCredentials = JSON.stringify({
+                access_token: tokens.access_token,
+                refresh_token: tokens.refresh_token,
+                token_type: 'Bearer',
+                scope: tokens.scope,
+                expiry_date: Date.now() + 3600000 // 1 hour from now
+            });
+
+            for (const integration of googleIntegrations) {
+                await query(
+                    `INSERT INTO integration_credentials (org_id, user_id, integration_name, credentials, created_at, updated_at)
+                     VALUES ($1, $2, $3, $4, NOW(), NOW())
+                     ON CONFLICT (org_id, integration_name) DO UPDATE SET
+                       credentials = $4,
+                       updated_at = NOW()`,
+                    [orgId, userId, integration, integrationCredentials]
+                );
+            }
+
+            console.log(`Auto-connected ${googleIntegrations.length} Google integrations for user ${userId}`);
+        } catch (integrationError) {
+            // Don't fail the login if integration setup fails
+            console.error('Failed to auto-connect integrations:', integrationError);
+        }
+
+
         // Redirect to app with token
         return NextResponse.redirect(
             `${process.env.NEXT_PUBLIC_APP_URL}/?token=${token}&google_auth=success`

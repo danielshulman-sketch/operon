@@ -7,8 +7,11 @@
 4. [Integration Types](#integration-types)
 5. [Step-by-Step Setup Guides](#step-by-step-setup-guides)
    - [Google Sign-In (Authentication)](#-google-sign-in-authentication)
+   - [Gmail](#-gmail)
    - [Google Sheets](#-google-sheets)
    - [Google Calendar](#-google-calendar)
+   - [Google Drive](#-google-drive)
+   - [Google Docs](#-google-docs)
    - [Slack](#-slack)
    - [Stripe](#-stripe-api-key)
    - [Outlook Calendar](#-outlook-calendar-microsoft)
@@ -145,6 +148,22 @@ Operon supports 20+ integrations across several categories:
 - **Kartra** - Marketing automation and funnels
 - **Kajabi** - Course and membership management
 - **GoHighLevel** - CRM and marketing automation
+
+---
+
+## Google Workspace Quick Setup ✨
+
+> [!TIP]
+> **One-Click Setup with Sign in with Google**
+>
+> If you sign in to Operon using "Sign in with Google", all Google integrations (Gmail, Drive, Docs, Sheets, Calendar) will be automatically connected! No additional OAuth setup needed.
+>
+> **New Users:**
+> 1. Click "Sign in with Google" on the login page
+> 2. Authorize Operon to access your Google Workspace
+> 3. ✅ All 5 Google integrations are automatically connected!
+>
+> **Already signed in with Google?** Go to the Integrations page and click **"Connect All Google Services"** to connect them instantly using your existing Google account.
 
 ---
 
@@ -412,6 +431,66 @@ NEXT_PUBLIC_APP_URL=https://your-operon-url.com
 
 ---
 
+### 📧 Gmail
+
+<details>
+<summary><strong>Click to expand Gmail setup instructions</strong></summary>
+
+#### Prerequisites
+- Google account
+- Access to Google Cloud Console
+
+#### Setup Steps
+
+1. **Go to Google Cloud Console**
+   - Visit [console.cloud.google.com](https://console.cloud.google.com/)
+   - Create a new project or select existing one
+
+2. **Enable Gmail API**
+   - Click **"Enable APIs and Services"**
+   - Search for "Gmail API"
+   - Click **"Enable"**
+
+3. **Configure OAuth Consent Screen**
+   - Go to **"APIs & Services"** → **"OAuth consent screen"**
+   - Choose **"External"** (unless using Google Workspace)
+   - Fill in app name (e.g., "Operon")
+   - Add your email as support contact
+   - Click **"Save and Continue"**
+   - Skip adding scopes (we'll add via app)
+   - Add test users if needed
+   - Save
+
+4. **Create OAuth Client ID**
+   - Go to **"Credentials"** → **"Create Credentials"** → **"OAuth client ID"**
+   - Choose **"Web application"**
+   - Name it (e.g., "Operon Web Client")
+   - Under **"Authorized redirect URIs"**, click **"Add URI"**
+   - Enter: `https://your-operon-url.com/api/integrations/oauth/callback`
+   - Click **"Create"**
+
+5. **Copy Credentials**
+   - Copy the **Client ID** and **Client Secret** shown in the popup
+
+6. **Save in Operon**
+   - Go to Operon → **Integrations** → **OAuth Settings**
+   - Find **Gmail**
+   - Paste Client ID and Client Secret
+   - Click **"Save"**
+
+7. **Connect**
+   - Go to **Integrations** page
+   - Click **"Connect with OAuth"** for Gmail
+   - Sign in with Google
+   - Grant permissions ✅
+
+> [!TIP]
+> **Using the same OAuth credentials**: If you've already set up Google Sheets or Calendar, you can use the same OAuth Client ID and Secret for Gmail by adding the Gmail API scopes.
+
+</details>
+
+---
+
 ### 📅 Google Calendar
 
 <details>
@@ -427,6 +506,86 @@ NEXT_PUBLIC_APP_URL=https://your-operon-url.com
 6. Copy Client ID and Client Secret
 7. Save in Operon → **Integrations** → **OAuth Settings** → **Google Calendar**
 8. Connect via **Integrations** page ✅
+
+</details>
+
+---
+
+### 📁 Google Drive
+
+<details>
+<summary><strong>Click to expand Google Drive setup instructions</strong></summary>
+
+#### Prerequisites
+- Google account
+- Access to Google Cloud Console
+
+#### Setup Steps
+
+1. **Go to Google Cloud Console**
+   - Visit [console.cloud.google.com](https://console.cloud.google.com/)
+   - Create a new project or select existing one
+
+2. **Enable Google Drive API**
+   - Click **"Enable APIs and Services"**
+   - Search for "Google Drive API"
+   - Click **"Enable"**
+
+3. **Configure OAuth Consent Screen** (if not done already)
+   - Go to **"APIs & Services"** → **"OAuth consent screen"**
+   - Choose **"External"** (unless using Google Workspace)
+   - Fill in app name (e.g., "Operon")
+   - Add your email as support contact
+   - Click **"Save and Continue"**
+   - Skip adding scopes
+   - Add test users if needed
+   - Save
+
+4. **Create OAuth Client ID** (or reuse existing one)
+   - Go to **"Credentials"** → **"Create Credentials"** → **"OAuth client ID"**
+   - Choose **"Web application"**
+   - Name it (e.g., "Operon Web Client")
+   - Under **"Authorized redirect URIs"**, click **"Add URI"**
+   - Enter: `https://your-operon-url.com/api/integrations/oauth/callback`
+   - Click **"Create"**
+
+5. **Copy Credentials**
+   - Copy the **Client ID** and **Client Secret**
+
+6. **Save in Operon**
+   - Go to Operon → **Integrations** → **OAuth Settings**
+   - Find **Google Drive**
+   - Paste Client ID and Client Secret
+   - Click **"Save"**
+
+7. **Connect**
+   - Go to **Integrations** page
+   - Click **"Connect with OAuth"** for Google Drive
+   - Sign in with Google
+   - Grant permissions ✅
+
+</details>
+
+---
+
+### 📝 Google Docs
+
+<details>
+<summary><strong>Click to expand Google Docs setup instructions</strong></summary>
+
+**Setup is similar to Google Drive:**
+
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Enable **Google Docs API**
+3. Configure OAuth consent screen (if not done already)
+4. Create OAuth client ID (web application) or reuse existing one
+5. Add redirect URI: `https://your-operon-url.com/api/integrations/oauth/callback`
+6. Copy Client ID and Client Secret
+7. Save in Operon → **Integrations** → **OAuth Settings** → **Google Docs**
+8. Connect via **Integrations** page ✅
+
+> [!TIP]
+> **Sharing OAuth across Google services**: You can use the same OAuth Client ID and Secret for all Google integrations (Gmail, Sheets, Calendar, Drive, Docs). Just enable all the APIs in your Google Cloud project and paste the same credentials in each integration's OAuth Settings.
 
 </details>
 

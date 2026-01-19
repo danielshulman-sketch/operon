@@ -221,6 +221,98 @@ export const INTEGRATIONS = {
         }
     },
 
+    google_drive: {
+        name: 'Google Drive',
+        description: 'Cloud file storage and sharing',
+        icon: '📁',
+        authType: 'oauth2',
+        color: '#4285F4',
+        actions: ['upload_file', 'create_folder', 'share_file', 'list_files', 'search_files', 'download_file', 'delete_file'],
+        helpUrl: 'https://developers.google.com/drive/api/guides/about-auth',
+        setupInstructions: '1. Go to Google Cloud Console (https://console.cloud.google.com/)\n2. Create or select a project, then enable the Google Drive API\n3. Go to "APIs & Services" > "OAuth consent screen" and configure it\n4. Go to "Credentials" > "Create Credentials" > "OAuth client ID"\n5. Choose "Web application" and add redirect URI: {APP_URL}/api/integrations/oauth/callback\n6. Save and copy the Client ID and Client Secret\n7. Paste them into Operon OAuth Settings and connect',
+        oauth: {
+            authUrl: 'https://accounts.google.com/o/oauth2/v2/auth',
+            tokenUrl: 'https://oauth2.googleapis.com/token',
+            scopes: ['https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/drive.file']
+        },
+        actionSchemas: {
+            upload_file: [
+                { name: 'file_name', label: 'File Name', type: 'text', required: true, help: 'e.g., document.pdf' },
+                { name: 'content', label: 'File Content', type: 'textarea', required: true },
+                { name: 'mime_type', label: 'MIME Type', type: 'text', help: 'e.g., text/plain, application/pdf' },
+                { name: 'folder_id', label: 'Folder ID', type: 'text', help: 'Optional parent folder ID' }
+            ],
+            create_folder: [
+                { name: 'folder_name', label: 'Folder Name', type: 'text', required: true },
+                { name: 'parent_folder_id', label: 'Parent Folder ID', type: 'text', help: 'Optional parent folder' }
+            ],
+            share_file: [
+                { name: 'file_id', label: 'File ID', type: 'text', required: true },
+                { name: 'email', label: 'Email Address', type: 'email', help: 'User to share with' },
+                { name: 'role', label: 'Role', type: 'select', options: ['reader', 'writer', 'commenter'], help: 'Permission level' },
+                { name: 'type', label: 'Type', type: 'select', options: ['user', 'group', 'domain', 'anyone'], help: 'Share type' }
+            ],
+            list_files: [
+                { name: 'folder_id', label: 'Folder ID', type: 'text', help: 'Leave empty for root folder' },
+                { name: 'page_size', label: 'Page Size', type: 'number', help: 'Max 100' }
+            ],
+            search_files: [
+                { name: 'query', label: 'Search Query', type: 'text', required: true, help: 'Search term in file name' },
+                { name: 'page_size', label: 'Page Size', type: 'number', help: 'Max 100' }
+            ],
+            download_file: [
+                { name: 'file_id', label: 'File ID', type: 'text', required: true }
+            ],
+            delete_file: [
+                { name: 'file_id', label: 'File ID', type: 'text', required: true }
+            ]
+        }
+    },
+
+    google_docs: {
+        name: 'Google Docs',
+        description: 'Create and edit documents',
+        icon: '📝',
+        authType: 'oauth2',
+        color: '#4285F4',
+        actions: ['create_document', 'append_text', 'replace_text', 'get_document_content', 'insert_table', 'export_document'],
+        helpUrl: 'https://developers.google.com/docs/api/how-tos/overview',
+        setupInstructions: '1. Go to Google Cloud Console (https://console.cloud.google.com/)\n2. Create or select a project, then enable the Google Docs API\n3. Go to "APIs & Services" > "OAuth consent screen" and configure it\n4. Go to "Credentials" > "Create Credentials" > "OAuth client ID"\n5. Choose "Web application" and add redirect URI: {APP_URL}/api/integrations/oauth/callback\n6. Save and copy the Client ID and Client Secret\n7. Paste them into Operon OAuth Settings and connect',
+        oauth: {
+            authUrl: 'https://accounts.google.com/o/oauth2/v2/auth',
+            tokenUrl: 'https://oauth2.googleapis.com/token',
+            scopes: ['https://www.googleapis.com/auth/documents', 'https://www.googleapis.com/auth/drive.file']
+        },
+        actionSchemas: {
+            create_document: [
+                { name: 'title', label: 'Document Title', type: 'text', required: true },
+                { name: 'content', label: 'Initial Content', type: 'textarea', help: 'Optional starting text' }
+            ],
+            append_text: [
+                { name: 'document_id', label: 'Document ID', type: 'text', required: true },
+                { name: 'text', label: 'Text to Append', type: 'textarea', required: true }
+            ],
+            replace_text: [
+                { name: 'document_id', label: 'Document ID', type: 'text', required: true },
+                { name: 'find_text', label: 'Find Text', type: 'text', required: true },
+                { name: 'replace_text', label: 'Replace With', type: 'text', help: 'Leave empty to delete' }
+            ],
+            get_document_content: [
+                { name: 'document_id', label: 'Document ID', type: 'text', required: true }
+            ],
+            insert_table: [
+                { name: 'document_id', label: 'Document ID', type: 'text', required: true },
+                { name: 'rows', label: 'Number of Rows', type: 'number', help: 'Default: 3' },
+                { name: 'columns', label: 'Number of Columns', type: 'number', help: 'Default: 3' },
+                { name: 'index', label: 'Insert Position', type: 'number', help: 'Index position (default: 1)' }
+            ],
+            export_document: [
+                { name: 'document_id', label: 'Document ID', type: 'text', required: true },
+                { name: 'format', label: 'Export Format', type: 'select', options: ['pdf', 'html', 'txt', 'docx', 'odt'], required: true }
+            ]
+        }
+    },
+
     outlook_calendar: {
         name: 'Outlook Calendar',
         description: 'Create and manage Outlook calendar events',

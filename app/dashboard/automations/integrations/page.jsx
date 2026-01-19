@@ -286,6 +286,46 @@ function IntegrationsContent() {
                 </div>
             )}
 
+            {/* Connect All Google Services Button */}
+            <div className="mb-6 rounded-2xl border border-blue-200 dark:border-blue-900/30 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-6">
+                <div className="flex items-start gap-4">
+                    <div className="text-4xl">🔗</div>
+                    <div className="flex-1">
+                        <h3 className="text-lg font-semibold text-black dark:text-white mb-1">
+                            Connect All Google Services
+                        </h3>
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                            Already signed in with Google? Connect Gmail, Drive, Docs, Sheets, and Calendar instantly using your existing Google account.
+                        </p>
+                        <button
+                            onClick={async () => {
+                                try {
+                                    const token = localStorage.getItem('auth_token');
+                                    const res = await fetch('/api/integrations/google/connect-all', {
+                                        headers: { Authorization: `Bearer ${token}` }
+                                    });
+                                    const data = await res.json();
+                                    if (res.ok) {
+                                        alert(`✅ Successfully connected ${data.count} Google services!`);
+                                        fetchIntegrations(); // Refresh the list
+                                    } else {
+                                        alert(data.error || 'Failed to connect Google services');
+                                    }
+                                } catch (error) {
+                                    alert('Failed to connect Google services');
+                                }
+                            }}
+                            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold transition-colors shadow-lg"
+                        >
+                            <span>Connect All Google Services</span>
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             {loading ? (
                 <div className="text-center py-12">
                     <p className="text-gray-500 dark:text-gray-500 font-inter">Loading integrations...</p>

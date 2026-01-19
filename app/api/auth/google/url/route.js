@@ -14,11 +14,32 @@ export async function GET() {
             );
         }
 
+        // Request comprehensive scopes for both authentication AND integrations
+        const scopes = [
+            'openid',
+            'email',
+            'profile',
+            // Gmail integration scopes
+            'https://www.googleapis.com/auth/gmail.send',
+            'https://www.googleapis.com/auth/gmail.readonly',
+            'https://www.googleapis.com/auth/gmail.modify',
+            // Google Drive integration scopes
+            'https://www.googleapis.com/auth/drive',
+            'https://www.googleapis.com/auth/drive.file',
+            // Google Docs integration scopes
+            'https://www.googleapis.com/auth/documents',
+            // Google Sheets integration scopes
+            'https://www.googleapis.com/auth/spreadsheets',
+            // Google Calendar integration scopes
+            'https://www.googleapis.com/auth/calendar',
+            'https://www.googleapis.com/auth/calendar.events'
+        ].join(' ');
+
         const params = new URLSearchParams({
             client_id: clientId,
             redirect_uri: redirectUri,
             response_type: 'code',
-            scope: 'email profile',
+            scope: scopes,
             access_type: 'offline',
             prompt: 'consent'
         });
