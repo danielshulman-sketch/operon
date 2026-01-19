@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { query } from '@/utils/db';
-import { verifyToken } from '@/utils/auth';
+import { requireAuth } from '@/utils/auth';
 import { encrypt } from '@/lib/automation/encryption';
 import { ensureIntegrationCredentialsTable } from '@/utils/ensure-integration-credentials';
 
@@ -16,21 +16,13 @@ export async function GET(request) {
         await ensureIntegrationCredentialsTable();
 
         // Verify authentication
-        const authHeader = request.headers.get('authorization');
-        const token = authHeader?.replace('Bearer ', '');
-
-        if (!token) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-        }
-
-        const decoded = verifyToken(token);
-        const { userId, orgId } = decoded;
+        const user = await requireAuth(request);
 
         // Check if user has Google authentication
         const authResult = await query(
             `SELECT access_token, refresh_token FROM auth_accounts 
              WHERE user_id = $1 AND provider = 'google' LIMIT 1`,
-            [userId]
+            [user.id]
         );
 
         if (authResult.rows.length === 0) {
@@ -71,7 +63,7 @@ export async function GET(request) {
                      ON CONFLICT (org_id, integration_name) DO UPDATE SET
                        credentials = $3,
                        updated_at = NOW()`,
-                    [orgId, integration, encryptedCreds]
+                    [user.org_id, integration, encryptedCreds]
                 );
                 connectedCount++;
             } catch (err) {
@@ -88,6 +80,9 @@ export async function GET(request) {
 
     } catch (error) {
         console.error('Error connecting Google services:', error);
+        if (error.message === 'Unauthorized') {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
         return NextResponse.json(
             { error: 'Failed to connect Google services', details: error.message },
             { status: 500 }
