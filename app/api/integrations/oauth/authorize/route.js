@@ -5,10 +5,21 @@ import { query } from '@/utils/db';
 import { ensureOAuthClientCredentialsTable } from '@/utils/ensure-oauth-client-credentials';
 import { decryptValue } from '@/lib/automation/encryption';
 import { cookies } from 'next/headers';
+import crypto from 'crypto';
 
 export const dynamic = 'force-dynamic';
 
-async function buildAuthUrl(request, integrationName, clientId) {
+function createOAuthState(integrationName) {
+    return `${integrationName}:${crypto.randomUUID()}`;
+}
+
+function isGoogleOAuthIntegration(integration, integrationName) {
+    if (!integration?.oauth?.authUrl) return false;
+    const authUrl = integration.oauth.authUrl.toLowerCase();
+    return authUrl.includes('accounts.google.com') || integrationName.startsWith('google_') || integrationName === 'gmail';
+}
+
+async function buildAuthUrl(request, integrationName, clientId, state) {
     const integration = getIntegration(integrationName);
     if (!integration || !supportsOAuth(integration)) {
         const url = new URL('/dashboard/automations/integrations?error=invalid_integration', request.url);
@@ -29,8 +40,6 @@ async function buildAuthUrl(request, integrationName, clientId) {
     const redirectUri = `${appUrl}/api/integrations/oauth/callback`;
     console.log('OAuth Redirect URI:', redirectUri);
 
-    const state = JSON.stringify({ integration: integrationName });
-
     const params = new URLSearchParams({
         client_id: clientId,
         redirect_uri: redirectUri,
@@ -42,7 +51,7 @@ async function buildAuthUrl(request, integrationName, clientId) {
         params.set('scope', integration.oauth.scopes.join(' '));
     }
 
-    if (integrationName === 'google_sheets') {
+    if (isGoogleOAuthIntegration(integration, integrationName)) {
         params.set('access_type', 'offline');
         params.set('prompt', 'consent');
     }
@@ -92,18 +101,26 @@ export async function POST(request) {
             return NextResponse.json({ error: 'Configuration missing (Client ID)' }, { status: 400 });
         }
 
-        const { url, redirect } = await buildAuthUrl(request, integrationName, clientId);
+        const state = createOAuthState(integrationName);
+        const { url, redirect } = await buildAuthUrl(request, integrationName, clientId, state);
         if (redirect) {
             return NextResponse.json({ error: 'Invalid integration' }, { status: 400 });
         }
 
         const token = request.headers.get('authorization')?.replace('Bearer ', '');
+        const response = NextResponse.json({ url });
+        const cookieStore = cookies();
         if (token) {
-            const cookieStore = cookies();
             cookieStore.set('auth_token', token, { httpOnly: true, sameSite: 'lax', path: '/' });
         }
-
-        return NextResponse.json({ url });
+        response.cookies.set('oauth_state', state, {
+            httpOnly: true,
+            sameSite: 'lax',
+            secure: process.env.NODE_ENV === 'production',
+            path: '/',
+            maxAge: 10 * 60,
+        });
+        return response;
     } catch (error) {
         console.error('OAuth authorize error:', error);
         return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
@@ -129,12 +146,21 @@ export async function GET(request) {
             return NextResponse.redirect(url);
         }
 
-        const { url, redirect } = await buildAuthUrl(request, integrationName, envClientId);
+        const state = createOAuthState(integrationName);
+        const { url, redirect } = await buildAuthUrl(request, integrationName, envClientId, state);
         if (redirect) {
             return NextResponse.redirect(redirect);
         }
 
-        return NextResponse.redirect(url);
+        const response = NextResponse.redirect(url);
+        response.cookies.set('oauth_state', state, {
+            httpOnly: true,
+            sameSite: 'lax',
+            secure: process.env.NODE_ENV === 'production',
+            path: '/',
+            maxAge: 10 * 60,
+        });
+        return response;
     } catch (error) {
         console.error('OAuth authorize error:', error);
         return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
