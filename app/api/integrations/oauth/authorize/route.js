@@ -4,7 +4,6 @@ import { requireAuth } from '@/utils/auth';
 import { query } from '@/utils/db';
 import { ensureOAuthClientCredentialsTable } from '@/utils/ensure-oauth-client-credentials';
 import { decryptValue } from '@/lib/automation/encryption';
-import { cookies } from 'next/headers';
 import crypto from 'crypto';
 
 export const dynamic = 'force-dynamic';
@@ -109,9 +108,8 @@ export async function POST(request) {
 
         const token = request.headers.get('authorization')?.replace('Bearer ', '');
         const response = NextResponse.json({ url });
-        const cookieStore = cookies();
         if (token) {
-            cookieStore.set('auth_token', token, { httpOnly: true, sameSite: 'lax', path: '/' });
+            response.cookies.set('auth_token', token, { httpOnly: true, sameSite: 'lax', path: '/' });
         }
         response.cookies.set('oauth_state', state, {
             httpOnly: true,

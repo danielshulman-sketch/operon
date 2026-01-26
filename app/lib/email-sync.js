@@ -308,10 +308,20 @@ export async function syncGmailMailbox(mailbox, user) {
         throw new Error('No Gmail OAuth credentials found for this mailbox');
     }
 
+    // Validate OAuth configuration before proceeding
+    const clientId = process.env.GOOGLE_CLIENT_ID || process.env.GOOGLE_OAUTH_CLIENT_ID;
+    const clientSecret = process.env.GOOGLE_CLIENT_SECRET || process.env.GOOGLE_OAUTH_CLIENT_SECRET;
+
+    if (!clientId || !clientSecret ||
+        clientId.includes('your_client_id_here') ||
+        clientSecret.includes('your_client_secret_here')) {
+        throw new Error('Google OAuth is not properly configured. Please configure valid credentials.');
+    }
+
     const credentials = tokenResult.rows[0];
     const oauth2Client = new google.auth.OAuth2(
-        process.env.GOOGLE_CLIENT_ID,
-        process.env.GOOGLE_CLIENT_SECRET,
+        clientId,
+        clientSecret,
         `${process.env.NEXT_PUBLIC_APP_URL}/api/email/oauth/google/callback`
     );
 

@@ -25,14 +25,18 @@ export async function GET(request) {
             return NextResponse.json({ error: 'Missing code or state' }, { status: 400 });
         }
 
-        let state;
-        try {
-            state = JSON.parse(stateParam);
-        } catch (e) {
+        // Verify state cookie to prevent CSRF
+        const cookieStore = cookies();
+        const stateCookie = cookieStore.get('oauth_state')?.value;
+        if (!stateCookie || stateCookie !== stateParam) {
             return NextResponse.json({ error: 'Invalid state' }, { status: 400 });
         }
+        cookieStore.set('oauth_state', '', { path: '/', maxAge: 0 });
 
-        const integrationName = state.integration;
+        const [integrationName] = stateParam.split(':');
+        if (!integrationName) {
+            return NextResponse.json({ error: 'Invalid state' }, { status: 400 });
+        }
         const integration = getIntegration(integrationName);
 
         if (!integration) {
@@ -40,7 +44,6 @@ export async function GET(request) {
         }
 
         // 1. Verify User from Cookie
-        const cookieStore = cookies();
         const token = cookieStore.get('auth_token')?.value;
 
         if (!token) {

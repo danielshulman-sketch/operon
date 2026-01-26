@@ -16,10 +16,19 @@ export async function GET(request) {
     try {
         const { searchParams } = new URL(request.url);
         const code = searchParams.get('code');
+        const stateParam = searchParams.get('state');
 
-        if (!code) {
+        if (!code || !stateParam) {
             return NextResponse.redirect(`${process.env.NEXT_PUBLIC_APP_URL}/dashboard/email-connect?error=no_code`);
         }
+
+        // Verify state cookie to prevent CSRF
+        const cookieStore = cookies();
+        const stateCookie = cookieStore.get('oauth_email_state')?.value;
+        if (!stateCookie || stateCookie !== stateParam) {
+            return NextResponse.redirect(`${process.env.NEXT_PUBLIC_APP_URL}/dashboard/email-connect?error=invalid_state`);
+        }
+        cookieStore.set('oauth_email_state', '', { path: '/', maxAge: 0 });
 
         // Get tokens from Google
         const { tokens } = await oauth2Client.getToken(code);
@@ -31,7 +40,6 @@ export async function GET(request) {
         const emailAddress = profile.data.emailAddress;
 
         // Get user from cookie/session (simplified - in production use proper session management)
-        const cookieStore = cookies();
         const token = cookieStore.get('auth_token')?.value || request.headers.get('authorization')?.substring(7);
 
         if (!token) {

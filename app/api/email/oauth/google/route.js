@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { google } from 'googleapis';
 import { requireAuth } from '@/utils/auth';
+import { cookies } from 'next/headers';
+import crypto from 'crypto';
 
 // Only initialize OAuth if credentials are configured
 const isOAuthConfigured = () => {
@@ -41,13 +43,23 @@ export async function GET(request) {
             'https://www.googleapis.com/auth/gmail.send',
         ];
 
+        const state = `gmail:${crypto.randomUUID()}`;
         const authUrl = oauth2Client.generateAuthUrl({
             access_type: 'offline',
             scope: scopes,
             prompt: 'consent',
+            state,
         });
 
-        return NextResponse.json({ authUrl });
+        const response = NextResponse.json({ authUrl });
+        response.cookies.set('oauth_email_state', state, {
+            httpOnly: true,
+            sameSite: 'lax',
+            secure: process.env.NODE_ENV === 'production',
+            path: '/',
+            maxAge: 10 * 60,
+        });
+        return response;
     } catch (error) {
         console.error('OAuth init error:', error);
         return NextResponse.json(
