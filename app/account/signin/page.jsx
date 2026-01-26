@@ -14,22 +14,6 @@ export default function SignInPage() {
     const [googleLoading, setGoogleLoading] = useState(false);
 
     useEffect(() => {
-        // Handle Google OAuth callback
-        const urlParams = new URLSearchParams(window.location.search);
-        const token = urlParams.get('token');
-        const googleAuth = urlParams.get('google_auth');
-        const errorParam = urlParams.get('error');
-
-        if (token && googleAuth === 'success') {
-            localStorage.setItem('auth_token', token);
-            // Clean URL
-            window.history.replaceState({}, '', '/account/signin');
-            // Redirect to dashboard
-            window.location.href = '/dashboard';
-        } else if (errorParam) {
-            setError('Google sign-in failed. Please try again.');
-            window.history.replaceState({}, '', '/account/signin');
-        }
     }, []);
 
     const handleSubmit = async (e) => {
@@ -61,26 +45,6 @@ export default function SignInPage() {
         }
 
         setLoading(false);
-    };
-
-    const handleGoogleSignIn = async () => {
-        setError('');
-        setGoogleLoading(true);
-
-        try {
-            const res = await fetch('/api/auth/google/url');
-            const data = await res.json();
-
-            if (res.ok && data.url) {
-                window.location.href = data.url;
-            } else {
-                setError(data.error || 'Failed to initiate Google sign-in');
-                setGoogleLoading(false);
-            }
-        } catch (err) {
-            setError('An error occurred. Please try again.');
-            setGoogleLoading(false);
-        }
     };
 
     return (

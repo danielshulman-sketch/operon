@@ -15,7 +15,20 @@ async function buildAuthUrl(request, integrationName, clientId) {
         return { redirect: url };
     }
 
-    const redirectUri = `${process.env.NEXT_PUBLIC_APP_URL}/api/integrations/oauth/callback`;
+    let appUrl = process.env.NEXT_PUBLIC_APP_URL;
+    if (!appUrl) {
+        const host = request.headers.get('host') || 'localhost:3000';
+        const protocol = host.includes('localhost') ? 'http' : 'https';
+        appUrl = `${protocol}://${host}`;
+        console.log(`NEXT_PUBLIC_APP_URL not set. Using host: ${appUrl}`);
+    }
+
+    // Remove trailing slash if present
+    appUrl = appUrl.trim().replace(/\/$/, '');
+
+    const redirectUri = `${appUrl}/api/integrations/oauth/callback`;
+    console.log('OAuth Redirect URI:', redirectUri);
+
     const state = JSON.stringify({ integration: integrationName });
 
     const params = new URLSearchParams({

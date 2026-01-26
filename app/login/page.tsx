@@ -49,24 +49,7 @@ export default function LoginPage() {
     }
   };
 
-  const handleGoogleSignIn = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch('/api/auth/google/url');
-      const data = await response.json();
 
-      if (data.url) {
-        window.location.href = data.url;
-      } else {
-        setError('Failed to initiate Google sign-in');
-        setLoading(false);
-      }
-    } catch (err) {
-      console.error('Google sign-in error:', err);
-      setError('Failed to initiate Google sign-in');
-      setLoading(false);
-    }
-  };
 
 
   return (
