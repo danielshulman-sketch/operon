@@ -79,7 +79,11 @@ export async function POST(request) {
             token,
         });
     } catch (error) {
-        console.error('Signin error:', error);
+        console.error('====================');
+        console.error(' Signin error:', error);
+        console.error('Error message:', error.message);
+        console.error('Error stack:', error.stack);
+        console.error('====================');
         const isProduction = process.env.NODE_ENV === 'production';
         return NextResponse.json(
             {

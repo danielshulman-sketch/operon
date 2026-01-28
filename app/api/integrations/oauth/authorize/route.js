@@ -93,7 +93,13 @@ export async function POST(request) {
         }
 
         const storedClientId = await getStoredClientId(user.org_id, integrationName);
-        const envClientId = process.env[`${integrationName.toUpperCase()}_CLIENT_ID`];
+        let envClientId = process.env[`${integrationName.toUpperCase()}_CLIENT_ID`];
+
+        // Fallback for Google integrations
+        const integration = getIntegration(integrationName);
+        if (!envClientId && isGoogleOAuthIntegration(integration, integrationName)) {
+            envClientId = process.env.GOOGLE_OAUTH_CLIENT_ID || process.env.GOOGLE_CLIENT_ID;
+        }
         const clientId = storedClientId || envClientId;
 
         if (!clientId) {
@@ -135,7 +141,13 @@ export async function GET(request) {
             return NextResponse.redirect(url);
         }
 
-        const envClientId = process.env[`${integrationName.toUpperCase()}_CLIENT_ID`];
+        let envClientId = process.env[`${integrationName.toUpperCase()}_CLIENT_ID`];
+
+        // Fallback for Google integrations
+        const integration = getIntegration(integrationName);
+        if (!envClientId && isGoogleOAuthIntegration(integration, integrationName)) {
+            envClientId = process.env.GOOGLE_OAUTH_CLIENT_ID || process.env.GOOGLE_CLIENT_ID;
+        }
         if (!envClientId) {
             const url = new URL(
                 `/dashboard/automations/integrations?error=${encodeURIComponent('Configuration missing (Client ID)')}`,

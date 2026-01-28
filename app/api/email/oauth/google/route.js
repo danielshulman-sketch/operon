@@ -6,8 +6,8 @@ import crypto from 'crypto';
 
 // Only initialize OAuth if credentials are configured
 const isOAuthConfigured = () => {
-    const clientId = process.env.GOOGLE_CLIENT_ID || process.env.GOOGLE_OAUTH_CLIENT_ID;
-    const clientSecret = process.env.GOOGLE_CLIENT_SECRET || process.env.GOOGLE_OAUTH_CLIENT_SECRET;
+    const clientId = process.env.GOOGLE_OAUTH_CLIENT_ID || process.env.GOOGLE_CLIENT_ID;
+    const clientSecret = process.env.GOOGLE_OAUTH_CLIENT_SECRET || process.env.GOOGLE_CLIENT_SECRET;
 
     // Check if credentials are placeholders
     if (!clientId || !clientSecret ||
@@ -19,8 +19,8 @@ const isOAuthConfigured = () => {
 };
 
 const oauth2Client = isOAuthConfigured() ? new google.auth.OAuth2(
-    process.env.GOOGLE_CLIENT_ID || process.env.GOOGLE_OAUTH_CLIENT_ID,
-    process.env.GOOGLE_CLIENT_SECRET || process.env.GOOGLE_OAUTH_CLIENT_SECRET,
+    process.env.GOOGLE_OAUTH_CLIENT_ID || process.env.GOOGLE_CLIENT_ID,
+    process.env.GOOGLE_OAUTH_CLIENT_SECRET || process.env.GOOGLE_CLIENT_SECRET,
     `${process.env.NEXT_PUBLIC_APP_URL}/api/email/oauth/google/callback`
 ) : null;
 
