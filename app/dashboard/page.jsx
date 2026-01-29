@@ -1,10 +1,12 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Clock, TrendingUp, CheckCircle, XCircle, Plus, CheckSquare } from 'lucide-react';
 
 export default function DashboardPage() {
+    const searchParams = useSearchParams();
     const [user, setUser] = useState(null);
     const [stats, setStats] = useState({
         pending: 0,
@@ -16,10 +18,18 @@ export default function DashboardPage() {
     const [orgStats, setOrgStats] = useState([]);
 
     useEffect(() => {
+        // Check for auth_token in URL (from Google OAuth callback)
+        const tokenParam = searchParams.get('auth_token');
+        if (tokenParam) {
+            localStorage.setItem('auth_token', tokenParam);
+            // Clean up URL
+            window.history.replaceState({}, '', '/dashboard');
+        }
+
         fetchUserData();
         fetchStats();
         fetchTasks();
-    }, []);
+    }, [searchParams]);
 
     useEffect(() => {
         if (user?.isSuperadmin) {
