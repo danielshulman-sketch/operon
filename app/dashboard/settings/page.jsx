@@ -2,7 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Mail, Plus, Trash2, RefreshCw, User, Lock, Bell, Users, Shield, X, Sparkles } from 'lucide-react';
+import { Mail, Plus, Trash2, RefreshCw, User, Lock, Bell, Users, Shield, X, Sparkles, Key, Webhook } from 'lucide-react';
+import ApiKeysTab from '@/components/ApiKeysTab';
+import WebhooksTab from '@/components/WebhooksTab';
 
 export default function SettingsPage() {
     const router = useRouter();
@@ -515,6 +517,26 @@ export default function SettingsPage() {
                 >
                     <Sparkles className="h-4 w-4 inline mr-2" />
                     Automations
+                </button>
+                <button
+                    onClick={() => setActiveTab('api-keys')}
+                    className={`px-4 py-2 font-medium transition-colors ${activeTab === 'api-keys'
+                        ? 'text-white border-b-2 border-white'
+                        : 'text-gray-400 hover:text-white'
+                        }`}
+                >
+                    <Key className="h-4 w-4 inline mr-2" />
+                    API Keys
+                </button>
+                <button
+                    onClick={() => setActiveTab('webhooks')}
+                    className={`px-4 py-2 font-medium transition-colors ${activeTab === 'webhooks'
+                        ? 'text-white border-b-2 border-white'
+                        : 'text-gray-400 hover:text-white'
+                        }`}
+                >
+                    <Webhook className="h-4 w-4 inline mr-2" />
+                    Webhooks
                 </button>
             </div>
 
@@ -1164,6 +1186,12 @@ export default function SettingsPage() {
                     </div>
                 </div>
             )}
+
+            {/* API Keys Tab */}
+            {activeTab === 'api-keys' && <ApiKeysTab />}
+
+            {/* Webhooks Tab */}
+            {activeTab === 'webhooks' && <WebhooksTab />}
         </div>
     );
 }
