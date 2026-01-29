@@ -1,11 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Clock, TrendingUp, CheckCircle, XCircle, Plus, CheckSquare } from 'lucide-react';
 
-export default function DashboardPage() {
+export const dynamic = 'force-dynamic';
+
+function DashboardPageContent() {
     const searchParams = useSearchParams();
     const [user, setUser] = useState(null);
     const [stats, setStats] = useState({
@@ -339,5 +341,13 @@ export default function DashboardPage() {
                 )}
             </section>
         </div>
+    );
+}
+
+export default function DashboardPage() {
+    return (
+        <Suspense fallback={<div className="max-w-6xl mx-auto py-10 text-white">Loading...</div>}>
+            <DashboardPageContent />
+        </Suspense>
     );
 }
